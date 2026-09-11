@@ -1,0 +1,16 @@
+<?php
+// Copy to config/mail.local.php and keep that file private.
+return [
+    // "auto" enables delivery only after both non-placeholder credentials are set.
+    'enabled' => 'auto',
+    // The sender address defaults to username; add 'from' only when it differs.
+    'from_name' => 'Vetrix',
+    'host' => 'smtp.gmail.com',
+    'port' => 587,
+    'secure' => 'tls',
+    'username' => 'replace-with-your-address@gmail.com',
+    'password' => 'replace-with-your-16-character-google-app-password',
+    'timeout' => 30,
+    // Leave blank to use PHP's openssl.cafile or the operating-system trust store.
+    'ca_file' => '',
+];

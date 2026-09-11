@@ -1,0 +1,24 @@
+.pet-qr-scanner{margin:20px 0;padding:20px;border:1px solid #dbe5f2;border-radius:16px;background:#f6f9ff;color:#19334d;min-width:0}
+.qr-retrieval-card.qr-camera-card{grid-template-columns:minmax(0,1fr)!important;gap:0;align-items:stretch}
+.qr-camera-card .qr-token-form>div{grid-template-columns:minmax(0,1fr) auto!important}
+.pet-qr-scanner [hidden]{display:none!important}
+.pet-qr-scanner h3{font-size:1rem;font-weight:700;margin:0 0 6px;color:#19334d}
+.pet-qr-scanner-heading p{margin:0;font-size:.88rem;line-height:1.55;color:#607086}
+.pet-qr-scanner-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.pet-qr-scanner-actions button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:10px;padding:10px 16px;font:inherit;font-size:.9rem;font-weight:600;cursor:pointer;line-height:1.3}
+.pet-qr-scanner .pet-qr-camera-start{background:#2563eb!important;color:#fff!important;border:1px solid #2563eb}
+.pet-qr-camera-start svg{width:20px;height:20px;flex-shrink:0}
+.pet-qr-camera-stop{background:#fff;color:#334155;border:1px solid #cbd5e1}
+.pet-qr-scanner-actions button:disabled{opacity:.6;cursor:wait}
+.pet-qr-scanner :is(button,select,a):focus-visible{outline:3px solid #60a5fa;outline-offset:3px}
+.pet-qr-camera-choice{display:block;margin-top:16px;font-size:.85rem;font-weight:600}
+.pet-qr-camera-choice select{display:block;width:100%;max-width:100%;min-height:42px;margin-top:6px;padding:8px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#19334d}
+.pet-qr-camera-preview{position:relative;overflow:hidden;margin-top:16px;border-radius:12px;background:#0f172a;aspect-ratio:4/3;max-width:540px}
+.pet-qr-camera-preview video{display:block;width:100%;height:100%;object-fit:contain}
+.pet-qr-camera-guide{position:absolute;top:15%;left:24%;width:52%;height:70%;border:2px solid rgba(255,255,255,.8);border-radius:12px;pointer-events:none}
+.pet-qr-camera-status{margin:14px 0 0!important;font-size:.86rem!important;line-height:1.55!important;color:#52657a}
+.pet-qr-camera-status[data-state="error"]{color:#b42318}
+.pet-qr-camera-status[data-state="success"]{color:#18794e}
+.pet-qr-camera-help{margin:8px 0 0;font-size:.86rem;line-height:1.6;color:#52657a}
+.pet-qr-camera-help a{color:#1d4ed8;text-decoration:underline}
+@media(max-width:480px){.pet-qr-scanner{padding:16px}.pet-qr-scanner-actions button{flex:1}.pet-qr-camera-preview{aspect-ratio:1/1}.qr-camera-card .qr-token-form>div{grid-template-columns:minmax(0,1fr)!important}}

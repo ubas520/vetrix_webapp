@@ -1,0 +1,16 @@
+# Local mail and environment secrets. Keep the supplied examples tracked.
+/config/mail.local.php
+/config/payments.local.php
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+!.env.*.example
+!.env.*.sample
+!.env.*.template
+
+# Local database backups, verification output, and user uploads.
+/backups/
+/artifacts/
+/uploads/

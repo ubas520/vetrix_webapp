@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vetrix User Manual — Admin, Staff and Veterinarian</title>
+<style>
+:root{color-scheme:light;font-family:Arial,sans-serif;color:#233441;background:#edf3f5}*{box-sizing:border-box}body{margin:0;line-height:1.65}main{max-width:900px;margin:32px auto;padding:48px 60px;background:white;border-radius:16px}h1{font-size:36px;color:#126b68;line-height:1.2}h2{font-size:26px;color:#126b68;border-top:2px solid #d9e8e7;padding-top:28px;margin-top:40px;line-height:1.3}h3{font-size:19px;margin-top:26px;line-height:1.4}p,li{font-size:16px}li{margin:7px 0}strong{color:#152f42}nav{padding:20px;background:#f0f7f7;border-radius:10px;margin-bottom:28px}nav a{display:block;padding:4px 0;color:#126b68}button{border:0;background:#126b68;color:white;padding:12px 18px;border-radius:8px;font-size:15px;cursor:pointer}.tools{max-width:900px;margin:24px auto 0;display:flex;align-items:center;gap:16px;padding:0 12px}.tools span{font-size:14px}@media(max-width:650px){main{margin:12px;padding:24px}h1{font-size:30px}.tools{flex-wrap:wrap}}@media print{@page{size:A4;margin:18mm}body{background:white}main{max-width:none;margin:0;padding:0;border-radius:0}.tools{display:none}nav{background:none;border:1px solid #bbb}h1{font-size:26pt}h2{font-size:19pt;break-before:page;border:0;margin:0;padding:0}h3{font-size:13pt;break-after:avoid}p,li{font-size:10.5pt;line-height:1.5}li{break-inside:avoid}a{color:inherit;text-decoration:none}}
+</style>
+</head>
+<body>
+<div class="tools"><button type="button" onclick="window.print()">Print / Save PDF</button><span>Choose Save as PDF in your browser's print window.</span></div>
+<main>
+<nav aria-label="Manual contents"><strong>Jump to a section</strong>
+<a href='#1-start-here-all-users'>1. Start here — all users</a>
+<a href='#2-staff-guide'>2. Staff guide</a>
+<a href='#3-veterinarian-guide'>3. Veterinarian guide</a>
+<a href='#4-admin-guide'>4. Admin guide</a>
+<a href='#5-what-the-status-words-mean'>5. What the status words mean</a>
+<a href='#6-common-problems'>6. Common problems</a>
+<a href='#7-daily-checklists'>7. Daily checklists</a>
+
+</nav>
+<h1 id='vetrix-user-manual'>Vetrix User Manual</h1>
+<p>Simple guide for Admin, Staff, and Veterinarian users</p>
+<p>Prepared from the app screens and forms in this project on 11 September 2026.</p>
+<h2 id='1-start-here-all-users'>1. Start here — all users</h2>
+<p>Vetrix helps the clinic manage pet owners, pets, appointments, treatment records, products, and payments. Your account decides which menus you can use.</p>
+<ul>
+<li><strong>Admin:</strong> manages accounts, approvals, clinic schedules, products, reports, and follow-ups.</li>
+<li><strong>Staff:</strong> assists owners, registers pets, arranges visits, handles sales and pickups, and updates stock.</li>
+<li><strong>Veterinarian (Vet):</strong> reviews pet health, completes visits, records treatment and prescriptions, and records vaccinations.</li>
+</ul>
+<h3 id='sign-in'>Sign in</h3>
+<ol>
+<li>Open the Vetrix website address provided by your clinic. On the clinic computer hosting the app, this may be http://localhost/vetrix/.</li>
+<li>Enter your <strong>Email address</strong> and <strong>Password</strong>.</li>
+<li>Click <strong>Sign in</strong>. Your Dashboard opens.</li>
+</ol>
+<p>Use the menu on the left to open a page. On a smaller screen, open the menu first. <strong>Dashboard</strong> takes you back to your starting page.</p>
+<h3 id='find-and-save-information'>Find and save information</h3>
+<ol>
+<li>Open the relevant menu, such as <strong>Pets</strong> or <strong>Appointments</strong>.</li>
+<li>Type a name in the search box and click <strong>Search</strong>.</li>
+<li>Use a status filter, such as <strong>Pending</strong> or <strong>All</strong>, to narrow the list. Clear the search or return to All if something is missing.</li>
+<li>Open the record and check the owner and pet before making changes.</li>
+<li>After saving, read the message on screen. If an error appears, correct it and save again.</li>
+</ol>
+<p><strong>Show</strong> changes how many records appear on a page. List and grid buttons change how the same records are displayed.</p>
+<h3 id='your-account'>Your account</h3>
+<ul>
+<li>Open your account menu and choose <strong>Profile</strong> to view or update your details.</li>
+<li>Choose <strong>Change password</strong>, enter your current password, enter the new password twice, and click <strong>Change password</strong>. Use at least 10 characters, including an uppercase letter, a lowercase letter, a number, and a symbol.</li>
+<li>Open <strong>Notifications</strong> to read alerts. <strong>Mark all read</strong> marks the alerts as read; it does not finish the tasks mentioned in them.</li>
+<li>When finished, open your account menu and click <strong>Sign out</strong>, especially on a shared computer.</li>
+</ul>
+<h2 id='2-staff-guide'>2. Staff guide</h2>
+<h3 id='a-register-a-client-pet-owner'>A. Register a client (pet owner)</h3>
+<ol>
+<li>Open <strong>Clients</strong> and search for the owner first to avoid a duplicate.</li>
+<li>If the owner is new, click <strong>Create client</strong>.</li>
+<li>Enter the full name, email, phone, address, and temporary password requested by the form.</li>
+<li>Click <strong>Create pending client</strong>.</li>
+<li>Ask the Admin to review the account. The client must verify the emailed one-time code after approval.</li>
+</ol>
+<p>An OTP is a one-time verification code. Client verification is separate from staff access to this clinic website.</p>
+<h3 id='b-register-a-walk-in-pet'>B. Register a walk-in pet</h3>
+<ol>
+<li>Open <strong>Pets</strong> and find <strong>Add Walk-In Pet</strong>.</li>
+<li>Select the correct <strong>Owner</strong>.</li>
+<li>Enter the pet name, type, breed, sex, birth date, weight in kilograms, and color or markings.</li>
+<li>Enter allergies, critical notes, and owner notes. Confirm these with the owner; ask the Vet if health information is unclear.</li>
+<li>Add a pet picture if available, then click <strong>Submit for Verification</strong>.</li>
+<li>Ask the Admin to review the pet. It must be <strong>Approved</strong> before it can be booked for an appointment.</li>
+</ol>
+<h3 id='c-arrange-an-appointment'>C. Arrange an appointment</h3>
+<ol>
+<li>Open <strong>Calendar</strong> to check the date and available times.</li>
+<li>To create a visit, select the date and choose <strong>Add client appointment</strong>.</li>
+<li>Choose the owner and approved pet. Fill in the requested date, time, and other details shown, then click <strong>Create appointment</strong>. New Staff-created appointments start as Pending.</li>
+<li>Open <strong>Appointments</strong> and open the appointment details.</li>
+<li>Set the <strong>Clinic schedule</strong>, <strong>Assign veterinarian</strong>, and <strong>Duration</strong>. Set <strong>Status</strong> to <strong>Approved - confirmed</strong> when the visit is confirmed.</li>
+<li>Add any instructions in <strong>Message / notes for client</strong> and click <strong>Save &amp; Notify</strong>.</li>
+<li>Check the saved date, time, assigned Vet, and status.</li>
+</ol>
+<p>For an existing request, start at step 4. If a time conflicts with another booking or an unavailable period, choose another time or ask the Admin to resolve it.</p>
+<h3 id='d-process-a-counter-sale'>D. Process a counter sale</h3>
+<ol>
+<li>Open <strong>Point of Sale</strong>.</li>
+<li>Find each product and click <strong>Add to cart</strong>. Use the plus or minus buttons to set the quantity.</li>
+<li>Select the client, or <strong>Walk-in / No linked client</strong> where appropriate.</li>
+<li>Check the items, quantities, and total with the customer.</li>
+<li>Choose <strong>Cash</strong> or <strong>QR payment</strong>. For cash, enter <strong>Cash Received</strong>, check the change, and select the correct <strong>Payment Status</strong>.</li>
+<li>For QR payment, confirm receipt of the payment before checkout. This option records the sale as paid.</li>
+<li>Click <strong>Checkout</strong> once and check the result. Open <strong>Receipts</strong> to find the saved receipt.</li>
+</ol>
+<p>Stock updates automatically for the sale. Do not enter another Stock out adjustment for the same sale. If checkout seems interrupted, check Recent transactions and Receipts before trying again.</p>
+<h3 id='e-handle-a-product-order-for-pickup'>E. Handle a product order for pickup</h3>
+<ol>
+<li>Open <strong>Product Orders</strong>, select an order, and check the client, products, quantities, and payment method.</li>
+<li>For GCash, open <strong>View payment proof</strong>. Check the reference, recipient, and exact amount received in the clinic GCash account.</li>
+<li>Tick the confirmation box and click <strong>Verify GCash payment</strong> if the payment matches. If it does not, enter a clear note and click <strong>Reject payment proof</strong>.</li>
+<li>Prepare the items and click <strong>Mark ready for pickup</strong> when available.</li>
+<li>At pickup, confirm the client and hand over the correct products. For pay-at-clinic orders, collect the full amount, enter <strong>Amount received (PHP)</strong>, and tick the confirmation box.</li>
+<li>Click <strong>Complete pickup</strong> or <strong>Complete pickup and record payment</strong>, then open <strong>View receipt</strong> when shown.</li>
+</ol>
+<p>Use the order&#39;s pickup process to record its sale. Do not create a second counter sale for the same order. <strong>Cancel order</strong> is available only for certain unpaid orders.</p>
+<p>To update the receiving account for product orders, open <strong>GCash Settings</strong>, enter the clinic account name and mobile number, verify the details, tick the confirmation box, and click <strong>Save GCash details</strong>.</p>
+<h3 id='f-update-inventory'>F. Update inventory</h3>
+<ol>
+<li>Open <strong>Inventory</strong>. Check <strong>Low stock</strong> and <strong>Out of stock</strong>.</li>
+<li>To record a delivery or other stock change, click <strong>Stock adjustment</strong>.</li>
+<li>Select the item. Choose <strong>Stock in</strong> to add stock or <strong>Stock out</strong> to remove stock.</li>
+<li>Enter the quantity and a reason, such as Delivery, Damaged item, or Clinic use.</li>
+<li>Click <strong>Record adjustment</strong> and check the new stock count.</li>
+</ol>
+<p>For a new product, click <strong>Add inventory item</strong>, fill in its name, price, unit, initial stock, and reorder level, then save. The reorder level is the quantity at which the app starts showing a low-stock alert. Check clinic pricing with the Admin before changing it.</p>
+<h3 id='g-look-up-a-pet-using-its-qr-code'>G. Look up a pet using its QR code</h3>
+<ol>
+<li>Open <strong>QR Token</strong>.</li>
+<li>Use the scan option if available, or enter the code in <strong>Secure QR token</strong>.</li>
+<li>Click <strong>Retrieve record</strong> and check the pet and owner.</li>
+</ol>
+<p>This QR code finds a pet record. The payment QR shown at checkout is used to receive money.</p>
+<h2 id='3-veterinarian-guide'>3. Veterinarian guide</h2>
+<h3 id='a-review-today-s-patients'>A. Review today&#39;s patients</h3>
+<ol>
+<li>Open <strong>Dashboard</strong> and review the clinical queue.</li>
+<li>Open <strong>Appointments</strong> or <strong>Calendar</strong> to check the visit time and assignment.</li>
+<li>Open <strong>Health Monitoring</strong> and <strong>Pets</strong> to review allergies and critical notes.</li>
+<li>Open <strong>Medical Records</strong> to check previous visits, diagnoses, medicines, and follow-up notes.</li>
+</ol>
+<p>You can see appointments assigned to you and unassigned appointments allowed by your account. Ask the Admin or Staff to correct an assignment when needed.</p>
+<h3 id='b-finish-a-visit-and-record-the-consultation'>B. Finish a visit and record the consultation</h3>
+<ol>
+<li>After the consultation, open the approved appointment in <strong>Appointments</strong>.</li>
+<li>Click <strong>Mark Completed</strong> and confirm. The appointment must be approved before this action is available.</li>
+<li>Click <strong>Create Medical Record</strong> for the completed visit.</li>
+<li>Check the pet and visit date. Enter <strong>Diagnosis</strong>, <strong>Treatment</strong>, <strong>Medicine and instructions</strong>, and <strong>Notes</strong>.</li>
+<li>Choose a <strong>Note type</strong>, such as General note, Improving / stable, Urgent concern, or Needs follow-up.</li>
+<li>Click <strong>Save</strong> and check the saved record.</li>
+</ol>
+<p>For a separate entry, open <strong>Prescription</strong> directly, or choose <strong>Add consultation</strong> from <strong>Medical Records</strong>. Saving a prescription entry also creates a medical record. Completing an appointment and saving its clinical record are separate steps.</p>
+<h3 id='c-record-a-vaccination'>C. Record a vaccination</h3>
+<ol>
+<li>Open <strong>Vaccinations</strong> and use <strong>Add Vaccine</strong>.</li>
+<li>Select the approved pet and enter <strong>Vaccine Name</strong>.</li>
+<li>Enter the actual <strong>Date Given</strong> and the <strong>Next Due Date</strong>.</li>
+<li>Add remarks and click <strong>Save</strong>. <strong>Administered By</strong> uses the logged-in Vet&#39;s name.</li>
+<li>Check the record in the vaccination list.</li>
+</ol>
+<p>Use <strong>Due soon</strong>, <strong>Overdue</strong>, and <strong>Scheduled</strong> to review follow-ups. On an overdue record, use <strong>Send notification</strong> when a follow-up is needed.</p>
+<h3 id='d-correct-pet-details-or-review-a-change'>D. Correct pet details or review a change</h3>
+<ol>
+<li>Open <strong>Pets</strong>, find the pet, and click <strong>Edit</strong>.</li>
+<li>Correct the details available in the form and click <strong>Save and Notify Client</strong>.</li>
+<li>For a submitted change request, open <strong>Pet Change Reviews</strong> instead.</li>
+<li>Compare the current details with the requested change. Choose the appropriate approval or rejection reason, add a note if needed, and click <strong>Approve</strong> or <strong>Reject</strong>.</li>
+</ol>
+<h3 id='e-request-time-away'>E. Request time away</h3>
+<ol>
+<li>Open <strong>Calendar</strong>, choose <strong>Staff and Vets</strong>, then <strong>Unavailable</strong>.</li>
+<li>Choose the date and open <strong>Add unavailability</strong>.</li>
+<li>Enter the reason, start, and end. Use repeat options only if needed.</li>
+<li>Click <strong>Submit unavailability</strong>.</li>
+<li>Check back for the Admin&#39;s decision. A pending request is not yet approved time away.</li>
+</ol>
+<p>Staff can also use their Calendar to submit an unavailability request.</p>
+<h2 id='4-admin-guide'>4. Admin guide</h2>
+<h3 id='a-approve-and-manage-client-accounts'>A. Approve and manage client accounts</h3>
+<ol>
+<li>Open <strong>Clients</strong>, find the client, and click <strong>Open account</strong>.</li>
+<li>Check the name, contact details, and account information.</li>
+<li>Click <strong>Approve and issue OTP</strong> when the details are acceptable.</li>
+<li>Ask the client to check their email and finish verification. Use <strong>Resend OTP</strong> if needed.</li>
+<li>To correct contact details, edit the form and click <strong>Save client details</strong>.</li>
+</ol>
+<p>You can also use <strong>Create client</strong> to add a pending account. Approval and email verification are separate steps.</p>
+<h3 id='b-approve-pets-and-requested-changes'>B. Approve pets and requested changes</h3>
+<ol>
+<li>Open <strong>Pets</strong> and find a pet needing review.</li>
+<li>Click <strong>Review profile</strong> and check the owner and pet information.</li>
+<li>Choose the <strong>Current verification status</strong>: Approved, Pending, Rejected, or In-person confirmation.</li>
+<li>Add an <strong>Administrator note</strong> explaining the decision and click <strong>Update verification</strong>.</li>
+<li>To correct details yourself, choose <strong>Edit full details</strong> and then <strong>Save verified changes</strong>.</li>
+</ol>
+<p>For an owner-submitted change, open <strong>Pet Edit Requests</strong>, read the old and requested details, select a reason, and click <strong>Approve</strong> or <strong>Reject</strong>. Review any appeal notes before deciding whether to <strong>Return to review</strong> or <strong>Reject appeal</strong>.</p>
+<p>For a walk-in pet you have already checked, use <strong>Add Walk-In Pet</strong> on Pets and click <strong>Save Approved Pet</strong>.</p>
+<h3 id='c-manage-appointments-and-the-team-calendar'>C. Manage appointments and the team calendar</h3>
+<p>Use <strong>Appointments</strong> to update one visit&#39;s status, date, time, Vet, and client instructions. Follow the scheduling steps in Staff section C.</p>
+<ol>
+<li>Open <strong>Calendar</strong>, choose <strong>Staff and Vets</strong>, and open <strong>Clinic Schedule</strong>.</li>
+<li>Choose a date and <strong>Add clinic day schedule</strong>.</li>
+<li>Enter the date, time ranges, schedule types, and the Vets or Staff assigned to each range.</li>
+<li>Set repeat days and an end date if needed, then click <strong>Save clinic schedule</strong>.</li>
+<li>Under <strong>Unavailable</strong>, open pending requests and choose <strong>Approve request</strong> or <strong>Deny request</strong>.</li>
+</ol>
+<p>Review any affected appointments when approving time away. Unavailability entered by an Admin is approved immediately.</p>
+<h3 id='d-manage-clinic-user-accounts'>D. Manage clinic user accounts</h3>
+<ol>
+<li>Open <strong>Staff Accounts</strong>, <strong>Veterinarians</strong>, or <strong>Administrators</strong>.</li>
+<li>Click the <strong>Create</strong> button for that role and complete the account form.</li>
+<li>For an existing user, open the account, update the details, and click <strong>Save account</strong>.</li>
+<li>Use <strong>Deactivate</strong> when access should stop. Use <strong>Restore account</strong> when access should return.</li>
+</ol>
+<p><strong>Delete</strong> removes the account from normal use while keeping linked clinic records. Read the confirmation carefully and choose the correct person before proceeding.</p>
+<h3 id='e-monitor-stock-prices-and-sales'>E. Monitor stock, prices, and sales</h3>
+<ul>
+<li>Use <strong>Inventory</strong> to add products, review low stock, update product details, and record stock adjustments. Follow Staff section F.</li>
+<li>Use <strong>Point of Sale</strong> to review products shown to cashiers and recent transactions.</li>
+<li>To set the QR image used for counter payments, click <strong>Payment QR</strong>, provide the clinic payment image, and click <strong>Save payment QR</strong>.</li>
+</ul>
+<p>The Staff <strong>GCash Settings</strong> page sets the receiving account details for product orders. The Admin <strong>Payment QR</strong> option sets the image used at counter checkout.</p>
+<h3 id='f-send-follow-ups-and-review-feedback'>F. Send follow-ups and review feedback</h3>
+<ol>
+<li>Open <strong>Notifications</strong> and click <strong>New notification</strong>.</li>
+<li>Select the recipient, type, and status. Enter a clear title and message.</li>
+<li>Click <strong>Save notification</strong>.</li>
+</ol>
+<p>Open <strong>Vaccinations</strong> to monitor upcoming and overdue vaccinations, then use <strong>Send reminder</strong> where needed. Open <strong>Feedback</strong> to review client comments. Email delivery depends on the clinic&#39;s email setup; if a message does not arrive, check with the person maintaining the app.</p>
+<h3 id='g-print-reports-or-export-records'>G. Print reports or export records</h3>
+<ol>
+<li>Open <strong>Reports and Export</strong>.</li>
+<li>Choose the report, such as Pet Medical Report, Appointment Report, Vaccination Due Report, or Client and Pet Directory.</li>
+<li>Select the pet, dates, or other details requested and click <strong>Open report</strong>.</li>
+<li>Check the report, then click <strong>Print / Save PDF</strong>.</li>
+<li>In the browser&#39;s print window, choose your printer, or choose <strong>Save as PDF</strong> and save the file.</li>
+</ol>
+<p>Use <strong>CSV exports</strong> when you need a file that opens in a spreadsheet. Use <strong>Activity Logs</strong> to check who performed an action and when. Admin <strong>QR Token</strong> also provides pet record retrieval, as described in Staff section G.</p>
+<h2 id='5-what-the-status-words-mean'>5. What the status words mean</h2>
+<ul>
+<li><strong>Pending appointment:</strong> waiting for a decision; not a confirmed booking.</li>
+<li><strong>Approved appointment:</strong> confirmed visit.</li>
+<li><strong>Completed appointment:</strong> the visit has finished. Check that the Vet has also saved the medical record.</li>
+<li><strong>Rejected appointment:</strong> the request was declined.</li>
+<li><strong>Cancelled appointment:</strong> the visit will no longer go ahead.</li>
+<li><strong>Approved pet:</strong> checked and eligible for booking.</li>
+<li><strong>In-person confirmation:</strong> the pet needs a clinic check before approval.</li>
+<li><strong>Inactive account:</strong> access is turned off.</li>
+<li><strong>Placed order:</strong> received and awaiting preparation or payment review.</li>
+<li><strong>Ready for pickup:</strong> prepared for collection.</li>
+<li><strong>Under review payment:</strong> proof has been submitted and needs checking.</li>
+<li><strong>Overdue vaccination:</strong> the saved next due date has passed.</li>
+</ul>
+<h2 id='6-common-problems'>6. Common problems</h2>
+<h3 id='i-cannot-sign-in'>I cannot sign in</h3>
+<p>Check the email and password, including capital letters. Ask the Admin to check whether your account is active and help restore access. Do not use another person&#39;s account.</p>
+<h3 id='a-client-or-pet-is-missing'>A client or pet is missing</h3>
+<p>Clear the search and select All. Check the owner name and spelling. If a pet is missing from appointment choices, ask the Admin to check its approval status. If a client was just registered, check whether approval and verification are still pending.</p>
+<h3 id='the-appointment-will-not-save'>The appointment will not save</h3>
+<p>Read the message. Check the pet&#39;s approval, selected Vet, date, time, and duration. Another visit or unavailable period may overlap. <strong>Save &amp; Notify</strong> also requires an actual change to the appointment.</p>
+<h3 id='the-verification-code-did-not-arrive'>The verification code did not arrive</h3>
+<p>Ask the client to check spam or junk mail. The Admin should check the email address and use <strong>Resend OTP</strong>. If it still does not arrive, ask the person maintaining the app to check email delivery.</p>
+<h3 id='i-cannot-add-a-product-to-the-cart'>I cannot add a product to the cart</h3>
+<p>Check whether it is unavailable or out of stock. Ask the Admin or responsible Staff member to check its stock and product details.</p>
+<h3 id='the-qr-lookup-or-camera-does-not-work'>The QR lookup or camera does not work</h3>
+<p>Check the code and try entering the secure token manually. Allow camera access if prompted. Ask for a current valid code if the app says it is invalid or expired.</p>
+<h3 id='a-photo-will-not-upload'>A photo will not upload</h3>
+<p>Follow the file type and size limits shown beside the upload field. Pet pictures accept JPG, PNG, or WEBP up to 3 MB. Try a smaller picture in an accepted format.</p>
+<h3 id='a-page-or-action-is-unavailable'>A page or action is unavailable</h3>
+<p>Check that you are signed in with the right role. If the page itself will not open, tell the person maintaining the app which page failed and the message shown.</p>
+<h2 id='7-daily-checklists'>7. Daily checklists</h2>
+<h3 id='staff'>Staff</h3>
+<ul>
+<li>Review today&#39;s appointments and pending requests.</li>
+<li>Check client and pet details before booking.</li>
+<li>Process orders, payments, and receipts accurately.</li>
+<li>Record deliveries and other stock changes.</li>
+<li>Sign out at the end of the shift.</li>
+</ul>
+<h3 id='veterinarian'>Veterinarian</h3>
+<ul>
+<li>Review the clinical queue, allergies, and critical notes.</li>
+<li>Check previous records before the consultation.</li>
+<li>Mark finished visits completed and save their clinical records.</li>
+<li>Record vaccinations and next due dates.</li>
+<li>Review follow-ups and sign out.</li>
+</ul>
+<h3 id='admin'>Admin</h3>
+<ul>
+<li>Review pending client, pet, and change approvals.</li>
+<li>Check appointments, team schedules, and time-away requests.</li>
+<li>Review low stock, sales, and follow-ups.</li>
+<li>Check reports, feedback, or activity history as needed.</li>
+<li>Sign out when finished.</li>
+</ul>
+
+</main>
+</body>
+</html>

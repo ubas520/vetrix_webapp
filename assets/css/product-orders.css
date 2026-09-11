@@ -1,0 +1,11 @@
+.product-orders-page .product-orders-heading { display: block; margin-bottom: 24px; }
+.product-orders-page .product-orders-heading p { color: #607184; margin: 8px 0 16px; }
+.product-orders-page .surface-card { padding: 24px; margin-bottom: 20px; }
+.product-orders-page .table-card { background: #fff; border: 1px solid #dce4ed; border-radius: 16px; padding: 8px 16px; }
+.product-orders-page .table { width: 100%; }
+.product-orders-page .product-order-feedback { position: static !important; visibility: visible !important; opacity: 1 !important; transform: none !important; color: #24384a; background: #edf5fc; border: 1px solid #c6dcef; padding: 16px; }
+.product-orders-page .product-order-feedback.alert-warning { background: #fff4dd; border-color: #e9cf91; color: #614719; }
+.product-orders-page .product-order-feedback.alert-success { background: #e6f5ed; border-color: #b4dcc7; color: #24573e; }
+.product-orders-page label { line-height: 1.6; }
+.product-orders-page input[type=checkbox] { margin-right: 8px; }
+@media (max-width: 600px) { .product-orders-page .surface-card { padding: 16px; } }
