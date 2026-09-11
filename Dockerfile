@@ -8,6 +8,9 @@ COPY . .
 COPY deploy/apache.conf /etc/apache2/conf-available/vetrix.conf
 COPY deploy/php.ini /usr/local/etc/php/conf.d/vetrix.ini
 RUN a2enconf vetrix \
+    && a2dismod -f mpm_event mpm_worker \
+    && a2enmod mpm_prefork \
+    && apache2ctl configtest \
     && sed -i 's/\r$//' deploy/start.sh
 
 ENV VETRIX_APP_ENV=production
