@@ -27,10 +27,14 @@ $smtpConfigured = filter_var($username, FILTER_VALIDATE_EMAIL) !== false
     && !$isPlaceholder($username)
     && !$isPlaceholder($password);
 $enabledRequested = $enabledRaw === 'auto' || in_array($enabledRaw, ['1','true','yes','on'], true);
-$enabled = $enabledRequested && $smtpConfigured;
+$transport = strtolower(trim((string)$getMail('VETRIX_MAIL_TRANSPORT', 'transport', 'smtp')));
+$apiKey = trim((string)$getMail('VETRIX_BREVO_API_KEY', 'brevo_api_key', ''));
+$enabled = $enabledRequested && ($transport === 'brevo' ? $apiKey !== '' : $smtpConfigured);
 $defaultCaFile = trim((string)ini_get('openssl.cafile'));
 
 define('APP_MAIL_SEND_REAL_EMAIL', $enabled);
+define('APP_MAIL_TRANSPORT', $transport);
+define('APP_MAIL_BREVO_API_KEY', $apiKey);
 define('APP_MAIL_SMTP_CONFIGURED', $smtpConfigured);
 define('APP_MAIL_FROM', (string)$getMail('VETRIX_MAIL_FROM', 'from', $username ?: 'no-reply@vetrix.local'));
 define('APP_MAIL_FROM_NAME', (string)$getMail('VETRIX_MAIL_FROM_NAME', 'from_name', 'Vetrix'));

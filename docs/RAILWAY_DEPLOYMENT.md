@@ -41,10 +41,9 @@ Enter passwords directly in Railway, never in GitHub or chat.
 
 ## Email and testing
 
-Configure the SMTP variables listed in `README.txt` directly in Railway before
-testing email verification or password reset. Do not copy the Windows CA-file
-path; the container uses its Linux certificate store. Verify your Railway plan
-allows outbound SMTP; otherwise use a supported email transport/provider.
+Follow [Railway email setup](RAILWAY_EMAIL.md) before testing email verification
+or password reset. Trial, Free, and Hobby require an HTTPS email API because
+Railway blocks SMTP on these plans.
 
 - Sign in and sign out, and open the dashboard from a phone over HTTPS.
 - Create veterinarian/staff accounts and check their role access.

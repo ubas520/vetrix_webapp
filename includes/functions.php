@@ -929,6 +929,15 @@ function mail_delivery_ready(&$reason = null) {
     }
     require_once $configFile;
 
+    if (APP_MAIL_TRANSPORT === 'brevo') {
+        require_once __DIR__ . '/http_mailer.php';
+        return brevo_mail_ready($reason);
+    }
+    if (APP_MAIL_TRANSPORT !== 'smtp') {
+        $reason = 'Unsupported mail transport.';
+        return false;
+    }
+
     if (!is_file($mailerFile)) {
         $reason = 'SMTP mailer file was not found.';
         return false;
@@ -984,13 +993,15 @@ function send_app_email($conn, $to_email, $to_name, $subject, $body, $type = 'sy
     $deliveryReady = mail_delivery_ready($deliveryError);
     $saveToOutbox = defined('APP_MAIL_SAVE_TO_OUTBOX') ? APP_MAIL_SAVE_TO_OUTBOX : true;
     $status = 'failed';
-    $error = $deliveryReady ? 'SMTP delivery was not attempted.' : $deliveryError;
+    $error = $deliveryReady ? 'Email delivery was not attempted.' : $deliveryError;
     $method = null;
 
     if ($deliveryReady) {
-        $result = smtp_send_mail($to_email, $to_name, $subject, $body);
+        $result = APP_MAIL_TRANSPORT === 'brevo'
+            ? brevo_send_mail($to_email, $to_name, $subject, $body)
+            : smtp_send_mail($to_email, $to_name, $subject, $body);
         $status = !empty($result['ok']) ? 'sent' : 'failed';
-        $error = !empty($result['ok']) ? null : ($result['error'] ?? 'SMTP sending failed.');
+        $error = !empty($result['ok']) ? null : ($result['error'] ?? 'Email sending failed.');
         $method = $result['method'] ?? null;
     }
     if ($status === 'failed') {
