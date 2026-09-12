@@ -13,4 +13,5 @@ done
 chown -R www-data:www-data /var/www/html/uploads
 
 php /var/www/html/deploy/init-db.php
+php /var/www/html/deploy/migrate-payments.php
 exec apache2-foreground

@@ -12,7 +12,7 @@ $sidebarSections = [
         ['paw', 'Pets', 'staff/pets.php', '/staff/pets.php'],
         ['package', 'Product Orders', 'staff/product_orders.php', '/staff/product_orders.php'],
         ['cart', 'Point of Sale', 'staff/pos.php', '/staff/pos.php'],
-        ['coins', 'GCash Settings', 'staff/payment_settings.php', '/staff/payment_settings.php'],
+        ['coins', 'Payment Settings', 'staff/payment_settings.php', '/staff/payment_settings.php'],
         ['receipt', 'Receipts', 'staff/receipts.php', '/staff/receipts.php'],
         ['inventory', 'Inventory', 'staff/inventory.php', '/staff/inventory.php'],
         ['qr', 'QR Token', 'staff/qr.php', '/staff/qr.php'],
