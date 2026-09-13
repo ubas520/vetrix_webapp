@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/_bootstrap.php';
+require_once __DIR__ . '/../../../includes/appointment_feedback.php';
 mobile_api_require_method('GET');
 
 $auth = mobile_api_authenticate($conn);
@@ -93,7 +94,10 @@ $appointmentsStmt = mobile_api_prepare(
 $appointmentsStmt->bind_param('i', $userId);
 $appointmentsStmt->execute();
 $appointments = mobile_api_all_rows($appointmentsStmt);
+$visitFeedback = mobile_api_column_exists($conn, 'feedback', 'appointment_id')
+    ? appointment_feedback_for_user($conn, $userId) : [];
 foreach ($appointments as &$appointment) {
+    $appointment['feedback'] = $visitFeedback[(int) $appointment['id']] ?? null;
     $reasonParts = mobile_api_split_appointment_reason($appointment['reason'] ?? '');
     $appointment['id'] = (int) $appointment['id'];
     $appointment['owner_id'] = (int) $appointment['owner_id'];
