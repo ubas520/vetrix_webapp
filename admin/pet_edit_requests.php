@@ -17,7 +17,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         if(!isset($reasonMap[$reasonKey])){flash('error','Choose a valid review reason before continuing.');redirect_to('admin/pet_edit_requests.php');}
         $notes=$reasonMap[$reasonKey].($notes!==''?' — '.$notes:'');
         if($req['status']!=='pending'){flash('error','Only pending requests can be reviewed.');redirect_to('admin/pet_edit_requests.php');}
-        if($status==='approved' && $req['field_name']==='allergies' && $req['vet_approval_status']!=='approved'){flash('error','Allergy changes require veterinarian approval before administrator approval.');redirect_to('admin/pet_edit_requests.php');}
+        if($status==='approved' && in_array($req['field_name'],['allergies','critical_notes'],true) && $req['vet_approval_status']!=='approved'){flash('error','Allergy and critical note changes require veterinarian approval before administrator approval.');redirect_to('admin/pet_edit_requests.php');}
         if($status==='approved'){
             $field=$req['field_name'];if(!isset($editableFields[$field])){flash('error','This field is not approved for edit requests.');redirect_to('admin/pet_edit_requests.php');}
             $update=$conn->prepare("UPDATE pets SET `$field`=?,last_updated_by=?,updated_at=NOW() WHERE id=?");$admin=(int)current_user_id();$update->bind_param('sii',$req['new_value'],$admin,$req['pet_id']);$update->execute();

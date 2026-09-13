@@ -1201,7 +1201,8 @@ function ensure_review_workflow_schema($conn) {
     foreach ($columns as $name => $definition) {
         if (!column_exists($conn, 'edit_requests', $name)) $conn->query("ALTER TABLE edit_requests ADD COLUMN `$name` $definition");
     }
-
+    // Repair older health reports that were submitted without consultation routing.
+    $conn->query("UPDATE edit_requests SET vet_approval_status='pending' WHERE status='pending' AND field_name IN ('allergies','critical_notes') AND (vet_approval_status='not_required' OR vet_approval_status IS NULL)");
 }
 
 function ensure_pos_product_schema($conn) {

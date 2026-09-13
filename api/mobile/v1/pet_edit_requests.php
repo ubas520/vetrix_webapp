@@ -16,6 +16,9 @@ $input = mobile_api_input();
 if (!mobile_api_table_exists($conn, 'edit_requests')) {
     mobile_api_error(503, 'Pet change requests are not initialized in the clinic database.');
 }
+if (!mobile_api_column_exists($conn, 'edit_requests', 'vet_approval_status')) {
+    mobile_api_error(503, 'Pet change review routing is not initialized. Ask the administrator to open Pet Edit Requests first.');
+}
 
 function mobile_api_pet_edit_fields(): array
 {
@@ -362,13 +365,14 @@ try {
 
     $insert = mobile_api_prepare(
         $conn,
-        "INSERT INTO edit_requests(pet_id,client_id,field_name,old_value,new_value,status) "
-        . "VALUES(?,?,?,?,?,'pending')"
+        "INSERT INTO edit_requests(pet_id,client_id,field_name,old_value,new_value,status,vet_approval_status) "
+        . "VALUES(?,?,?,?,?,'pending',?)"
     );
     foreach ($actualChanges as $field => $change) {
         $oldValue = $change['old_value'];
         $newValue = $change['new_value'];
-        $insert->bind_param('iisss', $petId, $userId, $field, $oldValue, $newValue);
+        $vetStatus = in_array($field, ['allergies', 'critical_notes'], true) ? 'pending' : 'not_required';
+        $insert->bind_param('iissss', $petId, $userId, $field, $oldValue, $newValue, $vetStatus);
         if (!$insert->execute()) {
             throw new RuntimeException('A pet change request could not be saved: ' . $insert->error);
         }
@@ -408,6 +412,27 @@ try {
             (string) $auth['full_name'] . ' requested changes to ' . (string) $pet['name'] . '.',
             'record'
         );
+    }
+
+    if (array_intersect(['allergies', 'critical_notes'], array_keys($actualChanges))) {
+        $vetWhere = "role='veterinarian' AND status IN ('active','approved')";
+        if (mobile_api_column_exists($conn, 'users', 'deleted_at')) {
+            $vetWhere .= ' AND deleted_at IS NULL';
+        }
+        $vets = $conn->query("SELECT id FROM users WHERE {$vetWhere}");
+        if (!$vets) {
+            throw new RuntimeException('Veterinarian notification recipients could not be loaded.');
+        }
+        while ($vet = $vets->fetch_assoc()) {
+            mobile_api_notify_user(
+                $conn,
+                (int) $vet['id'],
+                'Pet Health Changes Pending',
+                (string) $auth['full_name'] . ' reported health changes for ' . (string) $pet['name']
+                    . '. Open Pet Change Reviews to read the report and review it.',
+                'record'
+            );
+        }
     }
 
     $createdRows = mobile_api_pet_edit_rows($conn, $createdIds);
