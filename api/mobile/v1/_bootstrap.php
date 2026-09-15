@@ -556,6 +556,16 @@ function mobile_api_notify_user(
     $stmt->bind_param('isss', $userId, $title, $message, $type);
     if (!$stmt->execute()) {
         error_log('Vetrix mobile API notification failed: ' . $stmt->error);
+        return;
+    }
+    if (in_array($type, ['appointment', 'vaccine'], true)) {
+        try {
+            require_once __DIR__ . '/../../../includes/sms.php';
+            $result = vetrix_sms_send_to_client($conn, $userId, 'Vetrix: ' . $title . '. ' . $message);
+            mobile_api_audit($conn, null, $result['accepted'] ? 'SMS accepted by SMSGate API' : 'SMS not accepted', 'user', $userId, $result['message']);
+        } catch (Throwable $e) {
+            error_log('Vetrix mobile reminder SMS attempt failed.');
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 # Local mail and environment secrets. Keep the supplied examples tracked.
 /config/mail.local.php
 /config/payments.local.php
+/config/sms.local.php
 .env
 .env.*
 !.env.example

@@ -1,0 +1,7 @@
+<?php
+return [
+    'enabled' => false,
+    'username' => '', // SMSGate Cloud Server username
+    'password' => '', // SMSGate Cloud Server password
+    'base_url' => 'https://api.sms-gate.app',
+];

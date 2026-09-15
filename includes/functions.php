@@ -793,8 +793,11 @@ function get_nav_notification_count($conn, $role = null, $user_id = null) {
 }
 
 function queue_sms_alert($conn, $user_id, $message, $type = 'system', $related_type = null, $related_id = null) {
-    // GSM/SMS delivery is intentionally disabled until a gateway is integrated.
-    return false;
+    require_once __DIR__ . '/sms.php';
+    if (!vetrix_sms_notification_type((string)$type)) return false;
+    $result = vetrix_sms_send_to_client($conn, (int)$user_id, (string)$message);
+    log_action($conn, $result['accepted'] ? 'SMS accepted by SMSGate API' : 'SMS not accepted', 'user', (int)$user_id, $result['message']);
+    return $result['accepted'];
 }
 
 
@@ -836,7 +839,12 @@ function notify_user($conn, $user_id, $title, $message, $type='system', $action_
         $stmt->bind_param("isss", $user_id, $title, $message, $type);
     }
     if (!$stmt->execute()) return false;
-    return (int)$stmt->insert_id;
+    $notificationId = (int)$stmt->insert_id;
+    if (in_array($type, ['appointment', 'vaccine'], true)) {
+        try { queue_sms_alert($conn, $user_id, 'Vetrix: ' . $title . '. ' . $message, $type, 'notification', $notificationId); }
+        catch (Throwable $e) { error_log('Vetrix reminder SMS attempt failed.'); }
+    }
+    return $notificationId;
 }
 
 function record_pet_update($conn, $pet_id, $summary, $old_values = null, $new_values = null) {
