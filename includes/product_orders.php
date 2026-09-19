@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 class ProductOrderError extends RuntimeException {}
 require_once __DIR__ . '/payment_accounts.php';
+require_once __DIR__ . '/audit_events.php';
 
 function order_db(mysqli $conn, string $sql, string $types = '', array $args = []): mysqli_stmt
 {
@@ -56,7 +57,7 @@ function order_payment_options(mysqli $conn): array
 
 function order_audit(mysqli $conn, int $actor, int $id, string $action): void
 {
-    order_db($conn, "INSERT INTO audit_logs(actor_user_id,action,entity_type,entity_id,details) VALUES(?,?,'product_order',?,'')", 'isi', [$actor, $action, $id]);
+    order_db($conn, "INSERT INTO audit_logs(actor_user_id,action,entity_type,entity_id,details,event_data) VALUES(?,?,'product_order',?,'',?)", 'isis', [$actor, $action, $id, audit_event_json($action)]);
 }
 
 function order_has_column(mysqli $conn, string $table, string $column): bool

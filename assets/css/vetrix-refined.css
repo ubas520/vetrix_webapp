@@ -1,0 +1,167 @@
+/*
+ * VETRIX REDESIGN - REFINED ENTERPRISE STYLE
+ * Based on ShipERP reference - Professional, Comfortable, Information-Dense
+ *
+ * Design Goals:
+ * - Softer, comfortable colors (easy on eyes)
+ * - Clean, compact information density
+ * - Professional without being flashy
+ * - Usability over decoration
+ */
+
+/* ============================================
+   REFINED COLOR SYSTEM - SOFTER & COMFORTABLE
+   ============================================ */
+
+:root {
+    /* Primary Blues - Softer, More Comfortable */
+    --vetrix-primary: #4A90C4;
+    --vetrix-primary-dark: #3A7AA8;
+    --vetrix-primary-light: #6BA5D1;
+    --vetrix-primary-hover: #5899CD;
+
+    /* Backgrounds - Very Subtle */
+    --vetrix-bg-page: #F7F9FB;
+    --vetrix-bg-card: #FFFFFF;
+    --vetrix-bg-subtle: #FAFBFC;
+    --vetrix-bg-header: #F0F4F7;
+
+    /* Borders - Very Subtle */
+    --vetrix-border: #E4E9ED;
+    --vetrix-border-light: #EDF1F4;
+    --vetrix-border-medium: #D8DFE5;
+
+    /* Text - Comfortable Contrast */
+    --vetrix-text-primary: #2C3E50;
+    --vetrix-text-secondary: #5A6C7D;
+    --vetrix-text-muted: #8999A8;
+    --vetrix-text-white: #FFFFFF;
+
+    /* Status Colors - Softer Tones */
+    --vetrix-status-pending: #D4861F;
+    --vetrix-status-approved: #2D9D6F;
+    --vetrix-status-completed: #4A90C4;
+    --vetrix-status-cancelled: #D14949;
+
+    /* Status Backgrounds - Very Subtle */
+    --vetrix-status-pending-bg: #FFF8E6;
+    --vetrix-status-approved-bg: #E8F7F0;
+    --vetrix-status-completed-bg: #EBF4FA;
+    --vetrix-status-cancelled-bg: #FFEAEA;
+
+    /* Subtle Shadows */
+    --vetrix-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --vetrix-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.06);
+
+    /* Typography */
+    --vetrix-font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================================
+   IMPROVED COMPONENT STYLING
+   ============================================ */
+
+/* These classes work WITH existing Vetrix styles, not replacing them */
+
+/* Softer Page Headers */
+.vetrix-refined-header {
+    background: var(--vetrix-bg-card);
+    border-bottom: 1px solid var(--vetrix-border);
+    padding: 20px 24px;
+}
+
+/* Softer Stat Cards */
+.vetrix-refined-stat-card {
+    background: var(--vetrix-bg-card);
+    border: 1px solid var(--vetrix-border);
+    border-radius: 8px;
+    padding: 18px;
+    transition: border-color 0.2s;
+}
+
+.vetrix-refined-stat-card:hover {
+    border-color: var(--vetrix-primary);
+}
+
+/* Softer Tables */
+.vetrix-refined-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.vetrix-refined-table thead th {
+    background: var(--vetrix-bg-header);
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--vetrix-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid var(--vetrix-border);
+}
+
+.vetrix-refined-table tbody tr {
+    border-bottom: 1px solid var(--vetrix-border-light);
+}
+
+.vetrix-refined-table tbody tr:hover {
+    background: var(--vetrix-bg-subtle);
+}
+
+.vetrix-refined-table tbody td {
+    padding: 12px 14px;
+    color: var(--vetrix-text-primary);
+}
+
+/* Softer Badges */
+.vetrix-refined-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.vetrix-refined-badge-pending {
+    background: var(--vetrix-status-pending-bg);
+    color: #8B5E0F;
+}
+
+.vetrix-refined-badge-approved {
+    background: var(--vetrix-status-approved-bg);
+    color: #1E6B4F;
+}
+
+.vetrix-refined-badge-completed {
+    background: var(--vetrix-status-completed-bg);
+    color: #2E5F82;
+}
+
+.vetrix-refined-badge-cancelled {
+    background: var(--vetrix-status-cancelled-bg);
+    color: #9B2E2E;
+}
+
+/* Apply subtle refinements to existing components */
+.enterprise-ui {
+    background: var(--vetrix-bg-page);
+}
+
+.enterprise-ui .vetrix-card {
+    border-color: var(--vetrix-border);
+    box-shadow: var(--vetrix-shadow-sm);
+}
+
+.enterprise-ui .btn-vetrix-primary {
+    background: var(--vetrix-primary);
+    border-color: var(--vetrix-primary);
+}
+
+.enterprise-ui .btn-vetrix-primary:hover {
+    background: var(--vetrix-primary-hover);
+    border-color: var(--vetrix-primary-hover);
+}

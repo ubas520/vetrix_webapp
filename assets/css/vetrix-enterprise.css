@@ -1,0 +1,997 @@
+/*
+ * Vetrix desktop content theme. Loaded last, for screen only.
+ * Tokens belong to content/dialog roots: never the body, sidebar or topbar.
+ * Existing selectors, responsive navigation, JS state and print layouts remain
+ * owned by the original styles. The named layer lets these important visual
+ * rules override legacy important declarations without escalating selectors.
+ */
+@layer vetrix-enterprise {
+body.enterprise-ui[data-user-role] .audit-event { border-bottom: 1px solid #cbd6df; }
+body.enterprise-ui[data-user-role] .audit-event > summary {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 12px;
+  cursor: pointer;
+  list-style: none;
+  color: #263b50;
+}
+body.enterprise-ui[data-user-role] .audit-event > summary::-webkit-details-marker { display: none; }
+body.enterprise-ui[data-user-role] .audit-event > summary:hover { background: #e5edf3; }
+body.enterprise-ui[data-user-role] .audit-event > summary:focus-visible { outline: 2px solid #245a7a; outline-offset: -2px; }
+body.enterprise-ui[data-user-role] .audit-event-heading { display: grid; gap: 4px; min-width: 0; overflow-wrap: anywhere; }
+body.enterprise-ui[data-user-role] .audit-event time { font-size: 12px; color: #44566a; }
+body.enterprise-ui[data-user-role] .audit-expand-icon svg { width: 18px; height: 18px; }
+body.enterprise-ui[data-user-role] .audit-event[open] > summary .audit-expand-icon { transform: rotate(90deg); }
+body.enterprise-ui[data-user-role] .audit-event-body { padding: 16px; border-top: 1px solid #cbd6df; background: #eaf0f4; }
+body.enterprise-ui[data-user-role] .audit-data-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+body.enterprise-ui[data-user-role] .audit-event-body h3 { font-size: 14px; margin: 0 0 8px; }
+body.enterprise-ui[data-user-role] .audit-event pre {
+  padding: 12px; margin: 0; max-height: 360px; overflow: auto;
+  white-space: pre-wrap; overflow-wrap: anywhere; background: #f4f7f9;
+  color: #263b50; border: 1px solid #cbd6df; border-radius: 4px;
+  font: 13px/1.6 Consolas, monospace;
+}
+body.enterprise-ui[data-user-role] .audit-error-section pre { border-left: 3px solid #a53030; }
+body.enterprise-ui[data-user-role] .audit-raw { margin-top: 16px; }
+body.enterprise-ui[data-user-role] .audit-raw > summary { cursor: pointer; padding: 8px 0; font-weight: 600; }
+@media (max-width: 767px) {
+  body.enterprise-ui[data-user-role] .audit-event > summary { grid-template-columns: 18px minmax(0, 1fr); }
+  body.enterprise-ui[data-user-role] .audit-event > summary :is(.badge, time) { grid-column: 2; justify-self: start; }
+  body.enterprise-ui[data-user-role] .audit-data-sections { grid-template-columns: minmax(0, 1fr); }
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal, .floating-ai-panel) {
+  --vrx-primary: #2f78b7;
+  --vrx-primary-dark: #245a7a;
+  --vrx-primary-deep: #245a7a;
+  --vrx-primary-soft: #edf4fa;
+  --vrx-primary-muted: #d6e5f0;
+  --vrx-canvas: #e5ebf0;
+  --vrx-surface: #f1f4f6;
+  --vrx-surface-alt: #eaf0f4;
+  --vrx-ink: #263445;
+  --vrx-text: #263445;
+  --vrx-muted: #4b5d70;
+  --vrx-border: #dde5ec;
+  --vrx-border-strong: #c4d0dc;
+  --vrx-radius: 6px;
+  --vrx-shadow: none;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 12px 32px rgb(38 52 69 / 14%);
+  color: #263445 !important;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, system-ui, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5;
+}
+
+/* Page hierarchy, without altering shell offsets or sidebar widths. */
+body.enterprise-ui[data-user-role] main.content {
+  min-width: 0;
+  background: #e5ebf0 !important;
+  padding: 20px 24px 28px !important;
+  gap: 16px !important;
+}
+body.enterprise-ui[data-user-role] main.content .page-heading {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 0 16px !important;
+  margin: 0 0 16px !important;
+  border: 0 !important;
+  border-bottom: 1px solid #dde5ec !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  gap: 12px !important;
+  flex-wrap: wrap;
+}
+body.enterprise-ui[data-user-role] main.content h1 {
+  color: #263445 !important;
+  font-size: 23px !important;
+  line-height: 1.3 !important;
+  letter-spacing: -.4px !important;
+  font-weight: 800 !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(h2, .section-heading h2) {
+  color: #263445 !important;
+  font-size: 17px !important;
+  line-height: 1.4 !important;
+  letter-spacing: -.2px !important;
+}
+body.enterprise-ui[data-user-role] main.content .page-heading p {
+  margin: 5px 0 0 !important;
+  color: #4b5d70 !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  max-width: 70ch;
+}
+body.enterprise-ui[data-user-role] main.content .eyebrow {
+  color: #4b5d70 !important;
+  font-size: 11px !important;
+  letter-spacing: .6px !important;
+  line-height: 1.5 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.heading-actions, .toolbar-actions, .form-actions) {
+  gap: 8px !important;
+  flex-wrap: wrap;
+}
+body.enterprise-ui[data-user-role] main.content :is(.surface-card, .metric-card, .admin-summary-card, .report-action-card) {
+  border: 1px solid #dde5ec !important;
+  border-radius: 6px !important;
+  background: #f1f4f6 !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role] main.content .surface-card {
+  padding: 16px !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.management-table-card, .dashboard-table-card) {
+  padding: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content .section-heading {
+  padding: 0 0 12px !important;
+  margin-bottom: 12px !important;
+  gap: 12px !important;
+  border-bottom: 1px solid #dde5ec;
+}
+body.enterprise-ui[data-user-role] main.content :is(.management-table-card, .dashboard-table-card) > .section-heading {
+  padding: 12px 16px !important;
+  margin: 0 !important;
+}
+
+/* Compact summaries retain their links, detail actions and real data. */
+body.enterprise-ui[data-user-role] main.content .vetrix-dashboard-hero {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  overflow: visible !important;
+}
+body.enterprise-ui[data-user-role] main.content .dashboard-hero-copy {
+  max-width: none !important;
+  padding: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content .dashboard-hero-art,
+body.enterprise-ui[data-user-role] main.content .vetrix-dashboard-hero::before,
+body.enterprise-ui[data-user-role] main.content .vetrix-dashboard-hero::after {
+  display: none !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.metric-grid, .dashboard-main-grid, .dashboard-two-tables) {
+  gap: 12px !important;
+  margin-bottom: 16px !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.metric-card, .admin-summary-card) {
+  min-height: 0 !important;
+  padding: 14px !important;
+  gap: 12px !important;
+  transform: none !important;
+  text-align: left;
+}
+body.enterprise-ui[data-user-role] main.content .metric-card strong {
+  color: #263445 !important;
+  font-size: 24px !important;
+  line-height: 1.3 !important;
+  margin: 3px 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content .metric-card :is(small, p) {
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  color: #4b5d70 !important;
+}
+body.enterprise-ui[data-user-role] main.content .metric-icon {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  border-radius: 6px !important;
+  background: #edf4fa !important;
+  color: #245a7a !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.workflow-queue-item, .overview-item, .quick-link-list a, .dashboard-detail-entry) {
+  min-height: 0 !important;
+  padding: 12px !important;
+  border-radius: 4px !important;
+  background: #eaf0f4 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Toolbars visually belong to the data, with no extra ornamental cards. */
+body.enterprise-ui[data-user-role] main.content :is(.data-toolbar, .data-search-bar, .admin-list-search) {
+  padding: 12px !important;
+  margin-bottom: 10px !important;
+  gap: 8px !important;
+  border-radius: 6px !important;
+  background: #f1f4f6 !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.filter-tabs, .overview-tabs) {
+  gap: 4px !important;
+  flex-wrap: wrap;
+}
+body.enterprise-ui[data-user-role] main.content :is(.filter-tab, .overview-tab) {
+  min-height: 34px !important;
+  padding: 7px 11px !important;
+  border-radius: 4px !important;
+  border: 1px solid transparent !important;
+  background: #eaf0f4 !important;
+  color: #526174 !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.filter-tab, .overview-tab).active {
+  color: #245a7a !important;
+  background: #edf4fa !important;
+  border-color: #b9d2e5 !important;
+  font-weight: 800 !important;
+}
+
+/* Keep real tables and their existing local horizontal-scroll containers. */
+body.enterprise-ui[data-user-role] main.content :is(.data-table, .table) {
+  width: 100%;
+  border-collapse: collapse !important;
+  font-size: 13px !important;
+  color: #263445 !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.data-table, .table) th {
+  padding: 10px 12px !important;
+  background: #f0f4f8 !important;
+  color: #475569 !important;
+  border-bottom: 1px solid #ccd8e3 !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  line-height: 1.5 !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.data-table, .table) td {
+  padding: 10px 12px !important;
+  border-bottom: 1px solid #e5ebf0 !important;
+  color: #263445 !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  vertical-align: middle;
+}
+body.enterprise-ui[data-user-role] main.content :is(.data-table, .table) tbody tr:hover > td {
+  background: #f2f7fb !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.data-table, .table) td small {
+  color: #4b5d70 !important;
+  font-size: 12px !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.table-scroll-only, .table-responsive) {
+  max-width: 100%;
+  overflow-x: auto !important;
+  overscroll-behavior-x: contain;
+}
+body.enterprise-ui[data-user-role] main.content :is(.pagination, .pagination-bar, .table-pagination) {
+  gap: 6px !important;
+  font-size: 12px !important;
+  flex-wrap: wrap;
+}
+body.enterprise-ui[data-user-role] main.content .page-link {
+  padding: 6px 10px !important;
+  border-color: #dde5ec !important;
+  color: #245a7a !important;
+  border-radius: 4px !important;
+}
+body.enterprise-ui[data-user-role] main.content .active > .page-link {
+  background: #2f78b7 !important;
+  color: #f1f4f6 !important;
+}
+
+/* Explicit component lists avoid touching checkboxes, hidden fields or JS state. */
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.form-control, .form-select, input[type="search"], .unified-show-select) {
+  min-height: 36px !important;
+  height: auto !important;
+  border: 1px solid #bac8d5 !important;
+  border-radius: 4px !important;
+  background-color: #f1f4f6 !important;
+  color: #263445 !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  padding: 7px 10px !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) select.form-select {
+  padding-right: 32px !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) textarea.form-control {
+  min-height: 90px !important;
+  height: auto !important;
+  resize: vertical;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.form-label, .form-stack label) {
+  color: #37475a !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.form-grid-two, .form-stack) {
+  gap: 14px !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.button-primary, .button-secondary, .button-danger, .btn) {
+  min-height: 36px !important;
+  padding: 7px 12px !important;
+  border-radius: 4px !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.5 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.button-primary, .btn-primary) {
+  background: #2f78b7 !important;
+  border: 1px solid #2f78b7 !important;
+  color: #f1f4f6 !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.button-primary, .btn-primary):hover {
+  background: #245a7a !important;
+  border-color: #245a7a !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.button-secondary, .btn-light, .btn-secondary) {
+  background: #f1f4f6 !important;
+  border: 1px solid #bac8d5 !important;
+  color: #42556a !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.button-secondary, .btn-light, .btn-secondary):hover {
+  background: #edf2f6 !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.button-danger, .btn-danger, .btn-outline-danger) {
+  background: #fff1f1 !important;
+  border: 1px solid #e9baba !important;
+  color: #a53030 !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) .btn-success {
+  background: #267447 !important;
+  border-color: #267447 !important;
+  color: #f1f4f6 !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) .icon-button {
+  min-width: 34px !important;
+  min-height: 34px !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal, .floating-ai-panel) :is(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid #245a7a !important;
+  outline-offset: 3px !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(input, select, textarea):disabled {
+  background-color: #eef2f5 !important;
+  color: #4b5d70 !important;
+}
+
+/* Status words remain visible; color is supplementary. */
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) .badge {
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) .text-bg-success {
+  background: #eaf5ee !important; color: #24653c !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) .text-bg-warning {
+  background: #fff5df !important; color: #865b12 !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) .text-bg-danger {
+  background: #fceeee !important; color: #a53030 !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.text-bg-primary, .text-bg-info) {
+  background: #edf4fa !important; color: #245a7a !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) .text-bg-secondary {
+  background: #eef2f5 !important; color: #526174 !important;
+}
+
+/* Dialog dimensions/visibility stay with each existing dialog implementation. */
+body.enterprise-ui[data-user-role] main.content :is([class$="-card"], [class*="-card "], .appt-monitor, .pet-admin-list-card, .pet-admin-form-card) {
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role] main.content .appt-monitor {
+  padding: 16px !important;
+  border: 1px solid #dde5ec !important;
+  background: #f1f4f6 !important;
+}
+body.enterprise-ui[data-user-role] main.content .appt-monitor-head h2 {
+  margin: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content .appt-filter-toolbar {
+  padding-block: 10px !important;
+  gap: 8px !important;
+}
+body.enterprise-ui[data-user-role] main.content .appointment-list-heading {
+  background: #f0f4f8 !important;
+  color: #475569 !important;
+  padding: 10px 12px !important;
+  border-bottom: 1px solid #ccd8e3 !important;
+}
+body.enterprise-ui[data-user-role] main.content .appt-list.view-list {
+  gap: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content .view-list .appointment-row {
+  min-height: 60px !important;
+  padding: 10px 12px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid #dde5ec !important;
+  border-radius: 0 !important;
+  background: #f1f4f6 !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role] main.content .view-list .appointment-row:hover {
+  background: #f2f7fb !important;
+}
+body.enterprise-ui[data-user-role] main.content .filter-tab b {
+  color: #42556a !important;
+  background: #f1f4f6 !important;
+  border: 1px solid #dde5ec !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.appt-modal-card, .pet-review-dialog) {
+  background: #f1f4f6 !important;
+  border-radius: 8px !important;
+}
+body.enterprise-ui[data-user-role] :is(.calendar-dialog, .app-dialog, .appt-modal) :is(.dialog-card, .app-dialog-card, .appt-modal-card, .client-create-dialog) {
+  border: 1px solid #ccd8e3 !important;
+  border-radius: 8px !important;
+  background: #f1f4f6 !important;
+  box-shadow: 0 12px 32px rgb(38 52 69 / 16%) !important;
+}
+body.enterprise-ui[data-user-role] :is(.calendar-dialog, .app-dialog, .appt-modal) :is(.dialog-card, .app-dialog-card, .appt-modal-card, .client-create-dialog) > header {
+  padding: 16px 20px !important;
+  background: #eaf0f4 !important;
+  border-bottom: 1px solid #dde5ec !important;
+}
+body.enterprise-ui[data-user-role] :is(.calendar-dialog, .app-dialog, .appt-modal) h2 {
+  color: #263445 !important;
+  font-size: 19px !important;
+}
+body.enterprise-ui[data-user-role] :is(.calendar-dialog, .app-dialog, .appt-modal) .eyebrow {
+  background: transparent !important;
+  padding: 0 !important;
+  color: #4b5d70 !important;
+}
+body.enterprise-ui[data-user-role] .appt-modal .appt-box {
+  border-radius: 4px !important;
+  border: 1px solid #dde5ec !important;
+  padding: 10px 12px !important;
+  background: #eaf0f4 !important;
+}
+body.enterprise-ui[data-user-role] .floating-ai-panel {
+  border-radius: 8px !important;
+  border: 1px solid #dde5ec !important;
+}
+body.enterprise-ui[data-user-role] .floating-ai-panel .floating-ai-head {
+  background: #edf4fa !important;
+  color: #263445 !important;
+}
+
+/* A compact sign-in screen using the existing authentication form. */
+body.enterprise-ui[data-user-role="guest"] .auth-shell {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 100dvh !important;
+  height: auto !important;
+  padding: 24px 16px !important;
+  background: #e5ebf0 !important;
+  overflow: visible !important;
+}
+body.enterprise-ui[data-user-role="guest"] .auth-visual { display: none !important; }
+body.enterprise-ui[data-user-role="guest"] .auth-panel {
+  width: 100% !important;
+  max-width: 460px !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+body.enterprise-ui[data-user-role="guest"] .auth-card {
+  width: 100% !important;
+  max-width: none !important;
+  padding: 28px !important;
+  border: 1px solid #dde5ec !important;
+  border-radius: 8px !important;
+  background: #f1f4f6 !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role="guest"] .auth-mobile-brand {
+  display: flex !important;
+  margin-bottom: 20px !important;
+}
+body.enterprise-ui[data-user-role="guest"] .auth-heading h2 {
+  color: #263445 !important;
+  font-size: 23px !important;
+}
+body.enterprise-ui[data-user-role="guest"] :is(.auth-input-wrap, .demo-accounts) {
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role="guest"] .auth-form button[type="submit"] {
+  background: #2f78b7 !important;
+  border-color: #2f78b7 !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role="guest"] .auth-form :is(button, input):focus-visible {
+  outline: 2px solid #245a7a !important;
+  outline-offset: 3px !important;
+}
+
+/* Softer surfaces and readable supporting text for prolonged clinic use. */
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(p, .text-muted, .field-help, .form-help, .empty-copy) {
+  color: #44566a !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(small, .eyebrow, .form-label, .form-stack label) {
+  color: #44566a !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(h1, h2, h3) {
+  font-weight: 700 !important;
+  color: #263b50 !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.form-control, .form-select, input[type="search"]) {
+  background-color: #f7f9fa !important;
+  color: #263b50 !important;
+  border-color: #a5b5c4 !important;
+}
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) input::placeholder,
+body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) textarea::placeholder {
+  color: #5a6c7e !important;
+  opacity: 1 !important;
+}
+body.enterprise-ui[data-user-role] main.content :is([class$="-card"], [class*="-card "], .appt-monitor) {
+  background-color: #f1f4f6 !important;
+  border-color: #cbd6df !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.data-table, .table) th,
+body.enterprise-ui[data-user-role] main.content .appointment-list-heading {
+  background: #dfe7ee !important;
+  color: #344c63 !important;
+  font-size: 13px !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.data-table, .table) td {
+  background: #f1f4f6 !important;
+  font-size: 14px !important;
+}
+body.enterprise-ui[data-user-role] main.content [data-enterprise-filter="true"] {
+  display: none !important;
+}
+body.enterprise-ui[data-user-role] main.content .enterprise-filter-control {
+  display: flex !important;
+  align-items: center !important;
+  flex: 0 1 auto !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+  color: #344c63 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+body.enterprise-ui[data-user-role] main.content .enterprise-filter-select {
+  width: 230px !important;
+  max-width: 100% !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+}
+@media (max-width: 600px) {
+  body.enterprise-ui[data-user-role] main.content .enterprise-filter-control {
+    width: 100% !important;
+  }
+  body.enterprise-ui[data-user-role] main.content .enterprise-filter-select {
+    flex: 1 !important;
+    width: auto !important;
+  }
+}
+@media (min-width: 1200px) {
+  body.enterprise-ui[data-user-role] main.content .metric-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 767px) {
+  body.enterprise-ui[data-user-role] main.content {
+    padding: 16px 12px 24px !important;
+  }
+  body.enterprise-ui[data-user-role] main.content h1 { font-size: 21px !important; }
+  body.enterprise-ui[data-user-role] main.content .heading-actions { width: 100%; }
+  body.enterprise-ui[data-user-role] main.content .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.form-control, .form-select, input[type="search"]) {
+    font-size: 16px !important;
+    min-height: 40px !important;
+  }
+}
+@media (max-width: 480px) {
+  body.enterprise-ui[data-user-role] main.content .metric-grid {
+    grid-template-columns: 1fr !important;
+  }
+  body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) .form-grid-two {
+    grid-template-columns: 1fr !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.enterprise-ui[data-user-role] :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+}
+/* List presentation replaces card collections, including saved grid views. */
+@layer vetrix-enterprise {
+body.enterprise-ui[data-user-role] main.content .notification-admin-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content .notification-admin-item {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 16px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  border: 0 !important;
+  border-bottom: 1px solid #cbd6df !important;
+  border-radius: 0 !important;
+  background: #f1f4f6 !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role] main.content .notification-main {
+  min-width: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+body.enterprise-ui[data-user-role] main.content .notification-copy {
+  min-width: 0 !important;
+  overflow-wrap: anywhere !important;
+}
+body.enterprise-ui[data-user-role] main.content .notification-row-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+@media (max-width: 600px) {
+  body.enterprise-ui[data-user-role] main.content .notification-admin-item {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+  body.enterprise-ui[data-user-role] main.content .notification-row-actions {
+    justify-content: flex-end !important;
+  }
+}
+body.enterprise-ui[data-user-role] main.content :is(.view-toggle, [data-view-toggle]) {
+  display: none !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.view-list, .pos-product-admin-grid, .report-card-grid, .export-card-grid, .medical-record-index-grid, .medical-history-grid, .notification-today-overview-grid) {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  border: 1px solid #cbd6df !important;
+  border-radius: 4px !important;
+  background: #f1f4f6 !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.view-list, .pos-product-admin-grid, .report-card-grid, .export-card-grid, .medical-record-index-grid, .medical-history-grid, .notification-today-overview-grid) > :is(article, a, button, .metric-card, .admin-summary-card, .entity-card, .pet-review-card, .admin-review-card, .report-action-card, .export-action-card, .pos-admin-product-card) {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid #cbd6df !important;
+  border-radius: 0 !important;
+  padding: 12px 16px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.metric-card, .admin-summary-card) {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+body.enterprise-ui[data-user-role] main.content .admin-summary-card { text-align: left !important; }
+body.enterprise-ui[data-user-role] main.content .admin-summary-card span { flex: 1 !important; }
+body.enterprise-ui[data-user-role] main.content .admin-summary-card b { font-size: 18px !important; line-height: 1.4 !important; }
+body.enterprise-ui[data-user-role] main.content .view-list .entity-card {
+  grid-template-columns: minmax(200px, 1.2fr) minmax(240px, 1.6fr) minmax(150px, 1fr) auto !important;
+  gap: 12px !important;
+}
+body.enterprise-ui[data-user-role] main.content .entity-card > * { min-width: 0 !important; }
+body.enterprise-ui[data-user-role] main.content .entity-card :is(h2, p) { white-space: normal !important; overflow-wrap: anywhere !important; }
+body.enterprise-ui[data-user-role] main.content .entity-facts > span,
+body.enterprise-ui[data-user-role] main.content .entity-address { background: transparent !important; border: 0 !important; border-radius: 0 !important; padding: 4px !important; }
+body.enterprise-ui[data-user-role] main.content .metric-card > div {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  min-width: 0 !important;
+  gap: 3px !important;
+  flex: 1 1 0 !important;
+  text-align: left !important;
+}
+body.enterprise-ui[data-user-role] main.content .metric-card small { order: 0 !important; }
+body.enterprise-ui[data-user-role] main.content .metric-card strong {
+  order: -1 !important;
+  font-size: 18px !important;
+  margin: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content .metric-card p {
+  order: 2 !important;
+  margin: 0 !important;
+  white-space: normal !important;
+}
+body.enterprise-ui[data-user-role] main.content .pos-admin-product-card {
+  display: grid !important;
+  grid-template-columns: 56px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 16px !important;
+  text-align: left !important;
+}
+body.enterprise-ui[data-user-role] main.content .pos-admin-product-photo {
+  width: 56px !important;
+  height: 56px !important;
+  min-height: 0 !important;
+  border-radius: 4px !important;
+}
+body.enterprise-ui[data-user-role] main.content .pos-admin-product-copy {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 4px !important;
+  padding: 0 !important;
+  text-align: left !important;
+  min-height: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content .pos-admin-product-card > * { grid-area: auto !important; }
+body.enterprise-ui[data-user-role] main.content .pos-admin-product-copy > * { margin: 0 !important; text-align: left !important; }
+body.enterprise-ui[data-user-role] main.content .pos-admin-product-copy :is(h3, p, small, strong) {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  line-height: 1.5 !important;
+}
+body.enterprise-ui[data-user-role] main.content .pos-admin-product-actions {
+  padding: 0 !important;
+  min-width: 0 !important;
+  align-self: center !important;
+}
+body.enterprise-ui[data-user-role] main.content .admin-card-list .admin-review-main {
+  width: 100% !important;
+  max-width: none !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px 20px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  align-content: start !important;
+  grid-auto-rows: min-content !important;
+}
+body.enterprise-ui[data-user-role] main.content .admin-card-list > article { height: auto !important; aspect-ratio: auto !important; }
+body.enterprise-ui[data-user-role] main.content .admin-card-list .admin-review-main > * { min-height: 0 !important; height: auto !important; margin: 0 !important; align-self: start !important; }
+body.enterprise-ui[data-user-role] main.content .admin-card-list :is(.admin-row-title, .record-document-actions) { grid-column: 1 / -1 !important; }
+body.enterprise-ui[data-user-role] main.content .admin-card-list .admin-row-title { display: flex !important; justify-content: space-between !important; }
+body.enterprise-ui[data-user-role] main.content .admin-card-list :is(.admin-compare-grid > div, .record-note) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.admin-card-list, .medical-history-list) > article {
+  display: flex !important;
+  align-items: start !important;
+  flex-wrap: wrap !important;
+  gap: 12px 20px !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.admin-card-list, .medical-history-list) > article > * {
+  flex: 1 1 180px;
+  min-width: 0;
+  margin: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.pet-mini-details, .entity-stats, .admin-note-box) {
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role] main.content :is(.dashboard-main-grid, .dashboard-two-tables, .dashboard-equal-grid, .dashboard-ui-equal) {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+@media (max-width: 767px) {
+  body.enterprise-ui[data-user-role] main.content .admin-card-list .admin-review-main { grid-template-columns: minmax(0, 1fr) !important; }
+  body.enterprise-ui[data-user-role] main.content .view-list .entity-card {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  body.enterprise-ui[data-user-role] main.content .metric-card > div {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+  }
+  body.enterprise-ui[data-user-role] main.content .metric-card p { grid-column: 1 / -1 !important; }
+  body.enterprise-ui[data-user-role] main.content .pos-admin-product-card {
+    grid-template-columns: 44px minmax(0, 1fr) !important;
+  }
+  body.enterprise-ui[data-user-role] main.content .pos-admin-product-actions { grid-column: 2 !important; }
+}
+body.enterprise-ui[data-user-role] main.content :is([hidden], [style*="display: none"], [style*="display:none"]) {
+  display: none !important;
+}
+}
+
+/* Simple calendar controls and short, readable day entries. */
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-filter-panel { display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:14px!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-simple-views { display:flex;gap:8px;flex-wrap:wrap; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-simple-views .active { background:#2f78b7!important;color:#fff!important;border-color:#2f78b7!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-simple-filters { display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-simple-filters label { display:flex;align-items:center;gap:8px;margin:0;font-size:.85rem; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-simple-filters select { width:auto!important;max-width:100%;min-width:140px; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-day { min-width:0!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-day>header { display:flex!important;align-items:center!important;justify-content:space-between!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-add-date { display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid #d5e0ea;border-radius:6px;background:#fff;color:#315d83; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-event { display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:2px!important;padding:6px 8px!important;min-height:0!important;max-width:100%!important;position:relative!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-event .event-identifier { display:none!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-event>b { font-size:.72rem!important;line-height:1.3!important;white-space:normal!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-event>span:not(.event-identifier) { font-size:.8rem!important;line-height:1.3!important;max-width:100%;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-day.is-today { background:#eef5ff!important;box-shadow:inset 0 0 0 2px #5186cc!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-day.is-today .calendar-date-button { color:#205b9d!important;font-weight:800!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-more { font-weight:600!important;padding:5px 8px!important; }
+body.enterprise-ui[data-user-role] main.content#mainContent.calendar-page .calendar-pending-summary { font-size:.8rem;color:#8e5423; }
+
+/* Plain role navigation for clinic accounts. */
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent.admin-users-page .role-filter-tabs {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent.admin-users-page .role-filter-tabs .role-filter-tab {
+    background: #fff !important;
+    color: #526477 !important;
+    border: 1px solid #cbd6e2 !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    padding: 8px 12px !important;
+    gap: 6px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transform: none !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent.admin-users-page .role-filter-tabs .role-filter-tab:hover {
+    background: #edf2f7 !important;
+    border-color: #9db4ca !important;
+    box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent.admin-users-page .role-filter-tabs .role-filter-tab.active {
+    background: #2f78b7 !important;
+    border-color: #2f78b7 !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent.admin-users-page .role-filter-tabs .role-filter-tab:focus-visible {
+    outline: 2px solid #327db5 !important;
+    outline-offset: 2px !important;
+}
+
+/* Summary figures use individual cards across clinic roles. */
+body.enterprise-ui[data-user-role] main.content#mainContent :is(.metric-grid, .admin-summary-grid) {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)) !important;
+    gap: 14px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    align-items: stretch !important;
+}
+body.enterprise-ui[data-user-role] main.content#mainContent :is(.metric-grid, .admin-summary-grid) > :is(.metric-card, .admin-summary-card) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 14px !important;
+    border: 1px solid transparent !important;
+    border-radius: 16px !important;
+    background: #fff !important;
+    box-shadow: 0 8px 24px rgba(30, 55, 80, .05) !important;
+    text-align: left !important;
+}
+body.enterprise-ui[data-user-role] main.content#mainContent .metric-grid > .metric-card {
+    display: grid !important;
+    grid-template-columns: 50px minmax(0, 1fr) !important;
+    grid-template-rows: auto !important;
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+    gap: 10px !important;
+}
+body.enterprise-ui[data-user-role] main.content#mainContent .metric-grid .metric-card > div {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 3px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+}
+body.enterprise-ui[data-user-role] main.content#mainContent .metric-grid .metric-card > div > :is(strong, small, p) {
+    position: static !important;
+    display: block !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    text-align: left !important;
+}
+body.enterprise-ui[data-user-role] main.content#mainContent .metric-grid .metric-icon {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 50px !important;
+    height: 50px !important;
+    flex: 0 0 50px !important;
+    border-radius: 15px !important;
+    background: #edf3ff !important;
+    color: #3d70ff !important;
+}
+body.enterprise-ui[data-user-role] main.content#mainContent .metric-grid .metric-icon.warning { background: #fff6e7 !important; color: #cf790b !important; }
+body.enterprise-ui[data-user-role] main.content#mainContent .metric-grid .metric-icon.success { background: #e9f8ef !important; color: #20a45a !important; }
+body.enterprise-ui[data-user-role] main.content#mainContent .metric-grid .metric-icon.info { background: #edf3ff !important; color: #3d70ff !important; }
+body.enterprise-ui[data-user-role] main.content#mainContent .metric-grid .metric-icon.danger { background: #fcebed !important; color: #ad4858 !important; }
+body.enterprise-ui[data-user-role] main.content#mainContent :is(.metric-grid .metric-card small, .admin-summary-grid .admin-summary-card > span) {
+    flex: none !important;
+    font-size: .875rem !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    color: #405577 !important;
+    white-space: normal !important;
+}
+body.enterprise-ui[data-user-role] main.content#mainContent :is(.metric-grid .metric-card strong, .admin-summary-grid .admin-summary-card b) {
+    order: -1 !important;
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    color: #17264a !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+}
+body.enterprise-ui[data-user-role] main.content#mainContent .metric-grid .metric-card p {
+    font-size: .875rem !important;
+    line-height: 1.5 !important;
+    color: #506486 !important;
+    margin: 0 !important;
+}
+body.enterprise-ui[data-user-role] main.content#mainContent :is(.metric-grid, .admin-summary-grid) > :is(button, a):hover {
+    border-color: #cad9ff !important;
+    box-shadow: 0 0 0 3px rgba(72, 119, 255, .09), 0 5px 16px rgba(30, 55, 80, .05) !important;
+}
+body.enterprise-ui[data-user-role] main.content#mainContent :is(.metric-grid, .admin-summary-grid) > :is(button, a):focus-visible {
+    outline: 2px solid #327db5 !important;
+    outline-offset: 3px !important;
+}

@@ -1,0 +1,1372 @@
+/*
+ * VETRIX ENTERPRISE REDESIGN
+ * Professional Veterinary Clinic Management System UI
+ * Inspired by enterprise ERP systems for clean, organized, data-heavy interfaces
+ *
+ * Design Principles:
+ * - Soft, comfortable blue color palette
+ * - Clean, compact information density
+ * - Professional desktop-first layout
+ * - Easy navigation and clear page structure
+ * - Consistent spacing and typography
+ */
+
+/* ============================================
+   COLOR SYSTEM
+   ============================================ */
+
+:root {
+    /* Primary Blue Colors */
+    --vetrix-primary: #2F78B7;
+    --vetrix-primary-dark: #245A7A;
+    --vetrix-primary-light: #3478A9;
+    --vetrix-primary-hover: #2865A0;
+
+    /* Content Backgrounds */
+    --vetrix-bg-main: #F4F7FA;
+    --vetrix-bg-surface: #FFFFFF;
+    --vetrix-bg-subtle: #F8FAFC;
+    --vetrix-bg-header: #3478A9;
+
+    /* Borders */
+    --vetrix-border-color: #DDE5EC;
+    --vetrix-border-light: #E8EDF2;
+    --vetrix-border-medium: #CFD8E1;
+
+    /* Text Colors */
+    --vetrix-text-primary: #263445;
+    --vetrix-text-secondary: #64748B;
+    --vetrix-text-muted: #94A3B8;
+    --vetrix-text-white: #FFFFFF;
+
+    /* Status Colors */
+    --vetrix-status-pending: #F59E0B;
+    --vetrix-status-approved: #10B981;
+    --vetrix-status-completed: #3B82F6;
+    --vetrix-status-cancelled: #EF4444;
+    --vetrix-status-info: #6366F1;
+
+    /* Status Backgrounds (soft) */
+    --vetrix-status-pending-bg: #FEF3C7;
+    --vetrix-status-approved-bg: #D1FAE5;
+    --vetrix-status-completed-bg: #DBEAFE;
+    --vetrix-status-cancelled-bg: #FEE2E2;
+    --vetrix-status-info-bg: #E0E7FF;
+
+    /* Functional Colors */
+    --vetrix-success: #10B981;
+    --vetrix-success-bg: #D1FAE5;
+    --vetrix-warning: #F59E0B;
+    --vetrix-warning-bg: #FEF3C7;
+    --vetrix-danger: #EF4444;
+    --vetrix-danger-bg: #FEE2E2;
+
+    /* Shadows */
+    --vetrix-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --vetrix-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --vetrix-shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+
+    /* Spacing */
+    --vetrix-space-xs: 4px;
+    --vetrix-space-sm: 8px;
+    --vetrix-space-md: 12px;
+    --vetrix-space-lg: 16px;
+    --vetrix-space-xl: 20px;
+    --vetrix-space-2xl: 24px;
+
+    /* Border Radius */
+    --vetrix-radius-sm: 4px;
+    --vetrix-radius-md: 6px;
+    --vetrix-radius-lg: 8px;
+
+    /* Typography */
+    --vetrix-font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --vetrix-font-size-xs: 12px;
+    --vetrix-font-size-sm: 13px;
+    --vetrix-font-size-base: 14px;
+    --vetrix-font-size-md: 15px;
+    --vetrix-font-size-lg: 16px;
+    --vetrix-font-size-xl: 18px;
+    --vetrix-font-size-2xl: 20px;
+    --vetrix-font-size-3xl: 24px;
+}
+
+/* ============================================
+   BASE RESETS & TYPOGRAPHY
+   ============================================ */
+
+.enterprise-ui {
+    font-family: var(--vetrix-font-family);
+    font-size: var(--vetrix-font-size-base);
+    color: var(--vetrix-text-primary);
+    background-color: var(--vetrix-bg-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.enterprise-ui h1,
+.enterprise-ui h2,
+.enterprise-ui h3,
+.enterprise-ui h4,
+.enterprise-ui h5,
+.enterprise-ui h6 {
+    color: var(--vetrix-text-primary);
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+}
+
+.enterprise-ui p {
+    margin: 0 0 var(--vetrix-space-md) 0;
+    color: var(--vetrix-text-secondary);
+}
+
+/* ============================================
+   MAIN LAYOUT STRUCTURE
+   ============================================ */
+
+.enterprise-ui .layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--vetrix-bg-main);
+}
+
+.enterprise-ui .app-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background-color: var(--vetrix-bg-main);
+}
+
+.enterprise-ui .app-content {
+    flex: 1;
+    padding: var(--vetrix-space-2xl);
+    overflow-x: hidden;
+}
+
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+
+.vetrix-page-header {
+    background: var(--vetrix-bg-surface);
+    border-bottom: 1px solid var(--vetrix-border-color);
+    padding: var(--vetrix-space-xl) var(--vetrix-space-2xl);
+    margin: calc(var(--vetrix-space-2xl) * -1) calc(var(--vetrix-space-2xl) * -1) var(--vetrix-space-2xl);
+}
+
+.vetrix-page-header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--vetrix-space-lg);
+    margin-bottom: var(--vetrix-space-sm);
+}
+
+.vetrix-page-title {
+    font-size: var(--vetrix-font-size-2xl);
+    font-weight: 700;
+    color: var(--vetrix-text-primary);
+    margin: 0 0 var(--vetrix-space-xs) 0;
+}
+
+.vetrix-page-description {
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-secondary);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.vetrix-page-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--vetrix-space-sm);
+    flex-shrink: 0;
+}
+
+/* Breadcrumbs */
+.vetrix-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--vetrix-space-xs);
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-muted);
+    margin-top: var(--vetrix-space-md);
+    padding-top: var(--vetrix-space-md);
+    border-top: 1px solid var(--vetrix-border-light);
+}
+
+.vetrix-breadcrumb a {
+    color: var(--vetrix-text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.vetrix-breadcrumb a:hover {
+    color: var(--vetrix-primary);
+}
+
+.vetrix-breadcrumb-separator {
+    color: var(--vetrix-text-muted);
+    margin: 0 var(--vetrix-space-xs);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn-vetrix {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--vetrix-space-xs);
+    padding: var(--vetrix-space-sm) var(--vetrix-space-lg);
+    font-size: var(--vetrix-font-size-sm);
+    font-weight: 500;
+    font-family: var(--vetrix-font-family);
+    line-height: 1.5;
+    border-radius: var(--vetrix-radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-vetrix:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(47, 120, 183, 0.1);
+}
+
+/* Primary Button */
+.btn-vetrix-primary {
+    background-color: var(--vetrix-primary);
+    color: var(--vetrix-text-white);
+    border-color: var(--vetrix-primary);
+}
+
+.btn-vetrix-primary:hover {
+    background-color: var(--vetrix-primary-hover);
+    border-color: var(--vetrix-primary-hover);
+    color: var(--vetrix-text-white);
+}
+
+/* Secondary Button */
+.btn-vetrix-secondary {
+    background-color: var(--vetrix-bg-surface);
+    color: var(--vetrix-text-primary);
+    border-color: var(--vetrix-border-medium);
+}
+
+.btn-vetrix-secondary:hover {
+    background-color: var(--vetrix-bg-subtle);
+    border-color: var(--vetrix-border-medium);
+}
+
+/* Success Button */
+.btn-vetrix-success {
+    background-color: var(--vetrix-success);
+    color: var(--vetrix-text-white);
+    border-color: var(--vetrix-success);
+}
+
+.btn-vetrix-success:hover {
+    background-color: #059669;
+    border-color: #059669;
+    color: var(--vetrix-text-white);
+}
+
+/* Danger Button */
+.btn-vetrix-danger {
+    background-color: var(--vetrix-danger);
+    color: var(--vetrix-text-white);
+    border-color: var(--vetrix-danger);
+}
+
+.btn-vetrix-danger:hover {
+    background-color: #DC2626;
+    border-color: #DC2626;
+    color: var(--vetrix-text-white);
+}
+
+/* Small Button */
+.btn-vetrix-sm {
+    padding: 6px 12px;
+    font-size: var(--vetrix-font-size-xs);
+}
+
+/* Icon Button */
+.btn-vetrix-icon {
+    padding: var(--vetrix-space-sm);
+    width: 32px;
+    height: 32px;
+}
+
+/* ============================================
+   CARDS & CONTAINERS
+   ============================================ */
+
+.vetrix-card {
+    background: var(--vetrix-bg-surface);
+    border: 1px solid var(--vetrix-border-color);
+    border-radius: var(--vetrix-radius-lg);
+    padding: var(--vetrix-space-xl);
+    box-shadow: var(--vetrix-shadow-sm);
+}
+
+.vetrix-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--vetrix-space-lg);
+    padding-bottom: var(--vetrix-space-md);
+    border-bottom: 1px solid var(--vetrix-border-light);
+}
+
+.vetrix-card-title {
+    font-size: var(--vetrix-font-size-lg);
+    font-weight: 600;
+    color: var(--vetrix-text-primary);
+    margin: 0;
+}
+
+.vetrix-card-body {
+    padding: 0;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+.vetrix-table-container {
+    background: var(--vetrix-bg-surface);
+    border: 1px solid var(--vetrix-border-color);
+    border-radius: var(--vetrix-radius-lg);
+    overflow: hidden;
+}
+
+.vetrix-table-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--vetrix-space-lg);
+    border-bottom: 1px solid var(--vetrix-border-light);
+    gap: var(--vetrix-space-lg);
+    flex-wrap: wrap;
+}
+
+.vetrix-table-toolbar-left,
+.vetrix-table-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--vetrix-space-md);
+}
+
+.vetrix-table-toolbar-left {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Show entries control */
+.vetrix-show-entries {
+    display: flex;
+    align-items: center;
+    gap: var(--vetrix-space-sm);
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-secondary);
+}
+
+.vetrix-show-entries select {
+    padding: 6px 32px 6px 10px;
+    border: 1px solid var(--vetrix-border-color);
+    border-radius: var(--vetrix-radius-sm);
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-primary);
+    background-color: var(--vetrix-bg-surface);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* Search control */
+.vetrix-search-control {
+    display: flex;
+    align-items: center;
+    gap: var(--vetrix-space-sm);
+    position: relative;
+}
+
+.vetrix-search-control input {
+    padding: 8px 12px 8px 36px;
+    border: 1px solid var(--vetrix-border-color);
+    border-radius: var(--vetrix-radius-md);
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-primary);
+    background-color: var(--vetrix-bg-surface);
+    min-width: 240px;
+    transition: all 0.2s;
+}
+
+.vetrix-search-control input:focus {
+    outline: none;
+    border-color: var(--vetrix-primary);
+    box-shadow: 0 0 0 3px rgba(47, 120, 183, 0.1);
+}
+
+.vetrix-search-control::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-size: contain;
+    pointer-events: none;
+}
+
+/* Filter controls */
+.vetrix-filters {
+    display: flex;
+    align-items: center;
+    gap: var(--vetrix-space-md);
+    flex-wrap: wrap;
+}
+
+.vetrix-filter-group {
+    display: flex;
+    align-items: center;
+    gap: var(--vetrix-space-sm);
+}
+
+.vetrix-filter-group label {
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-secondary);
+    font-weight: 500;
+}
+
+.vetrix-filter-group select,
+.vetrix-filter-group input {
+    padding: 6px 10px;
+    border: 1px solid var(--vetrix-border-color);
+    border-radius: var(--vetrix-radius-sm);
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-primary);
+    background-color: var(--vetrix-bg-surface);
+    min-width: 140px;
+}
+
+/* Table itself */
+.vetrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--vetrix-font-size-sm);
+}
+
+.vetrix-table thead {
+    background-color: var(--vetrix-bg-subtle);
+    border-bottom: 2px solid var(--vetrix-border-color);
+}
+
+.vetrix-table thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--vetrix-text-primary);
+    font-size: var(--vetrix-font-size-sm);
+    white-space: nowrap;
+    border-bottom: 2px solid var(--vetrix-border-color);
+}
+
+.vetrix-table thead th:first-child {
+    padding-left: var(--vetrix-space-lg);
+}
+
+.vetrix-table thead th:last-child {
+    padding-right: var(--vetrix-space-lg);
+}
+
+.vetrix-table tbody tr {
+    border-bottom: 1px solid var(--vetrix-border-light);
+    transition: background-color 0.15s;
+}
+
+.vetrix-table tbody tr:hover {
+    background-color: var(--vetrix-bg-subtle);
+}
+
+.vetrix-table tbody td {
+    padding: 14px 16px;
+    color: var(--vetrix-text-primary);
+    vertical-align: middle;
+}
+
+.vetrix-table tbody td:first-child {
+    padding-left: var(--vetrix-space-lg);
+}
+
+.vetrix-table tbody td:last-child {
+    padding-right: var(--vetrix-space-lg);
+}
+
+/* Table sorting */
+.vetrix-table-sortable {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: 24px !important;
+}
+
+.vetrix-table-sortable::after {
+    content: '';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 3l3 3H3z'/%3E%3Cpath fill='%2394A3B8' d='M6 9l3-3H3z'/%3E%3C/svg%3E");
+}
+
+.vetrix-table-sortable:hover::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232F78B7' d='M6 3l3 3H3z'/%3E%3Cpath fill='%232F78B7' d='M6 9l3-3H3z'/%3E%3C/svg%3E");
+}
+
+/* Table actions column */
+.vetrix-table-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--vetrix-space-xs);
+}
+
+.vetrix-table-action-btn {
+    padding: 6px;
+    border: 1px solid var(--vetrix-border-color);
+    border-radius: var(--vetrix-radius-sm);
+    background: var(--vetrix-bg-surface);
+    color: var(--vetrix-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+}
+
+.vetrix-table-action-btn:hover {
+    background: var(--vetrix-bg-subtle);
+    border-color: var(--vetrix-primary);
+    color: var(--vetrix-primary);
+}
+
+.vetrix-table-action-btn.danger:hover {
+    border-color: var(--vetrix-danger);
+    color: var(--vetrix-danger);
+    background: var(--vetrix-danger-bg);
+}
+
+/* Table pagination */
+.vetrix-table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--vetrix-space-lg);
+    border-top: 1px solid var(--vetrix-border-light);
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-secondary);
+}
+
+.vetrix-pagination {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.vetrix-pagination-btn {
+    padding: 6px 12px;
+    min-width: 32px;
+    height: 32px;
+    border: 1px solid var(--vetrix-border-color);
+    border-radius: var(--vetrix-radius-sm);
+    background: var(--vetrix-bg-surface);
+    color: var(--vetrix-text-primary);
+    font-size: var(--vetrix-font-size-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vetrix-pagination-btn:hover:not(.active):not(:disabled) {
+    background: var(--vetrix-bg-subtle);
+    border-color: var(--vetrix-primary);
+    color: var(--vetrix-primary);
+}
+
+.vetrix-pagination-btn.active {
+    background: var(--vetrix-primary);
+    border-color: var(--vetrix-primary);
+    color: var(--vetrix-text-white);
+    font-weight: 600;
+}
+
+.vetrix-pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   STATUS BADGES
+   ============================================ */
+
+.vetrix-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--vetrix-space-xs);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: var(--vetrix-font-size-xs);
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.vetrix-badge-pending {
+    background-color: var(--vetrix-status-pending-bg);
+    color: #92400E;
+}
+
+.vetrix-badge-approved {
+    background-color: var(--vetrix-status-approved-bg);
+    color: #065F46;
+}
+
+.vetrix-badge-completed {
+    background-color: var(--vetrix-status-completed-bg);
+    color: #1E40AF;
+}
+
+.vetrix-badge-cancelled,
+.vetrix-badge-rejected {
+    background-color: var(--vetrix-status-cancelled-bg);
+    color: #991B1B;
+}
+
+.vetrix-badge-paid {
+    background-color: var(--vetrix-status-approved-bg);
+    color: #065F46;
+}
+
+.vetrix-badge-unpaid {
+    background-color: var(--vetrix-status-pending-bg);
+    color: #92400E;
+}
+
+.vetrix-badge-low-stock {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+.vetrix-badge-out-of-stock {
+    background-color: #FEE2E2;
+    color: #7F1D1D;
+}
+
+.vetrix-badge-active {
+    background-color: var(--vetrix-status-approved-bg);
+    color: #065F46;
+}
+
+.vetrix-badge-inactive {
+    background-color: #F3F4F6;
+    color: #4B5563;
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
+
+.vetrix-form {
+    background: var(--vetrix-bg-surface);
+    border: 1px solid var(--vetrix-border-color);
+    border-radius: var(--vetrix-radius-lg);
+    padding: var(--vetrix-space-2xl);
+}
+
+.vetrix-form-section {
+    margin-bottom: var(--vetrix-space-2xl);
+}
+
+.vetrix-form-section:last-child {
+    margin-bottom: 0;
+}
+
+.vetrix-form-section-title {
+    font-size: var(--vetrix-font-size-lg);
+    font-weight: 600;
+    color: var(--vetrix-text-primary);
+    margin-bottom: var(--vetrix-space-lg);
+    padding-bottom: var(--vetrix-space-md);
+    border-bottom: 2px solid var(--vetrix-border-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: var(--vetrix-font-size-sm);
+}
+
+.vetrix-form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--vetrix-space-lg);
+    margin-bottom: var(--vetrix-space-lg);
+}
+
+.vetrix-form-row.two-cols {
+    grid-template-columns: 1fr 1fr;
+}
+
+.vetrix-form-row.three-cols {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.vetrix-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vetrix-space-xs);
+}
+
+.vetrix-form-label {
+    font-size: var(--vetrix-font-size-sm);
+    font-weight: 500;
+    color: var(--vetrix-text-primary);
+    margin-bottom: 2px;
+}
+
+.vetrix-form-label.required::after {
+    content: '*';
+    color: var(--vetrix-danger);
+    margin-left: 4px;
+}
+
+.vetrix-form-input,
+.vetrix-form-select,
+.vetrix-form-textarea {
+    padding: 10px 12px;
+    border: 1px solid var(--vetrix-border-color);
+    border-radius: var(--vetrix-radius-md);
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-primary);
+    background-color: var(--vetrix-bg-surface);
+    font-family: var(--vetrix-font-family);
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.vetrix-form-input:focus,
+.vetrix-form-select:focus,
+.vetrix-form-textarea:focus {
+    outline: none;
+    border-color: var(--vetrix-primary);
+    box-shadow: 0 0 0 3px rgba(47, 120, 183, 0.1);
+}
+
+.vetrix-form-input::placeholder {
+    color: var(--vetrix-text-muted);
+}
+
+.vetrix-form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.vetrix-form-help {
+    font-size: var(--vetrix-font-size-xs);
+    color: var(--vetrix-text-muted);
+    margin-top: 4px;
+}
+
+.vetrix-form-error {
+    font-size: var(--vetrix-font-size-xs);
+    color: var(--vetrix-danger);
+    margin-top: 4px;
+}
+
+.vetrix-form-input.error,
+.vetrix-form-select.error,
+.vetrix-form-textarea.error {
+    border-color: var(--vetrix-danger);
+}
+
+.vetrix-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--vetrix-space-md);
+    margin-top: var(--vetrix-space-2xl);
+    padding-top: var(--vetrix-space-2xl);
+    border-top: 1px solid var(--vetrix-border-light);
+}
+
+/* ============================================
+   MODALS
+   ============================================ */
+
+.vetrix-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: var(--vetrix-space-xl);
+}
+
+.vetrix-modal {
+    background: var(--vetrix-bg-surface);
+    border-radius: var(--vetrix-radius-lg);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.vetrix-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--vetrix-space-xl);
+    border-bottom: 1px solid var(--vetrix-border-light);
+}
+
+.vetrix-modal-title {
+    font-size: var(--vetrix-font-size-xl);
+    font-weight: 600;
+    color: var(--vetrix-text-primary);
+    margin: 0;
+}
+
+.vetrix-modal-close {
+    padding: var(--vetrix-space-xs);
+    border: none;
+    background: none;
+    color: var(--vetrix-text-muted);
+    cursor: pointer;
+    border-radius: var(--vetrix-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.vetrix-modal-close:hover {
+    background: var(--vetrix-bg-subtle);
+    color: var(--vetrix-text-primary);
+}
+
+.vetrix-modal-body {
+    padding: var(--vetrix-space-xl);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.vetrix-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--vetrix-space-md);
+    padding: var(--vetrix-space-xl);
+    border-top: 1px solid var(--vetrix-border-light);
+}
+
+/* ============================================
+   DASHBOARD STATS CARDS
+   ============================================ */
+
+.vetrix-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--vetrix-space-lg);
+    margin-bottom: var(--vetrix-space-2xl);
+}
+
+.vetrix-stat-card {
+    background: var(--vetrix-bg-surface);
+    border: 1px solid var(--vetrix-border-color);
+    border-radius: var(--vetrix-radius-lg);
+    padding: var(--vetrix-space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--vetrix-space-md);
+    transition: all 0.2s;
+}
+
+.vetrix-stat-card:hover {
+    border-color: var(--vetrix-primary);
+    box-shadow: var(--vetrix-shadow-md);
+}
+
+.vetrix-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--vetrix-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--vetrix-primary);
+    color: var(--vetrix-text-white);
+    flex-shrink: 0;
+}
+
+.vetrix-stat-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.vetrix-stat-label {
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-secondary);
+    margin-bottom: 4px;
+}
+
+.vetrix-stat-value {
+    font-size: var(--vetrix-font-size-2xl);
+    font-weight: 700;
+    color: var(--vetrix-text-primary);
+    line-height: 1;
+}
+
+/* ============================================
+   EMPTY STATES
+   ============================================ */
+
+.vetrix-empty-state {
+    text-align: center;
+    padding: var(--vetrix-space-2xl) var(--vetrix-space-xl);
+    color: var(--vetrix-text-muted);
+}
+
+.vetrix-empty-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--vetrix-space-lg);
+    opacity: 0.3;
+}
+
+.vetrix-empty-title {
+    font-size: var(--vetrix-font-size-lg);
+    font-weight: 600;
+    color: var(--vetrix-text-secondary);
+    margin-bottom: var(--vetrix-space-sm);
+}
+
+.vetrix-empty-description {
+    font-size: var(--vetrix-font-size-sm);
+    color: var(--vetrix-text-muted);
+    margin-bottom: var(--vetrix-space-lg);
+}
+
+/* ============================================
+   ALERTS & NOTIFICATIONS
+   ============================================ */
+
+.vetrix-alert {
+    padding: var(--vetrix-space-lg);
+    border-radius: var(--vetrix-radius-md);
+    border-left: 4px solid;
+    margin-bottom: var(--vetrix-space-lg);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--vetrix-space-md);
+}
+
+.vetrix-alert-info {
+    background: var(--vetrix-status-info-bg);
+    border-left-color: var(--vetrix-status-info);
+    color: #312E81;
+}
+
+.vetrix-alert-success {
+    background: var(--vetrix-success-bg);
+    border-left-color: var(--vetrix-success);
+    color: #065F46;
+}
+
+.vetrix-alert-warning {
+    background: var(--vetrix-warning-bg);
+    border-left-color: var(--vetrix-warning);
+    color: #92400E;
+}
+
+.vetrix-alert-danger {
+    background: var(--vetrix-danger-bg);
+    border-left-color: var(--vetrix-danger);
+    color: #991B1B;
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+
+.vetrix-tabs {
+    border-bottom: 2px solid var(--vetrix-border-color);
+    margin-bottom: var(--vetrix-space-xl);
+}
+
+.vetrix-tabs-list {
+    display: flex;
+    gap: var(--vetrix-space-sm);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.vetrix-tab {
+    padding: var(--vetrix-space-md) var(--vetrix-space-lg);
+    font-size: var(--vetrix-font-size-sm);
+    font-weight: 500;
+    color: var(--vetrix-text-secondary);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.vetrix-tab:hover {
+    color: var(--vetrix-primary);
+}
+
+.vetrix-tab.active {
+    color: var(--vetrix-primary);
+    border-bottom-color: var(--vetrix-primary);
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+
+.vetrix-loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--vetrix-border-light);
+    border-top-color: var(--vetrix-primary);
+    border-radius: 50%;
+    animation: vetrix-spin 0.8s linear infinite;
+}
+
+@keyframes vetrix-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+    .enterprise-ui .app-content {
+        padding: var(--vetrix-space-lg);
+    }
+
+    .vetrix-page-header {
+        padding: var(--vetrix-space-lg);
+        margin: calc(var(--vetrix-space-lg) * -1) calc(var(--vetrix-space-lg) * -1) var(--vetrix-space-lg);
+    }
+
+    .vetrix-page-header-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .vetrix-page-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .vetrix-form-row.two-cols,
+    .vetrix-form-row.three-cols {
+        grid-template-columns: 1fr;
+    }
+
+    .vetrix-table-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .vetrix-table-toolbar-left,
+    .vetrix-table-toolbar-right {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .vetrix-search-control input {
+        min-width: 100%;
+    }
+
+    .vetrix-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .vetrix-table-container {
+        overflow-x: auto;
+    }
+
+    .vetrix-table {
+        min-width: 800px;
+    }
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+
+.text-muted {
+    color: var(--vetrix-text-muted) !important;
+}
+
+.text-secondary {
+    color: var(--vetrix-text-secondary) !important;
+}
+
+.text-primary-color {
+    color: var(--vetrix-primary) !important;
+}
+
+.text-success {
+    color: var(--vetrix-success) !important;
+}
+
+.text-danger {
+    color: var(--vetrix-danger) !important;
+}
+
+.text-sm {
+    font-size: var(--vetrix-font-size-sm) !important;
+}
+
+.text-xs {
+    font-size: var(--vetrix-font-size-xs) !important;
+}
+
+.font-weight-bold {
+    font-weight: 600 !important;
+}
+
+.font-weight-semibold {
+    font-weight: 500 !important;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.mt-xl {
+    margin-top: var(--vetrix-space-xl) !important;
+}
+
+.mb-xl {
+    margin-bottom: var(--vetrix-space-xl) !important;
+}
+
+/* Compact health overview; full clinical notes are available from each row. */
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-rows: auto !important;
+    gap: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    align-content: start !important;
+    overflow: visible !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-review-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 12px 16px !important;
+    gap: 8px !important;
+    align-content: start !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-main-info {
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+    height: auto !important;
+    gap: 10px !important;
+    align-items: start !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-photo-wrap {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 0 !important;
+    border-radius: 12px !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-title-block {
+    display: block !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    overflow-wrap: anywhere;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-name-row {
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-name-row h4 {
+    font-size: 1rem !important;
+    white-space: normal !important;
+    overflow: visible !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-owner {
+    margin: 3px 0 !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-detail-chips {
+    margin: 4px 0 0 !important;
+    gap: 5px !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-detail-chips span {
+    min-height: 0 !important;
+    padding: 3px 6px !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-review-actions {
+    position: static !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin: 0 !important;
+    padding-top: 8px !important;
+    gap: 10px !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-review-actions > div {
+    width: auto !important;
+    min-width: 0 !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-health-monitoring-page #vetHealthGrid .pet-review-actions .button-secondary {
+    width: auto !important;
+    height: auto !important;
+    min-height: 36px !important;
+    padding: 8px 12px !important;
+    border-radius: 4px !important;
+    white-space: normal !important;
+}
+
+/* Keep the veterinarian pet directory at the same row scale as admin Pets. */
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-rows: auto !important;
+    gap: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    align-content: start !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-review-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 12px 16px !important;
+    gap: 12px !important;
+    align-content: start !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-main-info {
+    grid-template-columns: 62px minmax(0, 1fr) !important;
+    gap: 11px !important;
+    height: auto !important;
+    min-width: 0 !important;
+    align-items: start !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-photo-wrap {
+    width: 62px !important;
+    height: 62px !important;
+    min-width: 0 !important;
+    border-radius: 15px !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-title-block {
+    display: block !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    overflow-wrap: anywhere;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-name-row {
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 4px !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-name-row h4 {
+    font-size: 1.03rem !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-owner {
+    margin: 3px 0 !important;
+    line-height: 1.34 !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-detail-chips {
+    gap: 5px !important;
+    margin: 5px 0 10px !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-detail-chips span {
+    min-height: 0 !important;
+    padding: 3px 6px !important;
+    font-size: .8rem !important;
+    line-height: 1.5 !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-mini-details {
+    display: none !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-review-actions {
+    position: static !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin: 0 !important;
+    padding-top: 9px !important;
+    gap: 12px !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-record-date {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-review-actions > div {
+    width: auto !important;
+    min-width: 0 !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+}
+body.enterprise-ui[data-user-role="veterinarian"] main.vet-pets-page #vetPetCollection .pet-review-actions .button-secondary {
+    width: auto !important;
+    height: auto !important;
+    min-height: 38px !important;
+    padding: 10px 12px !important;
+    border-radius: 4px !important;
+    line-height: 1.1 !important;
+    white-space: normal !important;
+}

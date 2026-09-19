@@ -125,8 +125,8 @@ include "../includes/navbar.php";
 <main class="content admin-dashboard-page" id="mainContent">
 <header class="page-heading dashboard-heading vetrix-dashboard-hero">
   <div class="dashboard-hero-copy">
-    <span class="eyebrow">Welcome back</span>
-    <h1><?=e($_SESSION['full_name'] ?? 'Administrator')?>!</h1>
+    <span class="eyebrow">Welcome back, <?=e($_SESSION['full_name'] ?? 'Administrator')?></span>
+    <h1>Admin Dashboard</h1>
     <p>Here is what is happening across the clinic today.</p>
   </div>
   <div class="heading-actions"><a class="button-secondary" href="<?=app_url('admin/calendar.php')?>"><?=ui_icon('calendar-days')?>Open calendar</a><a class="button-primary" href="<?=app_url('admin/appointments.php?status=pending')?>"><?=ui_icon('clipboard')?>Review pending</a></div>

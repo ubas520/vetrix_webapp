@@ -95,7 +95,7 @@ $pending=$conn->query("SELECT COUNT(*) c FROM pets WHERE verification_status='pe
     <a class="btn btn-light" href="health_monitoring.php?status=<?=e($health_status)?>&per_page=<?=e($health_show)?>">Clear</a>
 </form>
 
-<div class="pet-card-list view-grid vet-grid-only" id="vetHealthGrid">
+<div class="pet-card-list view-list" id="vetHealthGrid">
 <?php if($rows->num_rows===0): ?><div class="admin-empty-card">No pets found. Try another status filter or search term.</div><?php endif; ?>
 <?php while($p=$rows->fetch_assoc()):
     $detail=['title'=>$p['name'].' health monitoring','eyebrow'=>'Health monitoring snapshot','fields'=>['Allergies'=>$p['allergies'] ?: 'No allergies saved.','Critical notes'=>$p['critical_notes'] ?: 'No critical notes.','Care notes'=>$p['notes'] ?: 'No notes saved.','Last updated'=>!empty($p['updated_at']) ? date('M d, Y h:i A', strtotime($p['updated_at'])) : 'Not updated','_dialog'=>'health-monitoring']];
@@ -108,10 +108,9 @@ $pending=$conn->query("SELECT COUNT(*) c FROM pets WHERE verification_status='pe
                 <div class="pet-name-row"><h4><?=e($p['name'])?></h4><?=badge($p['verification_status'] ?? 'registered')?></div>
                 <p class="pet-owner">Owner: <b><?=e($p['owner_name'])?></b></p>
                 <div class="pet-detail-chips"><span><?=e($p['species'])?></span><span><?=e($p['breed'] ?: 'Breed not set')?></span><span><?=e(pet_age($p['birth_date']))?></span><span><?=e($p['weight'] ?: '0')?> kg</span></div>
-                <div class="pet-mini-details"><p><b>Allergies:</b> <?=e($p['allergies'] ?: 'No allergies saved.')?></p><p><b>Critical notes:</b> <?=e($p['critical_notes'] ?: 'No critical notes.')?></p><p><b>Care notes:</b> <?=e($p['notes'] ?: 'No notes saved.')?></p></div>
             </div>
         </div>
-        <footer class="pet-review-actions"><span class="pet-record-date">Updated <?=e(!empty($p['updated_at']) ? date('M d, Y', strtotime($p['updated_at'])) : 'Not updated')?></span><div><button class="button-secondary" type="button" data-edit-health='<?=e(json_encode($healthEditPayload))?>'><?=ui_icon('edit')?>Update Health Monitoring</button></div></footer>
+        <footer class="pet-review-actions"><span class="pet-record-date">Updated <?=e(!empty($p['updated_at']) ? date('M d, Y', strtotime($p['updated_at'])) : 'Not updated')?></span><div><button class="button-secondary" type="button" data-record-detail='<?=e(json_encode($detail))?>'><?=ui_icon('eye')?>View health notes</button><button class="button-secondary" type="button" data-edit-health='<?=e(json_encode($healthEditPayload))?>'><?=ui_icon('edit')?>Update notes</button></div></footer>
     </article>
 <?php endwhile; ?>
     <div class="admin-empty-card reference-empty-filter" id="healthEmptyFilter" style="display:none;">No pets found for this filter.</div>

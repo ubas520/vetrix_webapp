@@ -10,6 +10,8 @@ $currentUser = isset($conn) ? current_user_record($conn) : [
 ];
 $profilePath = profile_path_for_role($currentUser['role'] ?? null);
 $sidebarLinkIsActive = static function(array $link) use ($currentScript): bool {
+    if ($link[2] === 'admin/pets.php' && strpos($currentScript, '/admin/pet_edit_requests.php') !== false) return true;
+    if ($link[2] === 'vet/pets.php' && strpos($currentScript, '/vet/pet_change_reviews.php') !== false) return true;
     return strpos($currentScript, $link[3]) !== false
         && (empty($link[4]) || ($_GET['role'] ?? '') === $link[4]);
 };

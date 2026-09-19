@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/audit_events.php';
 if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.use_strict_mode', '1');
     ini_set('session.cookie_httponly', '1');
@@ -511,10 +512,12 @@ function workforce_reason_text($reason) {
 function pagination_values($default = 5, $max = 20, $choices = null) {
     $requested = strtolower(trim((string)($_GET['per_page'] ?? $default)));
     $choices = $choices ?: [5, 10, 15, 20, 'full'];
+    if (!in_array('full', $choices, true)) $choices[] = 'full';
     $allowed = array_map('strval', $choices);
     if (!in_array($requested, $allowed, true)) $requested = (string)$default;
     $perPage = $requested === 'full' ? 1000000 : max(1, min($max > 0 ? $max : PHP_INT_MAX, (int)$requested));
-    $page = $requested === 'full' ? 1 : max(1, (int)($_GET['page'] ?? 1));
+    // Lists use Show / Full rather than numbered pages, including old page links.
+    $page = 1;
     return [$page, $perPage, ($page - 1) * $perPage];
 }
 
@@ -529,6 +532,7 @@ function per_page_label($perPage) {
 function render_per_page_options($perPage, $choices = null) {
     $current = per_page_value($perPage);
     $choices = $choices ?: [5, 10, 15, 20, 'full'];
+    if (!in_array('full', $choices, true)) $choices[] = 'full';
     $html = '';
     foreach ($choices as $choice) {
         $value = (string)$choice;
@@ -604,54 +608,19 @@ function ensure_inventory_skus(mysqli $conn): void {
 }
 
 function render_pagination($page, $perPage, $total, $extra = []) {
-    $perPage = max(1, (int)$perPage);
-    $pages = max(1, (int)ceil($total / $perPage));
-    $page = max(1, min((int)$page, $pages));
-    if ($pages <= 1) return '';
-
-    $base = array_merge($_GET, $extra);
-    $anchor = isset($base['_anchor']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', (string)$base['_anchor']) : '';
-    unset($base['_anchor'], $base['page']);
-    $suffix = $anchor !== '' ? '#' . $anchor : '';
-
-    $href = function(int $target) use ($base, $suffix): string {
-        $query = $base;
-        $query['page'] = max(1, $target);
-        return '?' . e(http_build_query($query)) . $suffix;
-    };
-
-    $html = '<nav class="data-pagination natural-pagination" aria-label="Pagination" data-pagination-pages="' . $pages . '" data-pagination-current="' . $page . '" data-pagination-anchor="' . e($anchor) . '">';
-    $html .= '<div class="pagination-current-page"><label>Page <input class="pagination-page-input" type="number" min="1" max="' . $pages . '" value="' . $page . '" inputmode="numeric" aria-label="Current page"> <span>of ' . $pages . '</span></label></div>';
-    $html .= '<div class="pagination-nav">';
-
-    if ($page > 1) {
-        $html .= '<a class="page-step page-prev" href="' . $href($page - 1) . '" aria-label="Previous page">' . ui_icon('chevron-left') . '<span>Previous</span></a>';
-    } else {
-        $html .= '<span class="page-step page-prev disabled" aria-disabled="true">' . ui_icon('chevron-left') . '<span>Previous</span></span>';
-    }
-
-    $html .= '<div class="pagination-pages">';
-    foreach ([$page - 1, $page, $page + 1] as $number) {
-        if ($number < 1 || $number > $pages) continue;
-        if ($number === $page) {
-            $html .= '<span class="page-number current" aria-current="page">' . $number . '</span>';
-        } else {
-            $html .= '<a class="page-number" href="' . $href($number) . '" aria-label="Page ' . $number . '">' . $number . '</a>';
-        }
-    }
-    $html .= '</div>';
-
-    if ($page < $pages) {
-        $html .= '<a class="page-step page-next" href="' . $href($page + 1) . '" aria-label="Next page"><span>Next</span>' . ui_icon('chevron-right') . '</a>';
-    } else {
-        $html .= '<span class="page-step page-next disabled" aria-disabled="true"><span>Next</span>' . ui_icon('chevron-right') . '</span>';
-    }
-    $html .= '</div></nav>';
-    return $html;
+    // Retain the shared helper for existing pages; navigation uses Show / Full.
+    return '';
 }
 
 function flash($key, $message = null) {
-    if ($message !== null) { $_SESSION['flash'][$key] = $message; return; }
+    if ($message !== null) {
+        $_SESSION['flash'][$key] = $message;
+        if ($key === 'error' && current_user_id()) {
+            audit_write_event($GLOBALS['conn'] ?? null, (int)current_user_id(), 'Request reported an error', 'request', null, (string)$message,
+                ['outcome'=>'error', 'errors'=>[['message'=>(string)$message]]]);
+        }
+        return;
+    }
     if (isset($_SESSION['flash'][$key])) {
         $msg = $_SESSION['flash'][$key];
         unset($_SESSION['flash'][$key]);
@@ -673,11 +642,9 @@ function badge($status) {
     return "<span class='badge text-bg-$class'>" . e($label) . "</span>";
 }
 
-function log_action($conn, $action, $entity_type, $entity_id = null, $details = '') {
+function log_action($conn, $action, $entity_type, $entity_id = null, $details = '', array $eventData = []) {
     $actor = current_user_id();
-    $stmt = $conn->prepare("INSERT INTO audit_logs(actor_user_id,action,entity_type,entity_id,details) VALUES(?,?,?,?,?)");
-    $stmt->bind_param("issis", $actor, $action, $entity_type, $entity_id, $details);
-    $stmt->execute();
+    return audit_write_event($conn, $actor ? (int)$actor : null, $action, $entity_type, $entity_id, (string)$details, $eventData);
 }
 
 function staff_private_client_access_status($conn, $staff_id = null) {
@@ -838,8 +805,19 @@ function notify_user($conn, $user_id, $title, $message, $type='system', $action_
         $stmt = $conn->prepare("INSERT INTO notifications(user_id,title,message,type) VALUES(?,?,?,?)");
         $stmt->bind_param("isss", $user_id, $title, $message, $type);
     }
-    if (!$stmt->execute()) return false;
+    if (!$stmt->execute()) {
+        audit_write_event($conn, $actor ? (int)$actor : null, 'Notification transfer failed', 'notification', null, 'The in-system notification could not be saved.', [
+            'outcome'=>'error', 'result'=>['recipient_id'=>$user_id,'saved'=>false],
+            'errors'=>[['message'=>'Notification storage failed','database_code'=>$stmt->errno]],
+            'transfers'=>[['from'=>'Clinic system','to'=>'Recipient notification inbox','recipient_id'=>$user_id,'title'=>$title,'message'=>$message,'status'=>'failed']],
+        ]);
+        return false;
+    }
     $notificationId = (int)$stmt->insert_id;
+    audit_write_event($conn, $actor ? (int)$actor : null, 'Notification transferred to inbox', 'notification', $notificationId, 'In-system notification saved for recipient #' . (int)$user_id . '.', [
+        'outcome'=>'success', 'result'=>['recipient_id'=>$user_id,'notification_id'=>$notificationId,'saved'=>true],
+        'transfers'=>[['from'=>'Clinic system','to'=>'Recipient notification inbox','recipient_id'=>$user_id,'title'=>$title,'message'=>$message,'status'=>'saved']],
+    ]);
     if (in_array($type, ['appointment', 'vaccine'], true)) {
         try { queue_sms_alert($conn, $user_id, 'Vetrix: ' . $title . '. ' . $message, $type, 'notification', $notificationId); }
         catch (Throwable $e) { error_log('Vetrix reminder SMS attempt failed.'); }
@@ -853,7 +831,7 @@ function record_pet_update($conn, $pet_id, $summary, $old_values = null, $new_va
         $details .= ($details !== '' ? "\n" : '') . 'Previous: ' . (is_string($old_values) ? $old_values : json_encode($old_values, JSON_UNESCAPED_UNICODE));
         $details .= "\nUpdated: " . (is_string($new_values) ? $new_values : json_encode($new_values, JSON_UNESCAPED_UNICODE));
     }
-    log_action($conn, 'Updated pet profile', 'pet', (int)$pet_id, $details);
+    log_action($conn, 'Updated pet profile', 'pet', (int)$pet_id, $details, ['before'=>$old_values,'after'=>$new_values]);
 }
 
 function split_emergency_contact($value) {

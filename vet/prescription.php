@@ -76,7 +76,13 @@ include "../includes/navbar.php";
 ?>
 <div class="layout"><?php include "../includes/vet_sidebar.php"; ?>
 <main class="content vet-records-page vet-prescription-page" id="mainContent">
-    <header class="page-heading"><div><span class="eyebrow">Clinical prescriptions</span><h1>Prescription</h1></div></header>
+    <header class="page-heading"><div><span class="eyebrow">Clinical prescriptions</span><h1>Prescription</h1></div><button class="button-primary" type="button" id="prescriptionFormToggle" aria-controls="prescriptionFormPanel" aria-expanded="<?=$appointmentFocus>0?'true':'false'?>"><?=ui_icon('plus')?>Add prescription <span aria-hidden="true" id="prescriptionFormChevron"><?=$appointmentFocus>0?'&#9652;':'&#9662;'?></span></button></header>
+    <style>
+    body.enterprise-ui[data-user-role="veterinarian"] #mainContent.vet-prescription-page .vet-records-layout{display:grid!important;grid-template-columns:minmax(0,1fr)!important;height:auto!important;min-height:0!important;max-height:none!important;align-items:start!important}
+    body.enterprise-ui[data-user-role="veterinarian"] #mainContent.vet-prescription-page #prescriptionFormPanel[hidden]{display:none!important}
+    body.enterprise-ui[data-user-role="veterinarian"] #mainContent.vet-prescription-page #prescriptionFormPanel{position:static!important;width:100%!important;max-width:720px!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
+    body.enterprise-ui[data-user-role="veterinarian"] #mainContent.vet-prescription-page .vet-record-list-card{width:100%!important;height:auto!important;min-height:0!important;max-height:none!important}
+    </style>
 
     <?php if($m=flash('success')):?><div class="alert alert-success"><?=e($m)?></div><?php endif;?>
     <?php if($m=flash('error')):?><div class="alert alert-danger"><?=e($m)?></div><?php endif;?>
@@ -89,7 +95,7 @@ include "../includes/navbar.php";
     </section>
 
     <div class="vet-admin-split vet-records-layout vet-clinical-admin-layout">
-        <div class="soft-card vet-form-card vet-entry-card">
+        <div class="soft-card vet-form-card vet-entry-card" id="prescriptionFormPanel" <?=$appointmentFocus>0?'':'hidden'?>>
             <div class="vet-form-title clinical-form-title"><span class="pet-icon"><?=ui_icon('plus')?></span><div><h3>Add Prescription</h3></div></div>
             <form method="POST">
                 <?= csrf_field() ?>
@@ -103,6 +109,7 @@ include "../includes/navbar.php";
                 <fieldset class="record-prescription-entry" id="prescriptionCreator"><legend>Prescription <small>optional</small></legend><label class="form-label fw-bold mb-1">Medicine and instructions</label><textarea class="form-control" name="prescription" list="recordPrescriptionSuggestions" rows="3" placeholder="Medicine, dose, frequency, and duration"></textarea><small class="field-help">Saved prescriptions can be downloaded as a clinic PDF after the record is saved.</small></fieldset>
                 <label class="form-label fw-bold mb-1">Note type</label><select class="form-select" name="note_type"><option value="neutral">General note</option><option value="positive">Improving / stable</option><option value="negative">Urgent concern</option><option value="follow_up">Needs follow-up</option></select><label class="form-label fw-bold mb-1">Notes</label><input class="form-control" name="notes" list="recordNotesSuggestions" placeholder="Clinical note">
                 <datalist id="recordDiagnosisSuggestions"><?php foreach(['Gastroenteritis','Allergic dermatitis','Otitis externa (ear infection)','Upper respiratory infection','Urinary tract infection','Dental disease','Intestinal parasites','Flea infestation','Canine parvovirus infection','Feline upper respiratory infection'] as $commonDiagnosis):?><option value="<?=e($commonDiagnosis)?>"><?php endforeach;?><?php $suggest=$conn->query("SELECT DISTINCT diagnosis value FROM medical_records WHERE TRIM(COALESCE(diagnosis,''))<>'' ORDER BY id DESC LIMIT 40");while($x=$suggest->fetch_assoc()):?><option value="<?=e($x['value'])?>"><?php endwhile;?></datalist><datalist id="recordTreatmentSuggestions"><?php $suggest=$conn->query("SELECT DISTINCT treatment value FROM medical_records WHERE TRIM(COALESCE(treatment,''))<>'' ORDER BY id DESC LIMIT 40");while($x=$suggest->fetch_assoc()):?><option value="<?=e($x['value'])?>"><?php endwhile;?></datalist><datalist id="recordPrescriptionSuggestions"><?php $suggest=$conn->query("SELECT DISTINCT prescription value FROM medical_records WHERE TRIM(COALESCE(prescription,''))<>'' ORDER BY id DESC LIMIT 40");while($x=$suggest->fetch_assoc()):?><option value="<?=e($x['value'])?>"><?php endwhile;?></datalist><datalist id="recordNotesSuggestions"><?php $suggest=$conn->query("SELECT DISTINCT notes value FROM medical_records WHERE TRIM(COALESCE(notes,''))<>'' ORDER BY id DESC LIMIT 40");while($x=$suggest->fetch_assoc()): $cleanSuggestion=medical_note_text((string)$x['value']); if($cleanSuggestion==='') continue;?><option value="<?=e($cleanSuggestion)?>"><?php endwhile;?></datalist><button class="btn btn-primary w-100 mt-2">Save</button>
+                <button class="button-secondary mt-2" type="button" id="prescriptionFormClose">Close form</button>
             </form>
         </div>
         <div class="table-card vet-list-card vet-record-list-card">
@@ -136,4 +143,20 @@ include "../includes/navbar.php";
             <?php endif; ?>
         </div>
     </div>
+<script>
+(()=>{
+    const toggle=document.getElementById('prescriptionFormToggle');
+    const panel=document.getElementById('prescriptionFormPanel');
+    const setExpanded=expanded=>{
+        panel.hidden=!expanded;
+        toggle.setAttribute('aria-expanded',String(expanded));
+        document.getElementById('prescriptionFormChevron').textContent=expanded?'\u25b4':'\u25be';
+    };
+    toggle.addEventListener('click',()=>setExpanded(panel.hidden));
+    document.getElementById('prescriptionFormClose').addEventListener('click',()=>{setExpanded(false);toggle.focus();});
+    const openFromHash=()=>{if(location.hash==='#prescriptionCreator'){setExpanded(true);document.getElementById('prescriptionCreator').scrollIntoView({block:'center'});}};
+    window.addEventListener('hashchange',openFromHash);
+    openFromHash();
+})();
+</script>
 </main></div><?php include "../includes/footer.php"; ?>

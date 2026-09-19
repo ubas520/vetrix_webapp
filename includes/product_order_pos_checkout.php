@@ -45,7 +45,8 @@ function product_order_pos_checkout(mysqli $conn, int $staff, array $input): arr
             if ($status !== 'cancelled') order_stock($conn, $line[0], $line[3], false, $staff, 'POS sale transaction #' . $transaction);
         }
         if ($status === 'paid') order_db($conn, 'INSERT INTO pos_receipts(transaction_id,receipt_number,generated_by,paper_width_mm) VALUES(?,?,?,80)', 'isi', [$transaction, 'VTX-' . str_pad((string) $transaction, 6, '0', STR_PAD_LEFT), $staff]);
-        order_db($conn, "INSERT INTO audit_logs(actor_user_id,action,entity_type,entity_id,details) VALUES(?,'Processed POS product sale','pos_transaction',?,?)", 'iis', [$staff, $transaction, 'Amount: ' . $total . '; Items: ' . count($lines)]);
+        $auditSummary = 'Amount: ' . $total . '; Items: ' . count($lines);
+        order_db($conn, "INSERT INTO audit_logs(actor_user_id,action,entity_type,entity_id,details,event_data) VALUES(?,'Processed POS product sale','pos_transaction',?,?,?)", 'iiss', [$staff, $transaction, $auditSummary, audit_event_json($auditSummary, ['result'=>['transaction_id'=>$transaction,'payment_status'=>$status,'total'=>$total,'items'=>$lines]])]);
         $conn->commit();
         return ['id' => $transaction, 'status' => $status];
     } catch (Throwable $e) { $conn->rollback(); throw $e; }

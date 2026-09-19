@@ -15,3 +15,7 @@
 /backups/
 /artifacts/
 /uploads/
+
+# Local runtime output and editor backup copies.
+*.log
+*.backup

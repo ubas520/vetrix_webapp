@@ -12,7 +12,6 @@ $sidebarSections = [
     ],
     'Pet and Client Records' => [
         ['paw', 'Pets', 'admin/pets.php', '/admin/pets.php'],
-        ['edit', 'Pet Edit Requests', 'admin/pet_edit_requests.php', '/admin/pet_edit_requests.php'],
         ['users', 'Clients', 'admin/clients.php', '/admin/clients.php'],
         ['syringe', 'Vaccinations', 'admin/vaccinations.php', '/admin/vaccinations.php'],
         ['qr', 'QR Token', 'admin/qr.php', '/admin/qr.php'],

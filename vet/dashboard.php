@@ -71,8 +71,8 @@ $title='Veterinarian Dashboard';include '../includes/header.php';include '../inc
 <div class="layout"><?php include '../includes/vet_sidebar.php';?><main class="content vet-dashboard-page" id="mainContent">
 <header class="page-heading dashboard-heading vetrix-dashboard-hero">
   <div class="dashboard-hero-copy">
-    <span class="eyebrow">Welcome back</span>
-    <h1><?=e($_SESSION['full_name'] ?? 'Veterinarian')?>!</h1>
+    <span class="eyebrow">Welcome back, <?=e($_SESSION['full_name'] ?? 'Veterinarian')?></span>
+    <h1>Veterinarian Dashboard</h1>
     <p>Here is your clinical schedule and patient-care overview for today.</p>
   </div>
   <div class="heading-actions"><a class="button-secondary" href="<?=app_url('vet/calendar.php')?>"><?=ui_icon('calendar-days')?>Calendar</a><a class="button-primary" href="<?=app_url('vet/prescription.php')?>"><?=ui_icon('plus')?>Create record</a></div>

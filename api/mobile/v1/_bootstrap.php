@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/../../../includes/audit_events.php';
 
 const VETRIX_MOBILE_API_VERSION = '1';
 const VETRIX_MOBILE_DEFAULT_TOKEN_DAYS = 30;
@@ -22,6 +23,17 @@ function mobile_api_send(int $status, array $payload): never
         $json = '{"success":false,"message":"The response could not be encoded."}';
     }
 
+    $effectiveStatus = (int)http_response_code();
+    $response = json_decode($json, true);
+    $failed = $effectiveStatus >= 400 || ($response['success'] ?? true) === false;
+    audit_write_event($GLOBALS['conn'] ?? null, $GLOBALS['audit_mobile_actor'] ?? null,
+        $failed ? 'Mobile API request failed' : 'Mobile API response sent', 'api_request', null,
+        (string)($response['message'] ?? ('HTTP ' . $effectiveStatus)), [
+            'outcome' => $failed ? 'error' : 'success',
+            'response' => ['http_status'=>$effectiveStatus, 'body'=>$response],
+            'errors' => $failed ? [['message'=>$response['message'] ?? 'Request failed','fields'=>$response['errors'] ?? []]] : [],
+            'transfers' => [['from'=>'Mobile client','to'=>'Vetrix API'],['from'=>'Vetrix API','to'=>'Mobile client','http_status'=>$effectiveStatus]],
+        ]);
     echo $json;
     exit;
 }
@@ -414,6 +426,7 @@ function mobile_api_authenticate(mysqli $conn): array
     $user['id'] = (int) $user['id'];
     $user['token_id'] = $tokenId;
     $authenticated = $user;
+    $GLOBALS['audit_mobile_actor'] = $user['id'];
     return $authenticated;
 }
 
@@ -514,14 +527,7 @@ function mobile_api_audit(
     if (!mobile_api_table_exists($conn, 'audit_logs')) {
         return;
     }
-    $stmt = mobile_api_prepare(
-        $conn,
-        'INSERT INTO audit_logs(actor_user_id,action,entity_type,entity_id,details) VALUES(?,?,?,?,?)'
-    );
-    $stmt->bind_param('issis', $actorId, $action, $entityType, $entityId, $details);
-    if (!$stmt->execute()) {
-        error_log('Vetrix mobile API audit log failed: ' . $stmt->error);
-    }
+    audit_write_event($conn, $actorId, $action, $entityType, $entityId, $details);
 }
 
 function mobile_api_unread_count(mysqli $conn, int $userId): int

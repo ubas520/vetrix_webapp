@@ -58,8 +58,8 @@ $title='Staff Dashboard';include '../includes/header.php';include '../includes/n
 <div class="layout"><?php include '../includes/staff_sidebar.php';?><main class="content staff-dashboard-page" id="mainContent">
 <header class="page-heading dashboard-heading vetrix-dashboard-hero">
   <div class="dashboard-hero-copy">
-    <span class="eyebrow">Welcome back</span>
-    <h1><?=e($_SESSION['full_name'] ?? 'Clinic Staff')?>!</h1>
+    <span class="eyebrow">Welcome back, <?=e($_SESSION['full_name'] ?? 'Clinic Staff')?></span>
+    <h1>Staff Dashboard</h1>
     <p>Here is your clinic operations overview for today.</p>
   </div>
   <div class="heading-actions"><a class="button-secondary" href="<?=app_url('staff/calendar.php')?>"><?=ui_icon('calendar-days')?>Calendar</a><a class="button-primary" href="<?=app_url('staff/pos.php')?>"><?=ui_icon('cart')?>Open POS</a></div>

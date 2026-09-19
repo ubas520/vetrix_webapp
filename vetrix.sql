@@ -91,6 +91,7 @@ CREATE TABLE `audit_logs` (
   `entity_type` varchar(80) DEFAULT NULL,
   `entity_id` int(11) DEFAULT NULL,
   `details` text DEFAULT NULL,
+  `event_data` JSON DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `actor_user_id` (`actor_user_id`),

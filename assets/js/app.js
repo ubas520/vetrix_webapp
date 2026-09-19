@@ -676,13 +676,14 @@ function bindViewToggles(){
         const target=document.querySelector(group.dataset.target||'');
         if(!target)return;
         group.querySelectorAll('button[data-view]').forEach(button=>button.addEventListener('click',()=>{
-            const view=button.dataset.view;
+            const view=document.body.classList.contains('enterprise-ui')?'list':button.dataset.view;
             target.classList.toggle('view-grid',view==='grid');
             target.classList.toggle('view-list',view==='list');
             group.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===button));
             try{localStorage.setItem('vetrix.view.'+(group.dataset.key||'default'),view);}catch(e){}
         }));
         let saved='list';try{saved=localStorage.getItem('vetrix.view.'+(group.dataset.key||'default'))||group.dataset.default||'list';}catch(e){}
+        if(document.body.classList.contains('enterprise-ui'))saved='list';
         group.querySelector(`button[data-view="${saved}"]`)?.click();
     });
 }
@@ -1631,7 +1632,6 @@ function showToast(message,type='info'){
     const category = root.querySelector('[data-pos-admin-category]');
     const sort = root.querySelector('[data-pos-admin-sort]');
     const show = root.querySelector('[data-pos-admin-show]');
-    const pager = root.querySelector('[data-pos-admin-pager]');
     let page = 1;
     const effectiveStatus = card => card.dataset.status || '';
     const sold = card => Number(card.dataset.sold || 0);
@@ -1655,28 +1655,12 @@ function showToast(message,type='info'){
     }
     function render(){
       if(!grid) return;
-      const list=filtered(), per=Math.max(1,Number(show?.value||5)), pages=Math.max(1,Math.ceil(list.length/per));
+      const list=filtered(), per=show?.value==='full'?Math.max(1,list.length):Math.max(1,Number(show?.value||5)), pages=1;
       page=Math.min(Math.max(1,page),pages);
       cards.forEach(card=>card.hidden=true);
       list.slice((page-1)*per,page*per).forEach(card=>{card.hidden=false;grid.appendChild(card)});
-      if(pager){
-        pager.innerHTML='';
-        if(pages>1){
-          pager.classList.add('natural-pagination');
-          const currentWrap=document.createElement('div');currentWrap.className='pagination-current-page';currentWrap.innerHTML=`<label>Page <input class="pagination-page-input" type="number" min="1" max="${pages}" value="${page}" inputmode="numeric" aria-label="Current page"> <span>of ${pages}</span></label>`;
-          const pageInput=currentWrap.querySelector('.pagination-page-input');
-          pageInput?.addEventListener('change',()=>{const wanted=Math.trunc(Number(pageInput.value));if(!Number.isFinite(wanted)||wanted<1||wanted>pages){pageInput.value=page;showToast(`Enter a page from 1 to ${pages}.`,'warning');return;}page=wanted;render();root.querySelector('.pos-product-browser')?.scrollIntoView({block:'start'});});
-          pageInput?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();pageInput.blur();}});
-          const nav=document.createElement('div');nav.className='pagination-nav';
-          const button=(label,target,disabled,current=false,step=false)=>{const el=document.createElement(disabled?'span':'button');el.className=(step?'page-step':'page-number')+(current?' current':'');el.textContent=label;if(disabled){el.classList.add('disabled');el.setAttribute('aria-disabled','true')}else{el.type='button';el.addEventListener('click',()=>{page=target;render();root.querySelector('.pos-product-browser')?.scrollIntoView({block:'start'});});}return el};
-          nav.append(button('Previous',page-1,page===1,false,true));
-          const pagesWrap=document.createElement('span');pagesWrap.className='pagination-pages';
-          [page-1,page,page+1].filter(n=>n>=1&&n<=pages).forEach(n=>pagesWrap.append(button(String(n),n,false,n===page)));
-          nav.append(pagesWrap,button('Next',page+1,page===pages,false,true));
-          pager.append(currentWrap,nav);
-        }
-      }
     }
+    show?.addEventListener('change',render);
     root.querySelector('[data-pos-admin-apply]')?.addEventListener('click',()=>{page=1;render()});
     root.querySelector('[data-pos-admin-clear]')?.addEventListener('click',()=>{if(search)search.value='';if(category)category.value='all';if(sort)sort.value='priority';if(show)show.value='5';page=1;render()});
     render();

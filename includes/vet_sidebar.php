@@ -10,7 +10,6 @@ $sidebarSections = [
     ],
     'Records' => [
         ['paw', 'Pets', 'vet/pets.php', '/vet/pets.php'],
-        ['edit', 'Pet Change Reviews', 'vet/pet_change_reviews.php', '/vet/pet_change_reviews.php'],
         ['file', 'Medical Records', 'vet/medical_records.php', '/vet/medical_records.php'],
         ['receipt', 'Prescription', 'vet/prescription.php', '/vet/prescription.php'],
         ['syringe', 'Vaccinations', 'vet/vaccinations.php', '/vet/vaccinations.php'],

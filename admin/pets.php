@@ -121,7 +121,26 @@ $filteredPetTotal=(int)$conn->query("SELECT COUNT(*) c FROM pets p JOIN users u 
 
 $title="Pets"; include "../includes/header.php"; include "../includes/navbar.php"; ?>
 <div class="layout"><?php include "../includes/admin_sidebar.php"; ?><main class="content admin-pets-page" id="mainContent">
-<header class="page-heading"><div><span class="eyebrow">Records</span><h1>Pet Profiles</h1></div><a class="button-secondary" href="pet_edit_requests.php"><?=ui_icon('edit')?>Pet edit requests</a></header>
+<header class="page-heading"><div><span class="eyebrow">Records</span><h1>Pet Profiles</h1></div><div class="pet-heading-actions"><a class="button-secondary" href="pet_edit_requests.php"><?=ui_icon('edit')?>Pet requests</a><button class="button-primary" type="button" id="petRequestsToggle" aria-expanded="false" aria-controls="petRequestsPanel"><?=ui_icon('plus')?>Add walk-in pet <span aria-hidden="true" id="petRequestsChevron">&#9662;</span></button></div></header>
+<style>
+.admin-pets-page .pet-admin-shell{grid-template-columns:minmax(0,1fr)!important}
+.admin-pets-page .pet-requests-panel{margin-bottom:18px}
+.admin-pets-page .pet-requests-panel[hidden]{display:none!important}
+.admin-pets-page .pet-requests-options{display:flex;flex-direction:column;gap:16px;padding:18px;border:1px solid var(--vx-border,#d6dee8);border-radius:12px;background:#fff}
+.admin-pets-page .pet-requests-options>p{margin:0}
+.admin-pets-page .pet-requests-options>a{align-self:flex-start}
+.admin-pets-page .pet-heading-actions{display:flex;flex-wrap:wrap;gap:10px}
+.admin-pets-page .pet-requests-panel .pet-admin-form-card{position:static;max-width:720px;width:100%;height:auto!important;min-height:0!important}
+body.enterprise-ui[data-user-role="admin"] main.admin-pets-page .pet-admin-list-card{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
+body.enterprise-ui[data-user-role="admin"] main.admin-pets-page #adminPetView{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:auto!important;gap:0!important;flex:none!important;height:auto!important;max-height:none!important;overflow:visible!important;align-content:start!important}
+body.enterprise-ui[data-user-role="admin"] main.admin-pets-page #adminPetView .pet-review-card{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto!important;flex:none!important;height:auto!important;min-height:0!important;max-height:none!important;gap:12px!important;align-content:start!important}
+body.enterprise-ui[data-user-role="admin"] main.admin-pets-page #adminPetView .pet-main-info{align-items:start!important;min-width:0!important}
+body.enterprise-ui[data-user-role="admin"] main.admin-pets-page #adminPetView .pet-title-block{min-width:0!important;overflow-wrap:anywhere}
+body.enterprise-ui[data-user-role="admin"] main.admin-pets-page #adminPetView .pet-review-actions{position:static!important;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;margin:0!important;gap:12px!important}
+body.enterprise-ui[data-user-role="admin"] main.admin-pets-page #adminPetView .pet-record-date{flex-shrink:0!important;white-space:nowrap!important}
+body.enterprise-ui[data-user-role="admin"] main.admin-pets-page #adminPetView .pet-profile-actions{display:flex!important;flex-wrap:wrap!important;min-width:0!important;gap:8px!important}
+body.enterprise-ui[data-user-role="admin"] main.admin-pets-page #adminPetView .pet-profile-action{width:auto!important;height:auto!important;white-space:normal!important;padding:10px 12px!important}
+</style>
 
 
 <?php if($m=flash('success')):?><div class="alert alert-success"><?=e($m)?></div><?php endif;?>
@@ -134,7 +153,8 @@ while($sr = $sumResult->fetch_assoc()){
     if(isset($summary[$key])) $summary[$key] = (int)$sr['total'];
 }
 ?>
-<div class="pet-admin-shell">
+<section class="pet-requests-panel" id="petRequestsPanel" aria-label="Add walk-in pet" hidden>
+    <div class="pet-requests-options">
     <aside class="pet-admin-form-card">
         <div class="pet-section-heading">
             <span class="pet-icon"><?= ui_icon('plus') ?></span>
@@ -170,7 +190,12 @@ while($sr = $sumResult->fetch_assoc()){
             <button class="btn btn-primary w-100 mt-2">Save Approved Pet</button>
         </form>
     </aside>
-
+    </div>
+</section>
+<script>
+(()=>{const toggle=document.getElementById('petRequestsToggle'),panel=document.getElementById('petRequestsPanel');toggle.addEventListener('click',()=>{const expanded=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(expanded));panel.hidden=!expanded;document.getElementById('petRequestsChevron').textContent=expanded?'▴':'▾';});})();
+</script>
+<div class="pet-admin-shell">
     <section class="pet-admin-list-card">
         <div class="pet-list-header">
             <div>
