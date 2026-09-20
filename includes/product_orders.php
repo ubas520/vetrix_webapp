@@ -57,7 +57,14 @@ function order_payment_options(mysqli $conn): array
 
 function order_audit(mysqli $conn, int $actor, int $id, string $action): void
 {
-    order_db($conn, "INSERT INTO audit_logs(actor_user_id,action,entity_type,entity_id,details,event_data) VALUES(?,?,'product_order',?,'',?)", 'isis', [$actor, $action, $id, audit_event_json($action)]);
+    try {
+        order_db($conn, "INSERT INTO audit_logs(actor_user_id,action,entity_type,entity_id,details,event_data) VALUES(?,?,'product_order',?,'',?)", 'isis', [$actor, $action, $id, audit_event_json($action)]);
+    } catch (Throwable $error) {
+        // Older installations still have the text-only audit table. Preserve the
+        // audit entry without rolling back payment settings or mobile orders.
+        if ((int)$error->getCode() !== 1054 && (int)$conn->errno !== 1054) throw $error;
+        order_db($conn, "INSERT INTO audit_logs(actor_user_id,action,entity_type,entity_id,details) VALUES(?,?,'product_order',?,?)", 'isis', [$actor, $action, $id, $action]);
+    }
 }
 
 function order_has_column(mysqli $conn, string $table, string $column): bool
