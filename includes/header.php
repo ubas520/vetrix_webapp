@@ -36,6 +36,9 @@ $redesignStyleVersion = file_exists(__DIR__ . '/../assets/css/vetrix-redesign.cs
     <?php if (($_SESSION['role'] ?? '') === 'veterinarian' && in_array($scriptName, ['medical_records.php','prescription.php','vaccinations.php'], true)): ?>
     <link href="<?= app_url('assets/css/clinical-record-cards.css') ?>?v=<?= e(filemtime(__DIR__ . '/../assets/css/clinical-record-cards.css')) ?>" rel="stylesheet" media="screen">
     <?php endif; ?>
+    <?php if (($_SESSION['role'] ?? '') === 'admin' && $scriptName === 'reports.php'): ?>
+    <link href="<?= app_url('assets/css/report-cards.css') ?>?v=<?= e(hash_file('sha256', __DIR__ . '/../assets/css/report-cards.css')) ?>" rel="stylesheet" media="screen">
+    <?php endif; ?>
     <script>try{if(localStorage.getItem('vetrix.sidebar.expanded')==='0')document.documentElement.classList.add('vetrix-precollapsed')}catch(e){}</script>
     <style>body.vetrix-shell-prepaint .app-topbar,body.vetrix-shell-prepaint .layout{visibility:hidden!important}</style>
 </head>

@@ -684,7 +684,7 @@ body.enterprise-ui[data-user-role] main.content .notification-row-actions {
 body.enterprise-ui[data-user-role] main.content :is(.view-toggle, [data-view-toggle]) {
   display: none !important;
 }
-body.enterprise-ui[data-user-role] main.content :is(.view-list, .pos-product-admin-grid, .report-card-grid, .export-card-grid, .medical-record-index-grid, .medical-history-grid, .notification-today-overview-grid) {
+body.enterprise-ui[data-user-role] main.content :is(.view-list, .pos-product-admin-grid, .medical-record-index-grid, .medical-history-grid, .notification-today-overview-grid) {
   display: flex !important;
   flex-direction: column !important;
   gap: 0 !important;
@@ -694,7 +694,7 @@ body.enterprise-ui[data-user-role] main.content :is(.view-list, .pos-product-adm
   border-radius: 4px !important;
   background: #f1f4f6 !important;
 }
-body.enterprise-ui[data-user-role] main.content :is(.view-list, .pos-product-admin-grid, .report-card-grid, .export-card-grid, .medical-record-index-grid, .medical-history-grid, .notification-today-overview-grid) > :is(article, a, button, .metric-card, .admin-summary-card, .entity-card, .pet-review-card, .admin-review-card, .report-action-card, .export-action-card, .pos-admin-product-card) {
+body.enterprise-ui[data-user-role] main.content :is(.view-list, .pos-product-admin-grid, .medical-record-index-grid, .medical-history-grid, .notification-today-overview-grid) > :is(article, a, button, .metric-card, .admin-summary-card, .entity-card, .pet-review-card, .admin-review-card, .report-action-card, .export-action-card, .pos-admin-product-card) {
   width: 100% !important;
   max-width: none !important;
   min-height: 0 !important;

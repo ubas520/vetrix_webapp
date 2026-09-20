@@ -1,0 +1,81 @@
+/* Reports and exports use individual cards instead of the shared list layout. */
+.admin-reports-page .report-chart { margin: 0; min-width: 0; padding-top: 12px; border-top: 1px solid #edf1f5; }
+.admin-reports-page .report-chart figcaption { font-size: .78rem; font-weight: 700; color: #64748b; margin-bottom: 10px; }
+.admin-reports-page .report-chart-plot { position: relative; height: 180px; min-width: 0; }
+.admin-reports-page .report-chart [hidden] { display: none !important; }
+.admin-reports-page .report-chart-status:not(:empty) { min-height: 160px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: .82rem; }
+.admin-reports-page .report-chart-status:empty { display: none; }
+.admin-reports-page .report-chart details { margin-top: 8px; font-size: .75rem; overflow-x: auto; }
+.admin-reports-page .report-chart summary { cursor: pointer; color: #3478b7; }
+.admin-reports-page .report-chart table { width: 100%; margin-top: 8px; border-collapse: collapse; }
+.admin-reports-page .report-chart :is(th, td) { text-align: left; padding: 5px; border-bottom: 1px solid #edf1f5; }
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page :is(.report-card-grid, .export-card-grid) {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    align-items: stretch !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page :is(.report-card-grid, .export-card-grid) > :is(.report-action-card, .export-action-card) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    padding: 22px !important;
+    border: 1px solid #dbe3ec !important;
+    border-radius: 16px !important;
+    background: #fff !important;
+    box-shadow: 0 4px 16px rgba(26, 48, 76, .05) !important;
+    text-decoration: none !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page :is(.report-action-card, .export-action-card) > span {
+    display: grid !important;
+    place-items: center !important;
+    width: 46px !important;
+    height: 46px !important;
+    flex: 0 0 46px !important;
+    border-radius: 12px !important;
+    background: #edf4ff !important;
+    color: #3569f4 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page :is(.report-action-card, .export-action-card) h3 {
+    margin: 0 0 8px !important;
+    font-size: 1rem !important;
+    line-height: 1.4 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page :is(.report-action-card, .export-action-card) p {
+    margin: 0 !important;
+    color: #64748b !important;
+    line-height: 1.6 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page .report-action-card > form {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-top: auto !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page .report-action-card :is(input, select, .form-grid-two) {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page .report-action-card > a,
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page .export-action-card > b {
+    margin-top: auto !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page .report-action-card .button-primary {
+    width: 100% !important;
+    justify-content: center !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page .export-action-card:is(:hover, :focus-visible) {
+    border-color: #3569f4 !important;
+    box-shadow: 0 6px 20px rgba(53, 105, 244, .12) !important;
+}
+@media (max-width: 767px) {
+    body.enterprise-ui[data-user-role="admin"] main.content.admin-reports-page :is(.report-card-grid, .export-card-grid) {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+}
