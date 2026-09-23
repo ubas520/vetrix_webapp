@@ -840,13 +840,15 @@ body.enterprise-ui[data-user-role] main.content :is([hidden], [style*="display: 
 
 /* Pet requests must expand with evidence and review forms. */
 body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue {
-    display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:auto!important;
-    gap:14px!important;height:auto!important;max-height:none!important;border:0!important;background:transparent!important;
+    display:grid!important;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr))!important;grid-auto-rows:auto!important;
+    gap:14px!important;height:auto!important;max-height:none!important;border:0!important;background:transparent!important;align-items:start!important;
 }
 body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue .edit-request-card {
     display:flex!important;flex-direction:column!important;gap:14px!important;height:auto!important;min-height:0!important;
-    min-width:0!important;padding:18px!important;border:1px solid #d6e1eb!important;border-radius:12px!important;background:#fff!important;
+    min-width:0!important;width:100%!important;max-width:600px!important;box-sizing:border-box!important;padding:16px!important;border:1px solid #d6e1eb!important;border-radius:12px!important;background:#fff!important;
+    container-type:inline-size;container-name:pet-request;
 }
+body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue>.empty-state { grid-column:1/-1!important; }
 body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue :is(.change-comparison,.request-evidence,.request-review-zone,.review-decision-grid,.request-review-form,.vet-consult-waiting) {
     height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;min-width:0!important;
 }
@@ -865,6 +867,9 @@ body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue .c
 body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue .change-comparison p { max-height:none!important;overflow:visible!important;-webkit-line-clamp:unset!important; }
 body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue .request-review-form textarea { height:auto!important;min-height:76px!important;max-height:none!important;resize:vertical!important;overflow:auto!important; }
 body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue .request-review-form button { height:auto!important;min-height:38px!important;max-height:none!important;white-space:normal!important; }
+@container pet-request (max-width:460px) {
+    body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue .review-decision-grid { grid-template-columns:minmax(0,1fr)!important; }
+}
 @media(max-width:700px) {
     body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue :is(.review-decision-grid,.change-comparison) { grid-template-columns:minmax(0,1fr)!important; }
     body.enterprise-ui[data-user-role] main.content#mainContent #editRequestQueue .change-comparison>span { display:none!important; }
