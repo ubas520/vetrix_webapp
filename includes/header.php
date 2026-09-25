@@ -40,6 +40,9 @@ $redesignStyleVersion = file_exists(__DIR__ . '/../assets/css/vetrix-redesign.cs
     <link href="<?= app_url('assets/css/report-cards.css') ?>?v=<?= e(hash_file('sha256', __DIR__ . '/../assets/css/report-cards.css')) ?>" rel="stylesheet" media="screen">
     <?php endif; ?>
     <script>try{if(localStorage.getItem('vetrix.sidebar.expanded')==='0')document.documentElement.classList.add('vetrix-precollapsed')}catch(e){}</script>
+    <?php if ($scriptName === 'pet_edit_requests.php' && ($_SESSION['role'] ?? '') === 'admin'): ?>
+    <link href="<?= app_url('assets/css/pet-edit-requests.css') ?>?v=<?= e(filemtime(__DIR__ . '/../assets/css/pet-edit-requests.css')) ?>" rel="stylesheet" media="screen">
+    <?php endif; ?>
     <style>body.vetrix-shell-prepaint .app-topbar,body.vetrix-shell-prepaint .layout{visibility:hidden!important}</style>
 </head>
 <body class="<?= e($roleClass) ?> enterprise-ui" data-app-base="<?= app_url('') ?>" data-user-role="<?= e($_SESSION['role'] ?? 'guest') ?>" data-page-title="<?= e($title) ?>">

@@ -1,0 +1,237 @@
+/* Join the enterprise layer so its important defaults cannot override this page. */
+@layer vetrix-enterprise {
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 24px !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .edit-request-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.4fr) minmax(220px, 1fr) !important;
+    gap: 24px !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    padding: 26px !important;
+    border: 1px solid #dce5ed !important;
+    border-radius: 20px !important;
+    background: #fff !important;
+    box-shadow: 0 5px 20px #1c385208 !important;
+    container-type: inline-size;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .edit-request-card > header {
+    grid-column: 1 / -1 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 14px !important;
+    min-height: 0 !important;
+    padding: 0 0 22px !important;
+    margin: 0 !important;
+    border-bottom: 1px solid #edf1f5;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .entity-avatar {
+    width: 56px !important;
+    height: 56px !important;
+    flex: 0 0 56px !important;
+    border-radius: 16px !important;
+    object-fit: cover;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue header .eyebrow {
+    display: block;
+    margin-bottom: 3px;
+    color: #62809c !important;
+    font-size: 10px !important;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue header h2 {
+    margin: 0 0 4px !important;
+    color: #20374f !important;
+    font-size: 22px !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue header p {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    color: #738397 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue header .badge {
+    flex: 0 0 auto;
+    margin-left: auto;
+    max-width: none !important;
+    padding: 8px 12px !important;
+    border-radius: 30px !important;
+    font-size: 10px !important;
+    letter-spacing: .5px;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue :is(.change-comparison, .request-evidence, .request-review-zone, .review-decision-grid, .request-review-form) {
+    grid-row: auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .change-comparison {
+    grid-column: 1 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+    align-self: start;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .change-comparison > div {
+    width: 100%;
+    padding: 18px !important;
+    border: 1px solid #e7ecf1 !important;
+    border-radius: 12px !important;
+    background: #f7f9fb !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .change-comparison > div:last-child {
+    border-color: #cddff3 !important;
+    background: #f0f6ff !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .change-comparison small {
+    display: block;
+    font-size: 11px !important;
+    font-weight: 600;
+    color: #6b7f94 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .change-comparison p {
+    display: block !important;
+    margin: 8px 0 0 !important;
+    font-size: 21px !important;
+    font-weight: 700 !important;
+    line-height: 1.5 !important;
+    color: #324b65 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    white-space: pre-wrap !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .change-comparison > div:last-child p { color: #245ea3 !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .change-comparison > span {
+    display: grid !important;
+    place-items: center !important;
+    color: #91a3b6 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-evidence {
+    grid-column: 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    padding: 4px 0 4px 24px !important;
+    border-left: 1px solid #e7edf3;
+    align-self: start;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-evidence > span {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-evidence b { font-size: 12px !important; color: #3a5069; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-evidence small { font-size: 12px !important; color: #7a8a9b; line-height: 1.5 !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue :is(.request-review-zone, .appeal-review, .review-ui-review-reason) { grid-column: 1 / -1 !important; width: 100% !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-zone {
+    display: block !important;
+    padding-top: 22px !important;
+    border-top: 1px solid #edf1f5;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .review-section-heading { margin: 0 0 16px; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .review-section-heading h3 { font-size: 14px !important; font-weight: 800; color: #253e58; margin: 0 0 4px; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .review-section-heading p { font-size: 12px !important; color: #7a8a9b; margin: 0 !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .review-decision-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px !important;
+    padding: 0 !important;
+    align-items: stretch !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+    padding: 18px !important;
+    border: 1px solid #e1e8ef !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+    overflow: visible !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .approve-review-form { background: #f8fbff !important; border-color: #d5e3f3 !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .decision-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #285f9f;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .decision-heading .ui-icon { width: 25px; height: 25px; padding: 4px; border-radius: 7px; background: #e5effc; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .reject-review-form .decision-heading { color: #77575c; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .reject-review-form .decision-heading .ui-icon { background: #fbefef; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form label {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    align-self: stretch !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    gap: 7px !important;
+    color: #52667c !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-align: left !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form :is(select, textarea) {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 10px 12px !important;
+    border: 1px solid #d7e0e9 !important;
+    border-radius: 8px !important;
+    background-color: #fff !important;
+    color: #334e69 !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    box-shadow: 0 1px 2px #17324d04 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form select { height: 42px !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form textarea { height: 74px !important; min-height: 74px !important; max-height: none !important; resize: vertical !important; overflow: auto !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form :is(select, textarea):focus { outline: 3px solid #dceaff !important; border-color: #6d9dd6 !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form button {
+    width: 100% !important;
+    min-height: 42px !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: auto 0 0 !important;
+    padding: 11px 16px !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+}
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form .button-primary { background: #2c65a7 !important; border-color: #2c65a7 !important; color: #fff !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form .button-primary:hover { background: #214f86 !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form .button-danger { background: #fff !important; color: #b2525b !important; border: 1px solid #e6cbd0 !important; }
+body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-review-form .button-danger:hover { background: #fff4f4 !important; }
+@media (max-width: 760px) {
+    body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .edit-request-card { grid-template-columns: minmax(0, 1fr) !important; padding: 18px !important; gap: 18px !important; }
+    body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .request-evidence { grid-column: 1 !important; flex-direction: row !important; flex-wrap: wrap !important; gap: 20px !important; border: 0; padding: 0 !important; }
+}
+@container pet-request (max-width: 540px) {
+    body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .review-decision-grid { grid-template-columns: minmax(0, 1fr) !important; }
+}
+@media (max-width: 420px) {
+    body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .entity-avatar { width: 42px !important; height: 42px !important; flex-basis: 42px !important; border-radius: 12px !important; }
+    body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .edit-request-card > header { gap: 10px !important; flex-wrap: wrap !important; }
+    body.enterprise-ui[data-user-role="admin"] main.content#mainContent #editRequestQueue .change-comparison > div { padding: 12px !important; }
+}
+}
