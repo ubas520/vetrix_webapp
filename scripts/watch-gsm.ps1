@@ -1,5 +1,5 @@
 param(
-    [string]$Port = 'COM5',
+    [string]$Port = 'COM6',
     [int]$BaudRate = 115200
 )
 $ErrorActionPreference = 'Stop'

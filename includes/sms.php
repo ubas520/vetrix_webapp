@@ -28,23 +28,13 @@ function vetrix_sms_endpoint(array $config): ?string {
 
 function vetrix_sms_status(?array $config = null): array {
     $config = $config ?? vetrix_sms_config();
-    $raw = @file_get_contents($config['status_file']);
-    $state = $raw === false ? null : json_decode($raw, true);
-    $now = microtime(true);
-    $heartbeatAge = $now - (float)($state['updated_at'] ?? 0);
-    $responseAge = $now - (float)($state['last_response_at'] ?? 0);
-    $detected = is_array($state) && ($state['connected'] ?? false) === true
-        && $heartbeatAge >= 0 && $heartbeatAge <= 2
-        && $responseAge >= 0 && $responseAge <= 12;
     $configured = $config['enabled'] === true && trim((string)($config['username'] ?? '')) !== ''
         && trim((string)($config['password'] ?? '')) !== '' && vetrix_sms_endpoint($config) !== null;
     return [
-        'detected' => $detected,
-        'ready' => $detected && $configured && function_exists('curl_init'),
+        'ready' => $configured && function_exists('curl_init'),
         'provider' => 'SMSGate API',
-        'message' => !$detected ? 'GSM not detected or monitor unavailable. SMS is blocked.'
-            : (!$configured ? 'GSM detected. Configure SMSGate to enable SMS.'
-                : (!function_exists('curl_init') ? 'PHP cURL is required.' : 'GSM detected. SMSGate API sending enabled.')),
+        'message' => !$configured ? 'Enable and configure SMSGate Cloud to send SMS.'
+            : (!function_exists('curl_init') ? 'PHP cURL is required.' : 'SMSGate Cloud sending enabled.'),
     ];
 }
 

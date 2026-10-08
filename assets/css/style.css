@@ -11446,7 +11446,12 @@ body[data-user-role="staff"] .staff-pets-page .entity-card{
 }body[data-user-role="staff"] .staff-clients-page .client-toolbar{
   display:grid!important;grid-template-columns:minmax(0,1fr) max-content!important;align-items:center!important;gap:12px!important;overflow:visible!important
 }body[data-user-role="staff"] .staff-clients-page .client-toolbar>.filter-tabs{min-width:0!important;justify-content:flex-start!important}body[data-user-role="staff"] .staff-clients-page .client-toolbar>.toolbar-actions{justify-self:end!important;flex-wrap:nowrap!important;white-space:nowrap!important}
-body[data-user-role="staff"] .staff-pets-page .staff-pet-admin-shell{grid-template-columns:minmax(320px,.72fr) minmax(0,1.28fr)!important}
+body[data-user-role="staff"] .staff-pets-page .staff-pet-admin-shell{grid-template-columns:minmax(0,1fr)!important}
+body[data-user-role="staff"] .staff-pets-page .pet-heading-actions{display:flex;flex-wrap:wrap;gap:10px}
+body[data-user-role="staff"] .staff-pets-page .pet-requests-panel{margin-bottom:18px}
+body[data-user-role="staff"] .staff-pets-page .pet-requests-panel[hidden]{display:none!important}
+body[data-user-role="staff"] .staff-pets-page .pet-requests-options{display:flex;flex-direction:column;gap:16px;padding:18px;border:1px solid var(--vx-border,#d6dee8);border-radius:12px;background:#fff}
+body[data-user-role="staff"] .staff-pets-page .pet-requests-panel .pet-admin-form-card{position:static;max-width:720px;width:100%;height:auto!important;min-height:0!important}
 body[data-user-role="staff"] .staff-pets-page .pet-admin-list-card{max-height:calc(100vh - 130px)!important;min-height:640px!important}
 body[data-user-role="staff"] .staff-pos-page .pos-cashier-product-card.is-hidden{opacity:.72!important}
 body[data-user-role="staff"] .staff-faq-search-card input[type="search"],

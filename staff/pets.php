@@ -111,12 +111,16 @@ include "../includes/navbar.php";
 <main class="content staff-pets-page" id="mainContent">
 <header class="page-heading">
     <div><span class="eyebrow">Pet encoding</span><h1>Pet Profiles</h1></div>
-    <a class="button-secondary" href="<?=app_url('staff/appointments.php')?>"><?=ui_icon('calendar')?>Appointments</a>
+    <div class="pet-heading-actions">
+        <a class="button-secondary" href="<?=app_url('staff/appointments.php')?>"><?=ui_icon('calendar')?>Appointments</a>
+        <button class="button-primary" type="button" id="staffWalkInToggle" aria-expanded="false" aria-controls="staffWalkInPanel"><?=ui_icon('plus')?>Add walk-in pet <span aria-hidden="true" id="staffWalkInChevron">&#9662;</span></button>
+    </div>
 </header>
 <?php if($m=flash('success')):?><div class="alert alert-success" role="status"><?=e($m)?></div><?php endif;?>
 <?php if($m=flash('error')):?><div class="alert alert-danger" role="alert"><?=e($m)?></div><?php endif;?>
 
-<div class="pet-admin-shell staff-pet-admin-shell">
+<section class="pet-requests-panel" id="staffWalkInPanel" aria-label="Add walk-in pet" hidden>
+<div class="pet-requests-options">
 <aside class="pet-admin-form-card">
     <div class="pet-section-heading pet-section-heading-inline"><span class="pet-icon"><?=ui_icon('plus')?></span><h3>Add Walk-In Pet</h3></div>
     <form method="POST" enctype="multipart/form-data" class="pet-walkin-form">
@@ -135,7 +139,23 @@ include "../includes/navbar.php";
     <datalist id="staffBreedSuggestions"><?php $suggest=$conn->query("SELECT DISTINCT breed value FROM pets WHERE TRIM(COALESCE(breed,''))<>'' ORDER BY id DESC LIMIT 80");while($x=$suggest->fetch_assoc()):?><option value="<?=e($x['value'])?>"><?php endwhile;?></datalist><datalist id="staffColorSuggestions"><?php $suggest=$conn->query("SELECT DISTINCT color value FROM pets WHERE TRIM(COALESCE(color,''))<>'' ORDER BY id DESC LIMIT 50");while($x=$suggest->fetch_assoc()):?><option value="<?=e($x['value'])?>"><?php endwhile;?></datalist><datalist id="staffAllergySuggestions"><?php $suggest=$conn->query("SELECT DISTINCT allergies value FROM pets WHERE TRIM(COALESCE(allergies,''))<>'' ORDER BY id DESC LIMIT 50");while($x=$suggest->fetch_assoc()):?><option value="<?=e($x['value'])?>"><?php endwhile;?></datalist><datalist id="staffCriticalSuggestions"><?php $suggest=$conn->query("SELECT DISTINCT critical_notes value FROM pets WHERE TRIM(COALESCE(critical_notes,''))<>'' ORDER BY id DESC LIMIT 50");while($x=$suggest->fetch_assoc()):?><option value="<?=e($x['value'])?>"><?php endwhile;?></datalist><datalist id="staffNotesSuggestions"><?php $suggest=$conn->query("SELECT DISTINCT notes value FROM pets WHERE TRIM(COALESCE(notes,''))<>'' ORDER BY id DESC LIMIT 50");while($x=$suggest->fetch_assoc()):?><option value="<?=e($x['value'])?>"><?php endwhile;?></datalist></form>
 <script>(()=>{const species=document.getElementById('staffPetSpecies'),other=document.getElementById('staffPetSpeciesOther'),breed=document.getElementById('staffPetBreed');const known={Dog:['Aspin','Shih Tzu','Pomeranian','Labrador Retriever','Golden Retriever','Beagle','Chihuahua','Poodle','Siberian Husky'],Cat:['Puspin','Persian','Siamese','British Shorthair','Maine Coon']};const list=document.getElementById('staffBreedSuggestions');species?.addEventListener('change',()=>{const isOther=species.value==='Other';other.hidden=!isOther;other.required=isOther;if(!isOther)other.value='';if(list&&known[species.value]){const saved=[...list.options].map(o=>o.value);const values=[...new Set([...known[species.value],...saved])];list.replaceChildren(...values.map(value=>{const option=document.createElement('option');option.value=value;return option}))}});})();</script>
 </aside>
+</div>
+</section>
+<script>
+(() => {
+    const toggle = document.getElementById('staffWalkInToggle');
+    const panel = document.getElementById('staffWalkInPanel');
+    const chevron = document.getElementById('staffWalkInChevron');
+    toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(expanded));
+        panel.hidden = !expanded;
+        chevron.textContent = expanded ? '\u25B4' : '\u25BE';
+    });
+})();
+</script>
 
+<div class="pet-admin-shell staff-pet-admin-shell">
 <section class="pet-admin-list-card">
     <div class="pet-list-header"><div><h3>All Pet Profiles</h3></div></div>
     <div class="pet-category-toolbar"><div class="filter-tabs pet-filter-pills" aria-label="Pet status filters">

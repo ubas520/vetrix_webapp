@@ -22,34 +22,40 @@ try {
     }
     foreach (['', 'invalid', '{}'] as $raw) {
         file_put_contents($path, $raw);
-        check(!vetrix_sms_send('09171234567', 'Test', $config, $transport)['accepted'], 'Malformed status must block');
+        check(vetrix_sms_send('09171234567', 'Test', $config, $transport)['accepted'], 'Malformed GSM status must not block cloud sending');
     }
     foreach ([[false,0,0], [true,3,0], [true,0,13], [true,-10,0], [true,0,-10]] as $args) {
         state($path, ...$args);
-        check(!vetrix_sms_send('09171234567', 'Test', $config, $transport)['accepted'], 'Unavailable hardware must block');
+        check(vetrix_sms_send('09171234567', 'Test', $config, $transport)['accepted'], 'Unavailable GSM hardware must not block cloud sending');
     }
-    check($calls === 0, 'Blocked requests must never call provider');
+    check($calls === 8, 'Cloud sends must not depend on GSM status');
     state($path, true);
     check(vetrix_sms_send('09171234567', 'Test', $config, $transport)['accepted'], 'Fresh response should enable API');
     state($path, false);
-    check(!vetrix_sms_send('09171234567', 'Test', $config, $transport)['accepted'], 'Disconnect must block');
+    check(vetrix_sms_send('09171234567', 'Test', $config, $transport)['accepted'], 'Disconnect must not block cloud sending');
     state($path, true);
     check(vetrix_sms_send('09171234567', 'Test', $config, $transport)['accepted'], 'Reconnect should enable API');
+    unset($config['status_file']);
+    check(vetrix_sms_send('09171234567', 'Test', $config, $transport)['accepted'], 'Cloud sending must work without a status file');
+    foreach (['username', 'password'] as $key) {
+        $missingConfig = array_replace($config, [$key => '']);
+        check(!vetrix_sms_send('09171234567', 'Test', $missingConfig, $transport)['accepted'], 'Missing credentials must block');
+    }
     $config['enabled'] = false;
     check(!vetrix_sms_send('09171234567', 'Test', $config, $transport)['accepted'], 'Disabled config must block');
     $config['enabled'] = true;
     check(!vetrix_sms_send('bad number', 'Test', $config, $transport)['accepted'], 'Invalid number must block');
-    check($calls === 2, 'Only allowed sends should call provider');
+    check($calls === 12, 'Only allowed sends should call provider');
     foreach (['http://api.sms-gate.app', 'https://api.sms-gate.app.evil.test', 'https://user@api.sms-gate.app', 'https://api.sms-gate.app/path'] as $badUrl) {
         $badConfig = array_replace($config, ['base_url' => $badUrl]);
         check(!vetrix_sms_send('09171234567', 'Test', $badConfig, $transport)['accepted'], 'Invalid API origin must block');
     }
-    check($calls === 2, 'Invalid origins must not call provider');
+    check($calls === 12, 'Invalid origins must not call provider');
     foreach (['{"id":"failed","state":"Failed"}', '{"state":"Pending"}'] as $body) {
         check(!vetrix_sms_send('09171234567', 'Test', $config, fn() => ['status' => 200, 'body' => $body])['accepted'], 'HTTP success alone must not mean accepted');
     }
     foreach ([[401,'{}'], [500,'{}'], [202,'invalid'], [202,'{}']] as [$status,$body]) {
         check(!vetrix_sms_send('09171234567', 'Test', $config, fn() => ['status' => $status, 'body' => $body])['accepted'], 'Provider failure must not claim acceptance');
     }
-    echo "PASS: gate, expiry, disconnect/reconnect, configuration, validation, provider responses. No SMS sent.\n";
+    echo "PASS: cloud sending independent of GSM, configuration, validation, provider responses. No SMS sent.\n";
 } finally { unlink($path); }
