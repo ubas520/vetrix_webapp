@@ -24,10 +24,6 @@ function mobile_api_pet_edit_fields(): array
 {
     return [
         'name' => 'Pet Name',
-        'species' => 'Species',
-        'breed' => 'Breed',
-        'sex' => 'Sex',
-        'birth_date' => 'Birth Date',
         'weight' => 'Weight',
         'color' => 'Color / Markings',
         'allergies' => 'Allergies',
@@ -207,10 +203,6 @@ $petId = (int) ($input['pet_id'] ?? $input['petId'] ?? 0);
 $source = isset($input['changes']) && is_array($input['changes']) ? $input['changes'] : $input;
 $aliases = [
     'name' => ['name'],
-    'species' => ['species'],
-    'breed' => ['breed'],
-    'sex' => ['sex', 'gender'],
-    'birth_date' => ['birth_date', 'birthDate'],
     'weight' => ['weight'],
     'color' => ['color'],
     'allergies' => ['allergies'],
