@@ -8,6 +8,7 @@ $sidebarSections = [
         ['calendar-days', 'Calendar', 'admin/calendar.php', '/admin/calendar.php'],
         ['bell', 'Notifications', 'admin/notifications.php', '/admin/notifications.php'],
         ['inventory', 'Inventory', 'admin/inventory.php', '/admin/inventory.php'],
+        ['package', 'Product Orders', 'admin/product_orders.php', '/admin/product_orders.php'],
         ['cart', 'Point of Sale', 'admin/pos.php', '/admin/pos.php'],
     ],
     'Pet and Client Records' => [
@@ -15,6 +16,12 @@ $sidebarSections = [
         ['users', 'Clients', 'admin/clients.php', '/admin/clients.php'],
         ['syringe', 'Vaccinations', 'admin/vaccinations.php', '/admin/vaccinations.php'],
         ['qr', 'QR Token', 'admin/qr.php', '/admin/qr.php'],
+    ],
+    'Clinical Care' => [
+        ['heart-pulse', 'Health Monitoring', 'vet/health_monitoring.php', '/vet/health_monitoring.php'],
+        ['file', 'Medical Records', 'vet/medical_records.php', '/vet/medical_records.php'],
+        ['receipt', 'Prescription', 'vet/prescription.php', '/vet/prescription.php'],
+        ['stethoscope', 'Vet Appointments', 'vet/appointments.php', '/vet/appointments.php'],
     ],
     'User Management' => [
         ['user-cog', 'Staff Accounts', 'admin/users.php?role=staff', '/admin/users.php', 'staff'],

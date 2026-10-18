@@ -2,10 +2,40 @@
 (() => {
   const init = () => {
     // Standalone collections without a view toggle also use the list layout.
+    const usesCompactLayout = ['admin', 'veterinarian', 'staff'].includes(document.body.dataset.userRole);
     document.querySelectorAll('main.content .view-grid').forEach(collection => {
       collection.classList.remove('view-grid');
       collection.classList.add('view-list');
     });
+    if (usesCompactLayout) {
+      document.querySelectorAll('main.content .entity-collection, main.content .pet-card-list, main.content .admin-card-list, main.content .feedback-collection, main.content .edit-request-grid, main.content .medical-record-index-grid, main.content .medical-history-list, main.content .notification-admin-list, main.content .receipt-archive-list').forEach(collection => {
+        collection.classList.add('admin-compact-list');
+      });
+      // Keep lengthy review forms available without expanding every row on load.
+      document.querySelectorAll('main.content .edit-request-card').forEach(card => {
+        const content = Array.from(card.children).filter(child => child.tagName !== 'HEADER');
+        if (!content.length || card.querySelector('.admin-row-details')) return;
+        const details = document.createElement('details');
+        details.className = 'admin-row-details';
+        details.dataset.detailBypass = '';
+        const summary = document.createElement('summary');
+        summary.textContent = 'Review change';
+        details.append(summary, ...content);
+        card.append(details);
+      });
+      document.querySelectorAll('main.content .prescription-note-card, main.content .medical-history-row, main.content .vaccination-card').forEach(card => {
+        const container = card.querySelector('.admin-review-main') || card;
+        const content = Array.from(container.children).filter(child => child.matches('.admin-compare-grid, .record-note, .medical-history-grid, .owner-follow-up'));
+        if (!content.length || container.querySelector('.admin-row-details')) return;
+        const details = document.createElement('details');
+        details.className = 'admin-row-details';
+        details.dataset.detailBypass = '';
+        const summary = document.createElement('summary');
+        summary.textContent = 'View details';
+        details.append(summary, ...content);
+        container.append(details);
+      });
+    }
     document.querySelectorAll('main.content .filter-tabs, main.content .appt-filter-row').forEach(group => {
       const links = Array.from(group.querySelectorAll('a.filter-tab, a.appt-filter'));
       if (links.length < 2 || group.dataset.enterpriseFilter) return;
@@ -13,7 +43,7 @@
       label.className = 'enterprise-filter-control';
       const caption = document.createElement('span');
       const keys = links.flatMap(link => [...new URL(link.href).searchParams.keys()]);
-      caption.textContent = keys.includes('status') || keys.includes('filter') ? 'Status' : keys.includes('category') ? 'Category' : 'Filter';
+      caption.textContent = keys.includes('status') || keys.includes('filter') ? 'Status' : keys.includes('category') ? 'Category' : keys.includes('role') ? 'Role' : keys.includes('rating') ? 'Rating' : 'Filter';
       const select = document.createElement('select');
       select.className = 'form-select enterprise-filter-select';
       let previousState = '';
@@ -34,7 +64,10 @@
       sync();
       select.addEventListener('change', () => links[Number(select.value)]?.click());
       label.append(caption, select);
-      group.before(label);
+      if (usesCompactLayout) {
+        group.append(label);
+        links.forEach(link => { link.hidden = true; });
+      } else group.before(label);
       group.dataset.enterpriseFilter = 'true';
       new MutationObserver(sync).observe(group, {subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['class', 'aria-current']});
     });

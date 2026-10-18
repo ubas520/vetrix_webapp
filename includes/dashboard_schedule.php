@@ -9,6 +9,7 @@ $schedulePath = match ($scheduleRole) {
 };
 if ($schedulePath === null) return;
 $scheduleDay = $conn->query('SELECT CURDATE() AS today')->fetch_assoc()['today'];
+$scheduleAttentionCount = $scheduleRole === 'admin' ? (int)$conn->query("SELECT COUNT(*) c FROM appointments WHERE status='approved' AND scheduled_date>=CURDATE() AND scheduled_date<NOW()")->fetch_assoc()['c'] : 0;
 $scheduleVetCondition = $scheduleRole === 'veterinarian' ? ' AND a.assigned_vet_id='.(int)current_user_id() : '';
 $scheduleResult = $conn->query("SELECT a.id,a.scheduled_date,a.status,p.name pet_name,u.full_name owner_name
     FROM appointments a JOIN pets p ON p.id=a.pet_id JOIN users u ON u.id=a.owner_id
@@ -20,6 +21,9 @@ $scheduleResult = $conn->query("SELECT a.id,a.scheduled_date,a.status,p.name pet
         <div><h2 id="todayScheduleTitle">Today's schedule</h2><p><?=e(date('l, F j', strtotime($scheduleDay)))?> &middot; Next confirmed visits</p></div>
         <a class="button-secondary" href="<?=app_url($schedulePath.'/calendar.php')?>">View calendar <?=ui_icon('chevron-right')?></a>
     </div>
+    <?php if($scheduleAttentionCount > 0): ?>
+        <p class="schedule-attention-note"><a href="<?=app_url('admin/dashboard.php?queue=appointments#actionQueue')?>"><?=intval($scheduleAttentionCount)?> earlier confirmed visit<?= $scheduleAttentionCount===1?'':'s' ?> today still need<?= $scheduleAttentionCount===1?'s':'' ?> a status update. Review appointments needing attention <?=ui_icon('chevron-right')?></a></p>
+    <?php endif; ?>
     <?php if(!$scheduleResult->num_rows): ?>
         <div class="schedule-empty"><span class="schedule-empty-icon" aria-hidden="true"><?=ui_icon('calendar-days')?></span><div><b>No upcoming appointments today</b><p>New confirmed visits will appear here.</p></div></div>
     <?php else: ?>

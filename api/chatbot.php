@@ -195,7 +195,7 @@ if (preg_match('/records can i update|what.*record.*update|record access/', $low
         'veterinarian' => "You can update clinical records for pets available through your veterinarian pages and assigned work. Records outside your clinic access are not included.",
         'staff' => "You can use the client contact, appointment, pet-encoding, POS, inventory, and QR information shown on Staff pages. Diagnosis, treatment, prescription, and records outside staff work stay restricted.",
         'client' => "You can view your own approved pets, appointments, records, vaccinations, QR codes, and notifications. Pet detail changes are sent to the clinic as edit requests.",
-        default => "Administrators can manage clinic accounts, schedules, pets, appointments, inventory, notifications, and reports. Diagnosis and treatment entries remain veterinarian work.",
+        default => "Administrators can manage clinic accounts, schedules, pets, appointments, inventory, notifications, and reports. Administrators also have access to veterinarian workflows, including medical records, prescriptions, health monitoring, and pet change reviews through Clinical Care.",
     };
     echo json_encode(['answer' => $answer, 'suggestions' => assistant_suggestions($conn, $role, $uid, $message)], JSON_UNESCAPED_UNICODE); exit;
 }

@@ -2,6 +2,13 @@
 require_once "../config/database.php";
 require_once "../includes/functions.php";
 require_role("veterinarian");
+require_once __DIR__.'/../includes/appointment_return.php';
+$consultationListReturn=clinical_appointment_return($_GET['return_to']??'');
+$consultationEntry = ($_GET['action'] ?? '') === 'add';
+$recordEntryReturn = 'vet/medical_records.php';
+if ($consultationEntry) {
+    require_once __DIR__ . '/../includes/clinical_record_entry.php';
+}
 
 $q=trim($_GET['q']??'');
 $petId=max(0,(int)($_GET['pet_id']??0));
@@ -34,15 +41,24 @@ include "../includes/header.php";
 include "../includes/navbar.php";
 ?>
 <div class="layout"><?php include "../includes/vet_sidebar.php";?><main class="content vet-medical-records-page" id="mainContent">
-<header class="page-heading"><div><span class="eyebrow">Clinical history</span><h1>Medical Records</h1></div><a class="button-primary" href="<?=app_url('vet/prescription.php')?>"><?=ui_icon('plus')?>Add consultation</a></header>
+<header class="page-heading"><div><span class="eyebrow">Clinical history</span><h1>Medical Records</h1></div><a class="button-primary" href="<?=app_url('vet/medical_records.php?action=add'.($petId?'&pet_id='.$petId:''))?>#prescriptionFormPanel"><?=ui_icon('plus')?>Add consultation</a></header>
+<?php if($m=flash('success')):?><div class="alert alert-success"><?=e($m)?></div><?php endif;?>
+<?php if($m=flash('error')):?><div class="alert alert-danger"><?=e($m)?></div><?php endif;?>
+<?php if($consultationListReturn!==''): ?><p><a class="button-secondary" href="<?=e(app_url($consultationListReturn))?>">Back to appointment list</a></p><?php endif; ?>
+<?php if($consultationEntry):?>
+<section class="consultation-entry" aria-label="Add consultation">
+<?php include __DIR__ . '/../includes/clinical_record_form.php'; ?>
+</section>
+<?php endif;?>
 
 <section class="admin-summary-grid medical-record-summary"><div class="admin-summary-card"><span>Total consultations</span><b><?=intval($summary['total_records']??0)?></b></div><div class="admin-summary-card"><span>Patients with records</span><b><?=intval($summary['pets_with_records']??0)?></b></div><div class="admin-summary-card"><span>Matching patients</span><b><?=$total?></b></div><div class="admin-summary-card"><span>Latest consultation</span><b><?=!empty($summary['last_visit'])?e(date('M d, Y',strtotime($summary['last_visit']))):'—'?></b></div></section>
 
-<section class="surface-card medical-record-finder">
-    <div class="section-heading compact"><div><span class="eyebrow">Record search</span><h2>Browse clinical histories</h2></div><form class="toolbar-actions moved-show-control" method="GET" action="medical_records.php"><input type="hidden" name="q" value="<?=e($q)?>"><input type="hidden" name="pet_id" value="<?=$petId?>"><input type="hidden" name="sort" value="<?=e($sort)?>"><label class="entries-select">Show<select class="unified-show-select" name="per_page" onchange="this.form.submit()"><?=render_per_page_options($perPage,[6,12,18,24,'full'])?></select></label></form></div>
-    <form class="medical-record-toolbar" method="GET">
-        <input class="form-control medical-record-search" type="search" name="q" value="<?=e($q)?>" placeholder="Search pet, owner, diagnosis, or note">
-        <select class="form-select" name="pet_id"><option value="0">All patients with records</option><?php $options=$conn->query("SELECT p.id,p.name,u.full_name owner_name FROM pets p JOIN users u ON p.owner_id=u.id WHERE p.verification_status='approved' AND EXISTS(SELECT 1 FROM medical_records m WHERE m.pet_id=p.id) ORDER BY p.name");while($p=$options->fetch_assoc()):?><option value="<?=$p['id']?>" <?=$petId===(int)$p['id']?'selected':''?>><?=e($p['name'].' · '.$p['owner_name'])?></option><?php endwhile;?></select>
+<section class="surface-card prescription-finder">
+    <div class="section-heading compact"><div><span class="eyebrow">Record search</span><h2>Browse medical records</h2></div><form class="toolbar-actions prescription-show-control" method="GET" action="medical_records.php"><input type="hidden" name="q" value="<?=e($q)?>"><input type="hidden" name="pet_id" value="<?=$petId?>"><input type="hidden" name="sort" value="<?=e($sort)?>"><label class="entries-select">Show<select class="unified-show-select" name="per_page" onchange="this.form.submit()"><?=render_per_page_options($perPage,[6,12,18,24,'full'])?></select></label></form></div>
+    <form class="prescription-search-toolbar" method="GET">
+        <input type="hidden" name="per_page" value="<?=e(per_page_value($perPage))?>">
+        <input class="form-control" aria-label="Search medical records" type="search" name="q" value="<?=e($q)?>" placeholder="Search pet, owner, diagnosis, or note">
+        <select class="form-select" name="pet_id" aria-label="Filter by patient"><option value="0">All patients with records</option><?php $options=$conn->query("SELECT p.id,p.name,u.full_name owner_name FROM pets p JOIN users u ON p.owner_id=u.id WHERE p.verification_status='approved' AND EXISTS(SELECT 1 FROM medical_records m WHERE m.pet_id=p.id) ORDER BY p.name");while($p=$options->fetch_assoc()):?><option value="<?=$p['id']?>" <?=$petId===(int)$p['id']?'selected':''?>><?=e($p['name'].' · '.$p['owner_name'])?></option><?php endwhile;?></select>
         <select class="form-select" name="sort" aria-label="Sort medical records"><option value="recent" <?=$sort==='recent'?'selected':''?>>Latest visit</option><option value="pet_az" <?=$sort==='pet_az'?'selected':''?>>Pet A–Z</option><option value="owner_az" <?=$sort==='owner_az'?'selected':''?>>Owner A–Z</option></select>
         
         <button class="button-primary" type="submit">Search</button>
@@ -77,7 +93,16 @@ if($focusedPet):?>
         <article class="medical-history-row" data-note-status="<?=e($tone)?>" id="medicalRecord<?=$r['id']?>">
             <header><div><time><?=e(date('M d, Y',strtotime($r['visit_date'])))?></time><h3><?=e($r['diagnosis']?:'General consultation')?></h3></div><span class="medical-note-type"><?=e($label)?></span></header>
             <div class="medical-history-grid"><div><small>Veterinarian</small><p><?=e($r['veterinarian']?:'Not recorded')?></p></div><div><small>Treatment</small><p><?=e($r['treatment']?:'Not recorded')?></p></div><div><small>Prescription</small><p><?=e($r['prescription']?:'No prescription')?></p></div><div><small>Clinical note</small><p><?=e($clean?:'No note')?></p></div></div>
-            
+            <div class="record-document-actions">
+                <?php if(($_SESSION['role']??'')==='admin' && !empty($r['appointment_id'])): ?>
+                <a class="button-secondary" href="<?=app_url('admin/appointments.php?appointment_id='.(int)$r['appointment_id'])?>">View linked appointment</a>
+                <?php endif; ?>
+            <?php if(trim((string)($r['prescription']??''))===''):?>
+                <a class="button-secondary" href="<?=app_url('vet/prescription.php?record_id='.(int)$r['id'].'&pet_id='.$petId)?>#prescriptionFormPanel">Add prescription</a>
+            <?php else:?>
+                <a class="button-secondary" href="<?=app_url('vet/prescription_pdf.php?record_id='.(int)$r['id'])?>">View prescription</a>
+            <?php endif;?>
+            </div>
         </article>
     <?php endwhile;?>
     </div>

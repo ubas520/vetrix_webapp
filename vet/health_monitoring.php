@@ -80,21 +80,31 @@ $pending=$conn->query("SELECT COUNT(*) c FROM pets WHERE verification_status='pe
 <?php if($m=flash('success')):?><div class="alert alert-success" role="status"><?=e($m)?></div><?php endif;?>
 <?php if($m=flash('error')):?><div class="alert alert-danger" role="alert"><?=e($m)?></div><?php endif;?>
 
-<section class="surface-card data-toolbar vet-toolbar-card">
-<div class="filter-tabs" id="healthFilterBar">
-    <?php foreach(['all'=>'All Pets','approved'=>'Approved','pending'=>'Pending'] as $key=>$label): $query=['status'=>$key,'q'=>$health_search,'per_page'=>$health_show]; $count=$key==='all'?$total:($key==='approved'?$approved:$pending); ?>
-    <a class="reference-filter-chip status-<?=e($key)?> <?=$health_status===$key?'active':''?>" href="?<?=e(http_build_query(array_filter($query, fn($v)=>$v!==''&&$v!==null)))?>" data-filter="<?=e($key)?>" <?=$health_status===$key?'data-active-chip="1" aria-pressed="true"':'aria-pressed="false"'?>><?=e($label)?> <span class="count"><?=intval($count)?></span></a>
-    <?php endforeach; ?>
-</div>
-<form class="toolbar-actions moved-show-control" method="GET" action="health_monitoring.php"><input type="hidden" name="status" value="<?=e($health_status)?>"><input type="hidden" name="q" value="<?=e($health_search)?>"><label class="entries-select">Show<select class="unified-show-select" name="per_page" aria-label="Pets per page" onchange="this.form.submit()"><option value="6" <?=$health_show==='6'?'selected':''?>>6</option><option value="12" <?=$health_show==='12'?'selected':''?>>12</option><option value="full" <?=$health_show==='full'?'selected':''?>>Full</option></select></label></form></section>
-<form class="admin-list-search" method="GET" action="health_monitoring.php">
-    <input type="hidden" name="status" value="<?=e($health_status)?>">
-    <input class="form-control" type="search" name="q" value="<?=e($health_search)?>" placeholder="Search pet, owner, allergy, critical note, or care note">
-    
-    <button class="btn btn-primary" type="submit">Search</button>
-    <a class="btn btn-light" href="health_monitoring.php?status=<?=e($health_status)?>&per_page=<?=e($health_show)?>">Clear</a>
-</form>
-
+<section class="surface-card prescription-finder">
+    <div class="section-heading compact">
+        <div><span class="eyebrow">Record search</span><h2>Browse health records</h2></div>
+        <form class="toolbar-actions prescription-show-control" method="GET" action="health_monitoring.php">
+            <input type="hidden" name="status" value="<?=e($health_status)?>">
+            <input type="hidden" name="q" value="<?=e($health_search)?>">
+            <label class="entries-select">Show<select class="unified-show-select" name="per_page" aria-label="Pets per page" onchange="this.form.submit()">
+                <option value="6" <?=$health_show==='6'?'selected':''?>>6</option>
+                <option value="12" <?=$health_show==='12'?'selected':''?>>12</option>
+                <option value="full" <?=$health_show==='full'?'selected':''?>>Full</option>
+            </select></label>
+        </form>
+    </div>
+    <form class="prescription-search-toolbar" method="GET" action="health_monitoring.php">
+        <input type="hidden" name="per_page" value="<?=e($health_show)?>">
+        <input class="form-control" type="search" name="q" value="<?=e($health_search)?>" placeholder="Search pet, owner, allergy, critical note, or care note" aria-label="Search health records">
+        <select class="form-select" name="status" aria-label="Filter by pet status">
+            <?php foreach(['all'=>['All pets',$total],'approved'=>['Approved',$approved],'pending'=>['Pending',$pending]] as $key=>[$label,$count]):?>
+            <option value="<?=e($key)?>" <?=$health_status===$key?'selected':''?>><?=e($label)?> (<?=intval($count)?>)</option>
+            <?php endforeach;?>
+        </select>
+        <button class="button-primary" type="submit">Search</button>
+        <?php if($health_search!==''||$health_status!=='all'):?><a class="button-secondary" href="health_monitoring.php?per_page=<?=e($health_show)?>">Clear</a><?php endif;?>
+    </form>
+</section>
 <div class="pet-card-list view-list" id="vetHealthGrid">
 <?php if($rows->num_rows===0): ?><div class="admin-empty-card">No pets found. Try another status filter or search term.</div><?php endif; ?>
 <?php while($p=$rows->fetch_assoc()):

@@ -1,5 +1,5 @@
 /* Clinical collections: explicit scope keeps shared list rules out of these cards. */
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory .medical-record-index-grid, #patientHistory .medical-history-list) {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory .medical-record-index-grid, #patientHistory .medical-history-list) {
     display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)) !important;
     grid-auto-rows: auto !important;
@@ -13,7 +13,7 @@ body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#
     background: transparent !important;
     overflow: visible !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory, #patientHistory) :is(.prescription-note-card, .vaccination-card, .medical-record-index-card, .medical-history-row) {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory, #patientHistory) :is(.prescription-note-card, .vaccination-card, .medical-record-index-card, .medical-history-row) {
     --record-accent: #447fa9;
     display: flex !important;
     flex-direction: column !important;
@@ -33,69 +33,141 @@ body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#
     overflow-wrap: anywhere !important;
     box-sizing: border-box !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #patientHistory) :is([data-note-status="urgent"], .is-overdue) { --record-accent: #b84e5c; }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #patientHistory) :is([data-note-status="follow-up"], .is-due-soon) { --record-accent: #b88732; }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #patientHistory) [data-note-status="improving"] { --record-accent: #398364; }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList) .admin-review-main {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #patientHistory) :is([data-note-status="urgent"], .is-overdue) { --record-accent: #b84e5c; }
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #patientHistory) :is([data-note-status="follow-up"], .is-due-soon) { --record-accent: #b88732; }
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #patientHistory) [data-note-status="improving"] { --record-accent: #398364; }
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList) .admin-review-main {
     display: flex !important; flex-direction: column !important; flex: 1 1 auto !important;
     gap: 12px !important; min-width: 0 !important; width: 100% !important; height: auto !important; min-height: 0 !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent #patientHistory .medical-history-row > * { flex: none !important; min-width: 0 !important; width: 100% !important; }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory) :is(.admin-empty-state, .medical-record-empty) { grid-column: 1 / -1 !important; }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory, #patientHistory) :is(.admin-row-title, .medical-history-row > header) {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent #patientHistory .medical-history-row > * { flex: none !important; min-width: 0 !important; width: 100% !important; }
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory) :is(.admin-empty-state, .medical-record-empty) { grid-column: 1 / -1 !important; }
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory, #patientHistory) :is(.admin-row-title, .medical-history-row > header) {
     display: flex !important; align-items: flex-start !important; justify-content: space-between !important; flex-wrap: wrap !important; gap: 8px !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory, #patientHistory) :is(h2, h3) {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory, #patientHistory) :is(h2, h3) {
     font-size: 1.05rem !important; line-height: 1.35 !important; color: #203f5e !important;
     margin: 0 !important; white-space: normal !important; overflow-wrap: anywhere !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory, #patientHistory) :is(p, .medical-index-facts b) {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory, #patientHistory) :is(p, .medical-index-facts b) {
     font-size: .85rem !important; line-height: 1.5 !important; color: #435a70 !important;
     white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
     -webkit-line-clamp: unset !important; margin: 0 !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList) .admin-meta-row {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList) .admin-meta-row {
     display: flex !important; flex-wrap: wrap !important; gap: 6px 14px !important;
     font-size: .8rem !important; color: #60758a !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #medicalPetHistory, #patientHistory) :is(.admin-compare-grid, .medical-index-facts, .medical-history-grid) {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #medicalPetHistory, #patientHistory) :is(.admin-compare-grid, .medical-index-facts, .medical-history-grid) {
     display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 10px !important; border: 0 !important; background: transparent !important; margin: 0 !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #medicalPetHistory, #patientHistory) :is(.admin-compare-grid > div, .medical-index-facts > span, .medical-history-grid > div) {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #medicalPetHistory, #patientHistory) :is(.admin-compare-grid > div, .medical-index-facts > span, .medical-history-grid > div) {
     display: flex !important; flex-direction: column !important; gap: 5px !important;
     padding: 10px 12px !important; border: 0 !important; border-radius: 8px !important;
     background: #f4f7fa !important; min-width: 0 !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #medicalPetHistory, #patientHistory) :is(.admin-compare-grid > div > span, .medical-index-facts small, .medical-history-grid small) {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #medicalPetHistory, #patientHistory) :is(.admin-compare-grid > div > span, .medical-index-facts small, .medical-history-grid small) {
     font-size: .72rem !important; font-weight: 700 !important; color: #60778d !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory) :is(.record-note, .owner-follow-up, .medical-index-notes) {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory) :is(.record-note, .owner-follow-up, .medical-index-notes) {
     display: block !important; min-height: 0 !important; height: auto !important;
     padding: 10px 12px !important; margin: 0 !important; border: 1px solid #e0e7ee !important;
     border-radius: 8px !important; background: #f8fafc !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent #medicalPetHistory .medical-index-notes p {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent #medicalPetHistory .medical-index-notes p {
     display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 3px !important;
     min-height: 0 !important; padding: 4px 0 !important; border: 0 !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory) :is(.record-document-actions, .medical-record-index-card > footer) {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory) :is(.record-document-actions, .medical-record-index-card > footer) {
     display: flex !important; justify-content: flex-end !important; flex-wrap: wrap !important;
     margin-top: auto !important; padding: 12px 0 0 !important; gap: 8px !important;
     border-top: 1px solid #e7edf3 !important; background: transparent !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory) .button-secondary {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #vetVaccineList, #medicalPetHistory) .button-secondary {
     width: auto !important; max-width: 100% !important; min-height: 36px !important;
     padding: 8px 12px !important; border-radius: 7px !important; font-size: .8rem !important;
     white-space: normal !important; margin: 0 !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent #medicalPetHistory .medical-index-header {
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent #medicalPetHistory .medical-index-header {
     display: flex !important; align-items: center !important; gap: 12px !important;
     padding: 0 !important; border: 0 !important; background: transparent !important;
 }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent #medicalPetHistory .medical-index-header > div { min-width: 0 !important; }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent #medicalPetHistory .medical-pet-avatar { flex: 0 0 48px !important; width: 48px !important; height: 48px !important; }
-body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent #medicalPetHistory .medical-pet-avatar .entity-avatar { width: 48px !important; height: 48px !important; }
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent #medicalPetHistory .medical-index-header > div { min-width: 0 !important; }
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent #medicalPetHistory .medical-pet-avatar { flex: 0 0 48px !important; width: 48px !important; height: 48px !important; }
+body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent #medicalPetHistory .medical-pet-avatar .entity-avatar { width: 48px !important; height: 48px !important; }
 @media (max-width: 600px) {
-    body.enterprise-ui[data-user-role="veterinarian"] main.content#mainContent :is(#vetRecordList, #medicalPetHistory, #patientHistory) :is(.admin-compare-grid, .medical-index-facts, .medical-history-grid) { grid-template-columns: minmax(0, 1fr) !important; }
+    body.enterprise-ui:is([data-user-role="veterinarian"], [data-user-role="admin"]) main.content#mainContent :is(#vetRecordList, #medicalPetHistory, #patientHistory) :is(.admin-compare-grid, .medical-index-facts, .medical-history-grid) { grid-template-columns: minmax(0, 1fr) !important; }
+}
+
+/* Prescription uses the same open finder and card flow as Medical Records. */
+body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .vet-record-list-card {
+    display: block !important; position: static !important; height: auto !important;
+    min-height: 0 !important; max-height: none !important; overflow: visible !important;
+    padding: 0 !important; border: 0 !important; background: transparent !important; box-shadow: none !important;
+}
+body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .vet-records-layout {
+    gap: 18px !important; overflow: visible !important;
+}
+body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .prescription-finder {
+    display: block !important; padding: 18px !important; margin: 0 0 18px !important;
+    height: auto !important; min-height: 0 !important; overflow: visible !important;
+    border: 1px solid #dbe4ed !important; border-radius: 14px !important; background: #fff !important;
+}
+body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .prescription-finder .section-heading {
+    display: grid !important; grid-template-columns: minmax(0, 1fr) max-content !important;
+    align-items: center !important; gap: 12px !important; margin: 0 0 16px !important;
+    width: 100% !important; text-align: left !important;
+}
+body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .prescription-finder .section-heading > div {
+    min-width: 0 !important; margin: 0 !important; text-align: left !important;
+    justify-self: start !important;
+}
+body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .prescription-finder h2 {
+    margin: 4px 0 0 !important; font-size: 1.1rem !important; color: #203f5e !important;
+}
+body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .prescription-show-control {
+    margin: 0 !important; width: auto !important; flex: 0 0 auto !important;
+    justify-self: end !important;
+}
+body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .prescription-search-toolbar {
+    display: grid !important; grid-template-columns: minmax(200px, 2fr) minmax(150px, 1fr) minmax(140px, 1fr) auto auto !important;
+    align-items: center !important; gap: 10px !important; margin: 0 !important; padding: 0 !important;
+    height: auto !important; min-height: 0 !important; overflow: visible !important;
+}
+body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .prescription-search-toolbar > :is(input:not([type="hidden"]), select) {
+    width: 100% !important; min-width: 0 !important; max-width: none !important; margin: 0 !important; height: 42px !important;
+}
+body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) #vetRecordList {
+    margin: 0 !important; position: static !important;
+}
+@media (max-width: 1100px) {
+    body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .prescription-search-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 600px) {
+    body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .prescription-search-toolbar { grid-template-columns: minmax(0, 1fr) !important; }
+    body.enterprise-ui main.content#mainContent:is(.vet-prescription-page,.vet-health-monitoring-page,.vet-medical-records-page) .prescription-finder { padding: 14px !important; }
+}
+
+/* Keep consultation entry in the Medical Records page flow. */
+body.enterprise-ui main.content#mainContent.vet-medical-records-page .consultation-entry {
+    width: 100%; margin-bottom: 20px;
+}
+body.enterprise-ui main.content#mainContent.vet-medical-records-page .consultation-entry #prescriptionFormPanel {
+    position: static !important; display: block !important; width: 100% !important;
+    max-width: 760px !important; height: auto !important; min-height: 0 !important;
+    max-height: none !important; overflow: visible !important; margin: 0 !important;
+    padding: 20px !important; border: 1px solid #dbe4ed !important;
+    border-radius: 14px !important; background: #fff !important;
+}
+body.enterprise-ui main.content#mainContent.vet-medical-records-page .consultation-entry form {
+    display: flex; flex-direction: column; gap: 8px;
+}
+body.enterprise-ui main.content#mainContent.vet-medical-records-page .consultation-entry .clinical-form-title {
+    margin-bottom: 16px;
+}
+@media (min-width: 1101px) {
+    body.enterprise-ui main.content#mainContent.vet-health-monitoring-page .prescription-search-toolbar {
+        grid-template-columns: minmax(240px, 1fr) minmax(160px, 220px) auto auto !important;
+    }
 }

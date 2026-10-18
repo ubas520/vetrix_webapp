@@ -1,4 +1,8 @@
 <?php
+if (($_SESSION['role'] ?? '') === 'admin') {
+    include __DIR__ . '/admin_sidebar.php';
+    return;
+}
 $sidebarHome = 'vet/dashboard.php';
 $sidebarLabel = 'Veterinarian navigation';
 $sidebarSections = [

@@ -1,0 +1,57 @@
+/* First cascade layer: keep UI typography consistent across legacy themes. */
+@layer vetrix-typography {
+    body.enterprise-ui {
+        --vetrix-font-family: Arial, Helvetica, sans-serif;
+        font-family: var(--vetrix-font-family) !important;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        line-height: 1.5;
+        -webkit-font-smoothing: auto !important;
+        -moz-osx-font-smoothing: auto !important;
+        text-rendering: auto !important;
+    }
+
+    body.enterprise-ui * {
+        font-family: var(--vetrix-font-family) !important;
+        text-shadow: none !important;
+        -webkit-text-stroke: 0 !important;
+    }
+
+    body.enterprise-ui :is(h1, h2, h3, h4, h5, h6, b, strong) {
+        font-weight: 700 !important;
+    }
+
+    body.enterprise-ui :is(button, .btn, .button-primary, .button-secondary, .button-danger, .badge, .eyebrow, th) {
+        font-weight: 700 !important;
+    }
+
+    body.enterprise-ui :is(input, select, textarea, option) {
+        font-weight: 400 !important;
+        font-size: 14px !important;
+    }
+
+    body.enterprise-ui :is(.metric-card strong, .admin-summary-card > b) {
+        font-weight: 700 !important;
+        font-variant-numeric: tabular-nums;
+    }
+
+    body.enterprise-ui #mainContent :is(.data-table td, .admin-compact-list p, .admin-compact-list .entity-facts b, .admin-compact-list .medical-index-facts b, .appointment-cell, .inventory-overview-row) {
+        font-size: 14px !important;
+        line-height: 1.45 !important;
+    }
+
+    body.enterprise-ui :is(.eyebrow, .badge, .metric-card small, .admin-summary-card > span) {
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+    }
+
+    body.enterprise-ui #mainContent :is(.data-table small, .entity-facts small, .medical-index-facts small, .pet-detail-chips span, .pet-owner, .admin-meta-row, .entries-select, .button-primary, .button-secondary, .button-danger) {
+        font-size: 13px !important;
+        line-height: 1.45 !important;
+    }
+
+    /* Keep code and printed receipt text aligned in their intended columns. */
+    body.enterprise-ui :is(code, kbd, pre, samp, .receipt-paper, .receipt-paper *, .receipt-text-layout) {
+        font-family: "Courier New", Consolas, monospace !important;
+    }
+}

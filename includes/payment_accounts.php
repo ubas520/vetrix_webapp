@@ -39,7 +39,7 @@ function order_save_account(mysqli $conn, int $staff, array $input, ?array $qr =
     if (($input['confirmed'] ?? '') !== 'yes') throw new ProductOrderError('Confirm that the account and QR belong to the clinic.', 422);
     $conn->begin_transaction();
     try {
-        if (!order_db($conn, "SELECT id FROM users WHERE id=? AND role='staff' AND status='active' FOR UPDATE", 'i', [$staff])->get_result()->fetch_assoc()) throw new ProductOrderError('Only active staff can change payment accounts.', 403);
+        if (!order_db($conn, "SELECT id FROM users WHERE id=? AND role IN ('staff','admin') AND status='active' FOR UPDATE", 'i', [$staff])->get_result()->fetch_assoc()) throw new ProductOrderError('Only active staff or administrators can change payment accounts.', 403);
         $replace = (int) ($input['replace_id'] ?? 0);
         if ($replace) {
             $old = order_db($conn, 'SELECT id FROM product_payment_accounts WHERE id=? AND enabled=1 FOR UPDATE', 'i', [$replace])->get_result()->fetch_assoc();
@@ -58,7 +58,7 @@ function order_disable_account(mysqli $conn, int $staff, int $id): void
 {
     $conn->begin_transaction();
     try {
-        if (!order_db($conn, "SELECT id FROM users WHERE id=? AND role='staff' AND status='active' FOR UPDATE", 'i', [$staff])->get_result()->fetch_assoc()) throw new ProductOrderError('Only active staff can change payment accounts.', 403);
+        if (!order_db($conn, "SELECT id FROM users WHERE id=? AND role IN ('staff','admin') AND status='active' FOR UPDATE", 'i', [$staff])->get_result()->fetch_assoc()) throw new ProductOrderError('Only active staff or administrators can change payment accounts.', 403);
         order_db($conn, 'UPDATE product_payment_accounts SET enabled=0 WHERE id=?', 'i', [$id]);
         order_audit($conn, $staff, $id, 'Disabled clinic payment account for new orders');
         $conn->commit();

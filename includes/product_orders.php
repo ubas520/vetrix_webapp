@@ -271,7 +271,7 @@ function order_update(mysqli $conn, int $actor, int $id, string $action, array $
 {
     $conn->begin_transaction();
     try {
-        if ($staff && !order_db($conn, "SELECT id FROM users WHERE id=? AND role='staff' AND status='active'", 'i', [$actor])->get_result()->fetch_assoc()) throw new ProductOrderError('Only active staff can manage orders.', 403);
+        if ($staff && !order_db($conn, "SELECT id FROM users WHERE id=? AND role IN ('staff','admin') AND status='active'", 'i', [$actor])->get_result()->fetch_assoc()) throw new ProductOrderError('Only active staff or administrators can manage orders.', 403);
         if (!$staff && $action !== 'cancel') throw new ProductOrderError('This action is available to staff only.', 403);
         $order = order_get($conn, $id, $staff ? null : $actor, true);
         if (!in_array($order['status'], ['placed','ready'], true)) throw new ProductOrderError('This order has already been completed or cancelled.', 409);

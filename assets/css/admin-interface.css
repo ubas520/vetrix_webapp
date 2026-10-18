@@ -1,0 +1,608 @@
+/* Loaded before the legacy theme. Important rules in this first layer own
+   admin and veterinarian component geometry; navigation and dialog visibility remain unchanged. */
+@layer admin-interface {
+/* Readable shared appointment rows; retain the existing responsive columns. */
+body.enterprise-ui #mainContent .appointment-row :is(.appointment-pet h3,.appointment-time time b) {
+    color: #183b60 !important;
+    white-space: normal !important;
+    line-height: 1.5 !important;
+}
+body.enterprise-ui #mainContent .appointment-row :is(.appointment-owner,.appointment-veterinarian,.appointment-time small) {
+    color: #526579 !important;
+    line-height: 1.5 !important;
+}
+body.enterprise-ui #mainContent .appointment-row .appointment-status {
+    display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 8px !important;
+}
+body.enterprise-ui #mainContent .appointment-row .appointment-status-line {
+    display: flex !important; align-items: center !important; flex-wrap: wrap !important; gap: 4px 8px !important;
+}
+body.enterprise-ui #mainContent .appointment-row .appointment-status-label {
+    color: #526579 !important; font-size: 12px !important; min-width: 40px;
+}
+body.enterprise-ui #mainContent .appointment-row .appointment-actions button {
+    white-space: normal !important; line-height: 1.4 !important; max-width: 100% !important;
+}
+body.enterprise-ui #mainContent .appt-modal .appt-box.full > :is(span,b) {
+    white-space: pre-wrap !important; overflow-wrap: anywhere !important; line-height: 1.6 !important;
+}
+/* First admin improvement batch: retain the existing dashboard geometry. */
+body.enterprise-ui[data-user-role="admin"] #mainContent.admin-dashboard-page .queue-empty {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}
+body.enterprise-ui[data-user-role="admin"] #mainContent.admin-dashboard-page .queue-empty :is(.queue-icon,.queue-count) {
+    color: #61758a !important;
+    background: #eef2f6 !important;
+}
+body.enterprise-ui[data-user-role="admin"] #mainContent .schedule-attention-note {
+    margin: 0 0 16px !important;
+    padding: 12px 16px !important;
+    border-left: 3px solid #a35a00;
+    border-radius: 6px;
+    background: #fff4df;
+}
+body.enterprise-ui[data-user-role="admin"] #mainContent .schedule-attention-note a {
+    color: #854800;
+    line-height: 1.5;
+}
+body.enterprise-ui[data-user-role="admin"] #mainContent.admin-appointments-page .appt-update {
+    gap: 16px !important;
+}
+body.enterprise-ui[data-user-role="admin"] #mainContent.admin-appointments-page .appt-update :is(input:not([type="hidden"]),select,button) {
+    min-height: 40px !important;
+}
+body.enterprise-ui[data-user-role="admin"] #mainContent.admin-appointments-page .appt-update textarea {
+    min-height: 88px !important;
+    resize: vertical;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) {
+    --admin-border: #dce5ee;
+    --admin-muted: #61758a;
+    --admin-surface: #fff;
+    --vrx-radius: 12px;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content {
+    min-width: 0 !important; background: #f4f7fb !important;
+    padding: 24px !important; gap: 20px !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content > :not(.calendar-dialog):not(.app-dialog):not(.appt-modal):not(script):not(style) {
+    width: 100% !important; max-width: 1240px !important;
+    min-width: 0 !important; margin-left: auto !important; margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .page-heading {
+    display: flex !important; justify-content: space-between !important; align-items: center !important;
+    text-align: left !important; padding-bottom: 18px !important; margin-bottom: 20px !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.surface-card, .metric-card, .admin-summary-card, .table-card, .appt-monitor) {
+    background: var(--admin-surface) !important; border: 1px solid var(--admin-border) !important;
+    border-radius: 12px !important; box-shadow: 0 2px 8px rgb(30 55 80 / 3%) !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.data-toolbar, .appt-filter-toolbar, .pet-category-toolbar, .notification-category-toolbar, .inventory-category-toolbar) {
+    display: flex !important; flex-wrap: wrap !important; align-items: center !important;
+    justify-content: space-between !important; gap: 12px !important;
+    height: auto !important; min-height: 0 !important; padding: 14px 16px !important;
+    margin-bottom: 16px !important; text-align: left !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.toolbar-actions, .appt-category-controls, .users-status-row, .feedback-left-controls) {
+    display: flex !important; flex-wrap: wrap !important; align-items: center !important;
+    gap: 12px !important; min-width: 0 !important; margin: 0 !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content [data-enterprise-filter="true"] {
+    display: flex !important; align-items: center !important; padding: 0 !important;
+    margin: 0 !important; border: 0 !important; background: transparent !important;
+    min-width: 0 !important; height: auto !important; flex: 0 1 auto !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content [data-enterprise-filter="true"] > a { display: none !important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .enterprise-filter-control {
+    display: flex !important; align-items: center !important; justify-content: flex-start !important;
+    gap: 8px !important; margin: 0 !important; text-align: left !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .enterprise-filter-select {
+    width: 210px !important; max-width: 100% !important; margin: 0 !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.data-search-bar, .admin-list-search, .pet-search-form, .appointment-search-form) {
+    display: flex !important; flex-wrap: wrap !important; align-items: center !important;
+    gap: 10px !important; padding: 14px 16px !important; margin-bottom: 16px !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.data-search-bar, .admin-list-search) input[type="search"] {
+    flex: 1 1 240px !important; min-width: 0 !important; width: auto !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.form-control, .form-select, .enterprise-filter-select, .unified-show-select) {
+    box-sizing: border-box !important; min-width: 0 !important; min-height: 42px !important;
+    border: 1px solid #cbd8e5 !important; border-radius: 8px !important;
+    background-color: #fff !important; padding: 9px 12px !important;
+    font-size: 14px !important; line-height: 1.5 !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) select {
+    padding-right: 34px !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(main.content, .calendar-dialog, .app-dialog, .appt-modal) :is(.button-primary, .button-secondary, .button-danger, .btn) {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    min-height: 42px !important; border-radius: 8px !important; padding: 9px 14px !important;
+}
+/* Restore the actual view switch; allow saved preferences to work. */
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content [data-view-toggle] { display: inline-flex !important; flex: 0 0 auto !important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.entity-collection, .user-card-list, .client-card-list, #adminPetView, .admin-card-list).view-grid {
+    display: grid !important; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)) !important;
+    gap: 16px !important; align-items: stretch !important; border: 0 !important; background: transparent !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.entity-collection, .user-card-list, .client-card-list, #adminPetView, .admin-card-list).view-list {
+    display: grid !important; grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px !important; border: 0 !important; background: transparent !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.entity-card, .pet-review-card, .admin-review-card) {
+    min-width: 0 !important; width: 100% !important; max-width: 100% !important;
+    box-sizing: border-box !important; height: auto !important;
+    padding: 18px !important; margin: 0 !important;
+    border: 1px solid var(--admin-border) !important; border-radius: 12px !important;
+    background: #fff !important; box-shadow: 0 2px 8px rgb(30 55 80 / 3%) !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .view-list .entity-card {
+    display: grid !important; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(0, .9fr) !important;
+    align-items: center !important; gap: 20px !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .view-grid .entity-card {
+    display: flex !important; flex-direction: column !important; align-items: stretch !important;
+    gap: 16px !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .view-grid .entity-card footer { margin-top: auto !important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .view-list .entity-card .entity-address {
+    grid-column: 1 / -1 !important; grid-row: 2 !important; padding-top: 12px !important;
+    border-top: 1px solid var(--admin-border) !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .view-list .entity-card footer {
+    grid-column: 3 !important; grid-row: 1 !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.appointment-list-heading, .view-list .appointment-row) {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(90px, .7fr) auto !important;
+    min-width: 0 !important; gap: 12px !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .appointment-cell { min-width: 0 !important; overflow-wrap: anywhere !important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.inventory-overview-table, .table-responsive, .table-scroll-only) {
+    max-width: 100% !important; min-width: 0 !important; overflow-x: auto !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .entity-card :is(header, footer, .entity-facts) {
+    min-width: 0 !important; width: auto !important; margin: 0 !important; overflow-wrap: anywhere !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .entity-card footer {
+    display: flex !important; flex-wrap: wrap !important; gap: 10px !important; align-items: center !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.entity-facts, .pet-profile-grid, .pet-review-facts) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content :is(.entity-card, .pet-review-card) :is(h2, p, b, small) {
+    white-space: normal !important; overflow-wrap: anywhere !important;
+}
+/* A single dialog shell, with balanced columns and usable scrolling. */
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.calendar-dialog, .app-dialog, .appt-modal) :is(.dialog-card, .app-dialog-card, .appt-modal-card) {
+    position: relative !important; width: min(780px, calc(100vw - 32px)) !important;
+    min-width: 0 !important; max-width: calc(100vw - 32px) !important;
+    height: auto !important; min-height: 0 !important; max-height: calc(100dvh - 48px) !important;
+    overflow-y: auto !important; overflow-x: hidden !important;
+    box-sizing: border-box !important; padding: 0 !important;
+    border: 1px solid var(--admin-border) !important; border-radius: 16px !important;
+    background: #fff !important; box-shadow: 0 24px 80px rgb(24 44 67 / 22%) !important;
+    scrollbar-width: thin !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.calendar-dialog, .app-dialog, .appt-modal) :is(.dialog-card, .app-dialog-card, .appt-modal-card) > :is(header, .appt-modal-head) {
+    display: flex !important; align-items: flex-start !important; justify-content: space-between !important;
+    gap: 16px !important; padding: 20px 24px !important; margin: 0 !important;
+    background: #fff !important; border-bottom: 1px solid var(--admin-border) !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.dialog-card, .app-dialog-card, .appt-modal-card) > :is(form, .form-stack, .app-dialog-body, .appt-modal-body, .pet-review-detail-grid) {
+    padding: 20px 24px !important; margin: 0 !important; min-width: 0 !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.dialog-card, .app-dialog-card, .appt-modal-card) :is(.form-grid-two, .account-window-columns, .client-account-main-grid, .user-edit-account-grid) {
+    display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px !important; align-items: start !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.dialog-card, .app-dialog-card, .appt-modal-card) :is(label, .account-window-column) {
+    min-width: 0 !important; text-align: left !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.dialog-card, .app-dialog-card, .appt-modal-card) .account-window-column {
+    display: flex !important; flex-direction: column !important; gap: 16px !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) .appt-modal-card .appt-modal-body {
+    display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 20px !important; align-items: start !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) .appt-modal-card .appt-modal-body > :is(section, form) {
+    min-width: 0 !important; width: 100% !important; margin: 0 !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.dialog-card, .app-dialog-card, .appt-modal-card) :is(.form-control, .form-select) {
+    width: 100% !important; max-width: 100% !important; margin-top: 6px !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.dialog-card, .app-dialog-card, .appt-modal-card) .form-actions {
+    display: flex !important; flex-wrap: wrap !important; justify-content: flex-end !important;
+    gap: 10px !important; padding-top: 16px !important; margin-top: 8px !important;
+    border-top: 1px solid var(--admin-border) !important; grid-column: 1 / -1 !important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.dialog-card, .app-dialog-card, .appt-modal-card) .icon-button {
+    flex: 0 0 36px !important; width: 36px !important; height: 36px !important;
+    min-width: 36px !important; padding: 8px !important; border-radius: 8px !important;
+}
+@media (max-width: 1000px) {
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .view-list .entity-card {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .view-list .entity-card footer { grid-column: 1 / -1 !important; grid-row: auto !important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .view-list .entity-card .entity-address { grid-row: auto !important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .appointment-list-heading { display: none !important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .view-list .appointment-row { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .appointment-cell-label { display: block !important; }
+}
+@media (max-width: 640px) {
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content { padding: 16px !important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .view-list .entity-card { grid-template-columns: minmax(0, 1fr) !important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .enterprise-filter-control { width: 100% !important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) main.content .enterprise-filter-select { width: 100% !important; flex: 1 !important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.dialog-card, .app-dialog-card, .appt-modal-card) :is(.form-grid-two, .account-window-columns, .client-account-main-grid, .user-edit-account-grid) { grid-template-columns: minmax(0, 1fr) !important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) .appt-modal-card .appt-modal-body { grid-template-columns: minmax(0, 1fr) !important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) :is(.dialog-card, .app-dialog-card, .appt-modal-card) > :is(header, form, .form-stack, .app-dialog-body, .appt-modal-body, .pet-review-detail-grid) { padding: 16px !important; }
+}
+}
+
+/* Admin collections share the compact appointment-row presentation. */
+@layer admin-interface {
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent [data-view-toggle] { display:none!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list {
+    display:grid!important; grid-template-columns:minmax(0,1fr)!important; grid-auto-rows:auto!important;
+    gap:0!important; padding:0!important; margin-top:0!important;
+    border:1px solid #d4dfe9!important; border-radius:4px!important;
+    background:#f1f4f6!important; width:100%!important; min-width:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list > :is(article,.entity-card,.pet-review-card,.admin-review-card,.pos-admin-product-card) {
+    width:100%!important; max-width:100%!important; min-width:0!important;
+    height:auto!important; min-height:64px!important; margin:0!important; padding:10px 16px!important;
+    border:0!important; border-bottom:1px solid #d4dfe9!important; border-radius:0!important;
+    background:transparent!important; box-shadow:none!important; transform:none!important; box-sizing:border-box!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list > article:last-child { border-bottom:0!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list > article:hover { background:#eaf1f7!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list :is(h2,h3,h4) { font-size:14px!important; line-height:1.4!important; margin:0!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list :is(p,blockquote) { font-size:13px!important; line-height:1.45!important; margin:0!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list :is(.entity-avatar,.pet-photo-wrap,.feedback-avatar,.medical-pet-avatar) {
+    width:40px!important; height:40px!important; min-width:40px!important; flex:0 0 40px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list :is(.button-primary,.button-secondary,.button-danger,.btn) {
+    min-height:36px!important; padding:7px 12px!important; border-radius:6px!important; font-size:12px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .entity-card {
+    display:grid!important; grid-template-columns:minmax(180px,1.2fr) minmax(0,2fr) auto!important;
+    align-items:center!important; gap:16px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .entity-facts {
+    display:grid!important; grid-template-columns:repeat(4,minmax(0,1fr))!important; gap:12px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .entity-facts > span { padding:0!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .entity-facts small { font-size:11px!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .entity-facts b { font-size:12px!important; font-weight:600!important; }
+/* Extra account and health details are available in the existing detail dialogs. */
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list :is(.entity-address,.entity-card footer>small,.pet-mini-details,.pet-record-date) { display:none!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .entity-card footer { grid-column:auto!important; grid-row:auto!important; justify-content:flex-end!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .pet-review-card {
+    display:grid!important; grid-template-columns:minmax(0,1fr) auto!important; align-items:center!important; gap:16px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .pet-main-info {
+    display:flex!important; align-items:center!important; gap:12px!important; min-width:0!important; padding:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .pet-title-block {
+    display:grid!important; grid-template-columns:minmax(160px,1fr) minmax(160px,1fr) minmax(0,1fr)!important;
+    align-items:center!important; gap:16px!important; flex:1!important; min-width:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .pet-name-row { display:flex!important; flex-wrap:wrap!important; gap:6px!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .pet-detail-chips { display:flex!important; flex-wrap:wrap!important; gap:4px 10px!important; margin:0!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .pet-detail-chips span { padding:0!important; border:0!important; background:transparent!important; font-size:12px!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .pet-review-actions { margin:0!important; padding:0!important; border:0!important; justify-content:flex-end!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .feedback-card {
+    display:grid!important; grid-template-columns:minmax(200px,1fr) minmax(0,2fr) auto!important; align-items:center!important; gap:16px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .feedback-card > p { grid-column:2!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .feedback-card footer { grid-column:3!important; grid-row:1!important; padding:0!important; border:0!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .feedback-card blockquote { padding:0!important; border:0!important; background:transparent!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .edit-request-card { display:block!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .edit-request-card header { display:flex!important; align-items:center!important; gap:12px!important; padding:0!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-row-details > summary { cursor:pointer; color:#285b8e; font-size:12px; font-weight:700; padding:8px 0; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-row-details[open] > :not(summary) { margin-top:12px!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-record-index-card {
+    display:grid!important; grid-template-columns:minmax(180px,1fr) minmax(0,2fr) auto!important; align-items:center!important; gap:16px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-index-header { padding:0!important; border:0!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-index-facts { display:grid!important; grid-template-columns:repeat(4,minmax(0,1fr))!important; gap:12px!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-index-facts > span { padding:0!important; border:0!important; background:transparent!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-index-notes { display:none!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-record-index-card footer { margin:0!important; padding:0!important; border:0!important; }
+@media(max-width:1000px) {
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list :is(.entity-card,.medical-record-index-card,.feedback-card) { grid-template-columns:minmax(0,1fr) auto!important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list :is(.entity-facts,.medical-index-facts,.feedback-card blockquote) { grid-column:1/-1!important; grid-row:2!important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list :is(.entity-card footer,.medical-record-index-card footer,.feedback-card footer) { grid-column:2!important; grid-row:1!important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .pet-title-block { grid-template-columns:minmax(0,1fr)!important; gap:4px!important; }
+}
+@media(max-width:600px) {
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list > article { padding:10px 12px!important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .pet-review-card { grid-template-columns:minmax(0,1fr)!important; gap:8px!important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list :is(.entity-facts,.medical-index-facts) { grid-template-columns:repeat(2,minmax(0,1fr))!important; }
+}
+}
+@layer admin-interface {
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .prescription-note-card .admin-review-main {
+    display:grid!important; grid-template-columns:minmax(180px,1fr) minmax(0,1fr) auto!important;
+    align-items:center!important; gap:6px 16px!important; height:auto!important; min-height:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .prescription-note-card .admin-row-title { display:block!important; margin:0!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .prescription-note-card .admin-row-title>span { padding:0!important; border:0!important; font-size:12px!important; font-weight:400!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .prescription-note-card .admin-meta-row { margin:0!important; grid-column:2!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .prescription-note-card .record-document-actions { grid-column:3!important; grid-row:1!important; margin:0!important; padding:0!important; border:0!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .prescription-note-card .admin-row-details { grid-column:1/-1!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-history-row { gap:4px!important; }
+@media(max-width:700px) {
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .prescription-note-card .admin-review-main { grid-template-columns:minmax(0,1fr) auto!important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .prescription-note-card .record-document-actions { grid-column:2!important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .prescription-note-card .admin-meta-row { grid-column:1/-1!important; }
+}
+}
+@layer admin-interface {
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-finder {
+    display:block!important; padding:18px!important; margin-bottom:18px!important;
+    height:auto!important; min-height:0!important; background:#fff!important;
+    border:1px solid #dbe4ed!important; border-radius:14px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-finder-heading {
+    display:grid!important; grid-template-columns:minmax(0,1fr) max-content!important;
+    align-items:center!important; gap:12px!important; margin:0 0 16px!important; text-align:left!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-finder-heading > div { margin:0!important; min-width:0!important; text-align:left!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-finder-heading h2 { margin:4px 0 0!important; font-size:1.1rem!important; color:#203f5e!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-finder-heading form { display:flex!important; justify-self:end!important; margin:0!important; padding:0!important; width:auto!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-search {
+    display:flex!important; flex-wrap:wrap!important; align-items:center!important; gap:10px!important;
+    padding:0!important; margin:0!important; border:0!important; background:transparent!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-search input[type="search"] {
+    order:-1!important; flex:1 1 280px!important; width:auto!important; min-width:0!important; margin:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-search select {
+    flex:0 1 190px!important; width:190px!important; min-width:0!important; margin:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-search :is(button,a) { flex:0 0 auto!important; margin:0!important; }
+@media(max-width:640px) {
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-finder { padding:14px!important; }
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-search :is(input[type="search"],select) { flex-basis:100%!important; width:100%!important; }
+}
+}
+/* Shared row density, matching the Health Monitoring list. */
+@layer admin-interface {
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent {
+    --admin-row-height:64px;
+    --admin-row-avatar:40px;
+    --admin-row-action:36px;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent :is(.admin-compact-list > article, .view-list .appointment-row, .inventory-overview-row) {
+    min-height:var(--admin-row-height)!important; height:auto!important;
+    padding:11px 16px!important; gap:12px!important; align-items:center!important;
+    box-sizing:border-box!important; border-radius:0!important; box-shadow:none!important;
+    border-bottom:1px solid #d4dfe9!important; font-size:12px!important; line-height:1.4!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent :is(.admin-compact-list, .appt-list) > article:nth-child(even) {
+    background:#eaf2f8!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent :is(.admin-compact-list, .appt-list, .vaccination-table, .inventory-overview-table) :is(.entity-avatar, .pet-photo-wrap, .feedback-avatar, .medical-pet-avatar, .appt-avatar, .table-identity > .small) {
+    width:var(--admin-row-avatar)!important; height:var(--admin-row-avatar)!important;
+    min-width:var(--admin-row-avatar)!important; flex:0 0 var(--admin-row-avatar)!important;
+    margin:0!important; box-sizing:border-box!important; overflow:hidden!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent :is(.admin-compact-list, .appt-list, .vaccination-table) :is(.entity-avatar, .pet-photo-wrap, .feedback-avatar, .medical-pet-avatar, .appt-avatar) img {
+    width:100%!important; height:100%!important; object-fit:cover!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent :is(.admin-compact-list, .appt-list) :is(h2,h3,h4) {
+    font-size:14px!important; line-height:1.4!important; font-weight:800!important; margin:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent :is(.admin-compact-list, .appt-list) :is(p, .pet-owner, .pet-detail-chips span, .entity-facts b, .medical-index-facts b) {
+    font-size:12px!important; line-height:1.4!important; margin:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent :is(.admin-compact-list, .appt-list) :is(.entity-card > header, .medical-index-header) {
+    gap:12px!important; align-items:center!important; margin:0!important; padding:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list :is(.pet-review-actions, .entity-card footer, .medical-record-index-card footer) {
+    align-self:center!important; height:auto!important; min-height:0!important; gap:6px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .pet-review-actions > div {
+    display:flex!important; flex-wrap:wrap!important; align-items:center!important; gap:6px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent :is(.admin-compact-list, .appt-list, .vaccination-table, .inventory-overview-table) :is(.button-primary,.button-secondary,.button-danger,.btn) {
+    min-height:var(--admin-row-action)!important; height:auto!important; padding:7px 12px!important;
+    font-size:12px!important; line-height:20px!important; border-radius:6px!important; white-space:nowrap!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent :is(.admin-compact-list, .appt-list, .vaccination-table) .badge {
+    padding:5px 8px!important; font-size:11px!important; line-height:16px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .vaccination-table tbody tr { height:var(--admin-row-height)!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .vaccination-table :is(th,td) {
+    padding:10px 12px!important; font-size:12px!important; line-height:1.4!important; vertical-align:middle!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .vaccination-table tbody tr:nth-child(even) > td { background:#eaf2f8!important; }
+@media(max-width:640px) {
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent :is(.admin-compact-list > article, .view-list .appointment-row, .inventory-overview-row) { padding:10px 12px!important; }
+}
+}
+/* Coverage for admin lists outside the shared card collections. */
+@layer admin-interface {
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]):not(.report-page) #mainContent :is(.audit-event > summary, .workflow-queue-item, .overview-item, .quick-link-list > a, .calendar-day-list-item, .notification-admin-item) {
+    min-height:64px!important; box-sizing:border-box!important; padding:11px 16px!important;
+    gap:12px!important; font-size:12px!important; line-height:1.4!important;
+    border-radius:0!important; box-shadow:none!important; border-bottom:1px solid #d4dfe9!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]):not(.report-page) #mainContent .data-table tbody tr { height:64px!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]):not(.report-page) #mainContent .data-table :is(th,td) {
+    padding:10px 12px!important; font-size:12px!important; line-height:1.4!important; vertical-align:middle!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]):not(.report-page) #mainContent .data-table :is(.button-primary,.button-secondary,.button-danger) {
+    min-height:36px!important; padding:7px 12px!important; font-size:12px!important; line-height:20px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .notification-admin-item .notification-main { padding:0!important; gap:12px!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .notification-admin-item .notification-type-icon {
+    width:40px!important; height:40px!important; min-width:40px!important; flex:0 0 40px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .notification-admin-item .notification-copy p {
+    margin:0!important; font-size:12px!important; line-height:1.4!important;
+}
+}
+@layer admin-interface {
+/* Two-line summaries fit the same 64px baseline as the reference. */
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-index-header .eyebrow { display:none!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .notification-admin-item .notification-copy p { display:none!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .edit-request-card {
+    display:grid!important; grid-template-columns:minmax(0,1fr) auto!important; align-items:center!important; gap:12px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .edit-request-card .admin-row-details[open] { grid-column:1/-1!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-history-row {
+    display:grid!important; grid-template-columns:minmax(0,1fr) auto!important; align-items:center!important; gap:12px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-history-row .admin-row-details[open] { grid-column:1/-1!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-history-row .record-document-actions {
+    margin:0!important; padding:0!important; border:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .pos-admin-product-card {
+    grid-template-columns:40px minmax(0,1fr) auto!important; align-items:center!important; gap:12px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .pos-admin-product-photo {
+    width:40px!important; height:40px!important; min-width:40px!important; padding:0!important; margin:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .pos-admin-product-photo img { width:100%!important; height:100%!important; object-fit:cover!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .pos-admin-product-copy {
+    display:flex!important; flex-wrap:wrap!important; align-items:center!important; gap:6px 16px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .pos-admin-product-copy :is(h3,p,small,strong) { margin:0!important; font-size:12px!important; line-height:1.4!important; }
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .pos-admin-product-copy h3 { font-size:14px!important; }
+@media(max-width:640px) {
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .medical-history-row { grid-template-columns:minmax(0,1fr)!important; }
+}
+}
+/* Clinical rows share the compact list geometry on both staff-facing roles. */
+@layer admin-interface {
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-finder-heading > .entries-select {
+    justify-self:end!important; display:flex!important; align-items:center!important; gap:8px!important; margin:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-record-finder-heading > .entries-select select {
+    width:90px!important; min-width:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .vaccination-card .admin-review-main {
+    display:grid!important; grid-template-columns:minmax(180px,1fr) minmax(0,2fr) auto!important;
+    gap:8px 16px!important; align-items:center!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .vaccination-card .admin-review-main > p {
+    display:none!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .vaccination-card :is(.admin-row-title,.admin-meta-row) {
+    display:flex!important; align-items:center!important; flex-wrap:wrap!important; gap:6px 12px!important; margin:0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .vaccination-card .admin-row-details[open] {
+    grid-column:1/-1!important;
+}
+@media(max-width:800px) {
+    body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"],[data-user-role="staff"]) #mainContent .admin-compact-list .vaccination-card .admin-review-main {
+        grid-template-columns:minmax(0,1fr)!important;
+    }
+}
+}
+/* Vet dashboard: prioritize the day's work with the same compact surfaces. */
+@layer admin-interface {
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .dashboard-heading {
+    min-height:0!important; height:auto!important; background:transparent!important;
+    border:0!important; box-shadow:none!important; padding:0 0 18px!important;
+    gap:16px!important; flex-wrap:wrap!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .dashboard-hero-copy {
+    padding:0!important; width:auto!important; max-width:none!important; min-width:0!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .heading-actions {
+    display:flex!important; align-items:center!important; flex-wrap:wrap!important; gap:8px!important;
+    margin:0!important; position:static!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .metric-grid {
+    display:grid!important; grid-template-columns:repeat(4,minmax(0,1fr))!important; gap:12px!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .metric-card {
+    min-height:112px!important; height:auto!important; padding:16px!important; text-align:left!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .metric-card strong { font-size:26px!important; }
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .metric-card p {
+    font-size:12px!important; line-height:1.5!important; margin:5px 0 0!important; color:#61758a!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) :is(.dashboard-schedule,.workflow-queue-card,.quick-link-card,.dashboard-table-card) {
+    padding:0!important; height:auto!important; min-height:0!important; overflow:hidden!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .section-heading {
+    display:flex!important; align-items:center!important; justify-content:space-between!important;
+    gap:12px!important; flex-wrap:wrap!important; padding:16px!important; margin:0!important;
+    border-bottom:1px solid #dce5ee!important; min-height:0!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .section-heading h2 { font-size:17px!important; margin:3px 0 0!important; }
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .dashboard-main-grid {
+    display:grid!important; grid-template-columns:minmax(0,1.4fr) minmax(280px,1fr)!important;
+    align-items:start!important; gap:16px!important; margin-top:20px!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) :is(.workflow-queue-list,.workflow-queue-column,.quick-link-list) {
+    display:flex!important; flex-direction:column!important; gap:0!important; padding:0!important;
+    margin:0!important; width:100%!important; min-width:0!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .workflow-queue-item {
+    display:grid!important; grid-template-columns:36px minmax(0,1fr) auto 16px!important;
+    align-items:center!important; margin:0!important; width:100%!important; text-decoration:none!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .workflow-queue-item p:empty { display:none!important; }
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .queue-icon {
+    width:36px!important; height:36px!important; border-radius:8px!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .quick-link-list > a {
+    display:grid!important; grid-template-columns:24px minmax(0,1fr)!important; gap:3px 10px!important;
+    text-decoration:none!important; padding:12px 16px!important; align-content:center!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .quick-link-list > a > svg { grid-row:1/3!important; }
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .quick-link-list > a > span {
+    grid-column:2!important; font-size:12px!important; font-weight:400!important; color:#61758a!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .dashboard-two-tables {
+    display:grid!important; grid-template-columns:minmax(0,1fr)!important; gap:20px!important; margin-top:20px!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .data-table { width:100%!important; margin:0!important; }
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .data-table tbody tr:nth-child(even) > td { background:#eaf2f8!important; }
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .table-identity > .small {
+    width:40px!important; height:40px!important; min-width:40px!important; overflow:hidden!important;
+}
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .schedule-list { margin:0!important; padding:0!important; }
+body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) :is(.schedule-visit,.schedule-empty) {
+    min-height:64px!important; padding:12px 16px!important; box-sizing:border-box!important;
+}
+@media(max-width:1000px) {
+    body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .metric-grid { grid-template-columns:repeat(2,minmax(0,1fr))!important; }
+    body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .dashboard-main-grid { grid-template-columns:minmax(0,1fr)!important; }
+}
+@media(max-width:540px) {
+    body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .metric-grid { grid-template-columns:minmax(0,1fr)!important; }
+    body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .heading-actions { width:100%!important; }
+    body.enterprise-ui #mainContent:is(.vet-dashboard-page,.staff-dashboard-page) .heading-actions > a { flex:1!important; }
+}
+}
+@layer admin-interface {
+body.enterprise-ui[data-user-role="staff"] #mainContent .receipt-archive-row {
+    display:grid!important; grid-template-columns:minmax(0,1fr) auto auto!important;
+    align-items:center!important; gap:16px!important; min-height:64px!important;
+}
+body.enterprise-ui[data-user-role="staff"] #mainContent .receipt-archive-actions {
+    display:flex!important; flex-wrap:wrap!important; align-items:center!important; gap:6px!important;
+}
+body.enterprise-ui[data-user-role="staff"] #mainContent .receipt-archive-row :is(h3,p,small) { margin:0!important; }
+body.enterprise-ui[data-user-role="staff"] #mainContent .receipt-archive-total { text-align:right!important; }
+body.enterprise-ui[data-user-role="staff"] #mainContent .product-orders-heading {
+    flex-wrap:wrap!important; gap:8px 16px!important;
+}
+body.enterprise-ui[data-user-role="staff"] #mainContent .product-orders-heading h1 { margin:0!important; }
+body.enterprise-ui[data-user-role="staff"] #mainContent .product-orders-heading p { flex:1!important; margin:0!important; }
+@media(max-width:640px) {
+    body.enterprise-ui[data-user-role="staff"] #mainContent .receipt-archive-row { grid-template-columns:minmax(0,1fr) auto!important; }
+    body.enterprise-ui[data-user-role="staff"] #mainContent .receipt-archive-actions { grid-column:1/-1!important; }
+}
+}

@@ -177,6 +177,11 @@ function dashboard_for_role($role = null) {
     return $map[$role] ?? 'login.php';
 }
 
+function role_has_access($currentRole, $requiredRoles) {
+    $allowed = is_array($requiredRoles) ? $requiredRoles : [$requiredRoles];
+    return $currentRole === 'admin' || in_array($currentRole, $allowed, true);
+}
+
 function require_role($role) {
     require_login();
     global $conn;
@@ -196,8 +201,7 @@ function require_role($role) {
             $_SESSION['role'] = $account['role'];
         }
     }
-    $allowed = is_array($role) ? $role : [$role];
-    if (!in_array($_SESSION['role'], $allowed, true)) {
+    if (!role_has_access($_SESSION['role'] ?? '', $role)) {
         redirect_to(dashboard_for_role($_SESSION['role'] ?? 'client'));
     }
 }

@@ -10,6 +10,7 @@ $pendingUsers = (int)$conn->query("SELECT COUNT(*) c FROM users WHERE role='clie
 $pendingEditRequests = (int)$conn->query("SELECT COUNT(*) c FROM edit_requests WHERE status='pending'")->fetch_assoc()['c'];
 $lowStock = (int)$conn->query("SELECT COUNT(*) c FROM inventory_items WHERE status IN ('low_stock','out_of_stock')")->fetch_assoc()['c'];
 $dueSoon = (int)$conn->query("SELECT COUNT(*) c FROM vaccinations WHERE next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 60 DAY)")->fetch_assoc()['c'];
+$overdueVaccinations = (int)$conn->query("SELECT COUNT(*) c FROM vaccinations WHERE next_due_date<CURDATE()")->fetch_assoc()['c'];
 $attentionAppointments = (int)$conn->query("SELECT COUNT(*) c FROM appointments WHERE (status='pending' AND requested_date<NOW()) OR (status='approved' AND (scheduled_date IS NULL OR assigned_vet_id IS NULL OR scheduled_date<NOW()))")->fetch_assoc()['c'];
 $pendingLeaveRequests = (int)$conn->query("SELECT COUNT(*) c FROM staff_availability WHERE event_kind='unavailable' AND reason LIKE '[Pending]%' AND ends_at>starts_at")->fetch_assoc()['c'];
 $revenue = (float)$conn->query("SELECT COALESCE(SUM(total_amount),0) c FROM pos_transactions WHERE payment_status='paid' AND DATE(transaction_date)=CURDATE()")->fetch_assoc()['c'];
@@ -98,18 +99,20 @@ usort($diagnosisRows,fn($a,$b)=>[(int)$b['c'],strtotime($b['latest_visit']),$a['
 $diagnosisRows=array_slice($diagnosisRows,0,3);$diagnosisMax=1;
 foreach($diagnosisRows as $d)$diagnosisMax=max($diagnosisMax,(int)$d['c']);
 $periodEndDisplay=$periodEnd->modify('-1 day');
+require __DIR__.'/../includes/dashboard_appointment_tasks.php';
 
 $queue = [
- ['Inventory alerts',$lowStock,'Review low and unavailable stock in Quick overview.','admin/dashboard.php?overview=inventory#quickOverview','package','danger',100],
- ['Appointments needing attention',$attentionAppointments,'Review client appointments with scheduling or status issues.','admin/calendar.php?scope=appointments&status=attention','alert','danger',95,['title'=>'Appointments needing attention','eyebrow'=>'Action queue','html'=>$attentionAppointmentHtml]],
- ['Pending appointments',$pendingAppointments,'Review scheduling requests.','admin/appointments.php?status=pending','calendar','warning',80],
+ ['Inventory alerts',$lowStock,'Review low and unavailable stock in Quick overview.','admin/dashboard.php?overview=inventory#quickOverview','package','warning',75],
+ ['Pending appointments',$pendingAppointments,'All requests awaiting approval or rejection.','admin/appointments.php?status=pending','calendar','warning',80],
  ['Pet verification',$pendingPets,'Verify submitted pet profiles.','admin/pets.php?verification=pending','paw','info',65],
  ['Pet edit requests',$pendingEditRequests,'Review owner profile changes.','admin/pet_edit_requests.php?status=pending','edit','purple',60],
  ['Pending clients',$pendingUsers,'Review new client accounts in grid view.','admin/clients.php?filter=pending&view=grid','user-check','warning',55],
  ['Leave requests',$pendingLeaveRequests,'Review staff and veterinarian unavailability requests.','admin/calendar.php?scope=workforce&workforce=unavailable','calendar-days','warning',54,['title'=>'Pending leave requests','eyebrow'=>'Workforce review','html'=>$pendingLeaveHtml]],
- ['Vaccinations due',$dueSoon,'Review upcoming follow-ups.','admin/vaccinations.php?status=overdue','syringe','info',45],
+ ['Overdue vaccinations',$overdueVaccinations,'Review follow-ups past their due date.','admin/vaccinations.php?status=overdue','syringe','danger',90],
+ ['Vaccinations due soon',$dueSoon,'Review follow-ups due in the next 60 days.','admin/vaccinations.php?status=due_soon','syringe','info',45],
 ];
-usort($queue, fn($a,$b)=>($b[6]<=>$a[6]) ?: ($b[1]<=>$a[1]));
+$queue=array_merge($queue,$dashboardAppointmentTaskQueues);
+usort($queue, fn($a,$b)=>(($b[1]>0)<=>($a[1]>0)) ?: ($b[6]<=>$a[6]) ?: ($b[1]<=>$a[1]));
 
 $appointments=[];$res=$conn->query("SELECT a.id,a.status,a.requested_date,a.scheduled_date,a.reason,a.confirmation_code,u.full_name client_name,p.name pet_name,p.species,v.full_name vet_name FROM appointments a JOIN users u ON a.owner_id=u.id JOIN pets p ON a.pet_id=p.id LEFT JOIN users v ON a.assigned_vet_id=v.id ORDER BY COALESCE(a.scheduled_date,a.requested_date) DESC,a.id DESC LIMIT 5");while($r=$res->fetch_assoc())$appointments[]=$r;
 $logs=[];$res=$conn->query("SELECT l.*,u.full_name FROM audit_logs l LEFT JOIN users u ON l.actor_user_id=u.id ORDER BY l.created_at DESC LIMIT 5");while($r=$res->fetch_assoc())$logs[]=$r;
@@ -135,28 +138,15 @@ include "../includes/navbar.php";
 <?php if($m=flash('success')):?><div class="alert alert-success" role="status"><?=e($m)?></div><?php endif;?>
 
 <section class="metric-grid dashboard-metrics" aria-label="Clinic totals">
-  <button type="button" class="metric-card" data-record-detail='<?=e(json_encode(['title'=>'Appointments today','eyebrow'=>'Today\'s clinic schedule','html'=>$todayAppointmentHtml]))?>'><span class="metric-icon"><?=ui_icon('calendar-days')?></span><div><small>Appointments today</small><strong><?=$todayAppointments?></strong><p>Open today’s appointment list.</p></div></button>
-  <button type="button" class="metric-card" data-record-detail='<?=e(json_encode(['title'=>'Pending appointments','eyebrow'=>'Scheduling review','html'=>$pendingAppointmentHtml]))?>'><span class="metric-icon warning"><?=ui_icon('clock')?></span><div><small>Pending appointments</small><strong><?=$pendingAppointments?></strong><p>Review requests awaiting a decision.</p></div></button>
+  <button type="button" class="metric-card" data-record-detail='<?=e(json_encode(['title'=>'Appointments today','eyebrow'=>'Today - all statuses','html'=>$todayAppointmentHtml]))?>'><span class="metric-icon"><?=ui_icon('calendar-days')?></span><div><small>Appointments today</small><strong><?=$todayAppointments?></strong><p>All statuses, including completed and cancelled.</p></div></button>
+  <button type="button" class="metric-card" data-record-detail='<?=e(json_encode(['title'=>'Pending appointments','eyebrow'=>'Scheduling review','html'=>$pendingAppointmentHtml]))?>'><span class="metric-icon warning"><?=ui_icon('clock')?></span><div><small>Pending appointments</small><strong><?=$pendingAppointments?></strong><p>All pending requests, across all dates.</p></div></button>
   <button type="button" class="metric-card" data-record-detail='<?=e(json_encode(['title'=>'Vaccinations due soon','eyebrow'=>'Next 60 days','html'=>$dueVaccinationHtml]))?>'><span class="metric-icon info"><?=ui_icon('syringe')?></span><div><small>Vaccinations due soon</small><strong><?=$dueSoon?></strong><p>Open upcoming vaccination follow-ups.</p></div></button>
   <button type="button" class="metric-card" data-record-detail='<?=e(json_encode(['title'=>'Paid sales today','eyebrow'=>'Sales summary','html'=>$todaySalesHtml,'action_url'=>app_url('admin/pos.php'),'action_label'=>'Open POS']))?>'><span class="metric-icon success"><?=ui_icon('coins')?></span><div><small>Paid sales today</small><strong>₱<?=number_format($revenue,2)?></strong><p>Review today’s paid transactions.</p></div></button>
 </section>
 
-<?php include '../includes/dashboard_schedule.php'; ?>
-<div class="dashboard-main-grid dashboard-equal-grid">
-<section class="surface-card workflow-queue-card" id="actionQueue">
-  <div class="section-heading"><div><span class="eyebrow">Action queue</span><h2>Items requiring review</h2></div></div>
-  <?php $queueColumns = array_chunk($queue, max(1, (int)ceil(count($queue) / 2))); ?>
-  <div class="workflow-queue-list">
-  <?php foreach($queueColumns as $queueColumn): ?>
-    <div class="workflow-queue-column">
-    <?php foreach($queueColumn as $queueItem): [$label,$count,$note,$url,$icon,$tone,$priority]=$queueItem; $detail=$queueItem[7]??null; ?>
-      <?php if($detail):?><button type="button" class="workflow-queue-item queue-<?=e($tone)?> <?=$count > 0 ? 'queue-has-items' : 'queue-empty'?>" data-queue-key="<?=$label==='Appointments needing attention'?'appointments':'leave'?>" data-record-detail='<?=e(json_encode($detail))?>'><?php else:?><a class="workflow-queue-item queue-<?=e($tone)?> <?=$count > 0 ? 'queue-has-items' : 'queue-empty'?>" href="<?=app_url($url)?>"><?php endif;?><span class="queue-icon"><?=ui_icon($icon)?></span><div><b><?=e($label)?></b><p><?=e($note)?></p></div><span class="queue-count-wrap"><strong class="queue-count"><?=intval($count)?></strong><?php if($count>0 && $priority>=80):?><span class="queue-urgency" aria-label="Urgent">!</span><?php endif;?></span><span class="queue-arrow"><?=ui_icon('chevron-right')?></span><?php if($detail):?></button><?php else:?></a><?php endif;?>
-    <?php endforeach;?>
-    </div>
-  <?php endforeach;?>
-  </div>
-</section>
-
+<div class="dashboard-schedule-pair">
+<?php include '../includes/dashboard_mini_calendar.php'; ?>
+<div class="dashboard-day-stack">
 <section class="surface-card diagnosis-card top-diagnosis-card" id="clinicalTrend">
   <div class="section-heading diagnosis-heading"><div class="section-copy"><span class="eyebrow">Clinical trend</span><h2>Top 3 diagnoses</h2><small class="diagnosis-period-caption"><?=e($periodStart->format('M d, Y'))?> to <?=e($periodEndDisplay->format('M d, Y'))?></small><form method="GET" action="dashboard.php" class="clinical-trend-form"><label for="diagnosisPeriod">Date range</label><select class="form-select" id="diagnosisPeriod" name="diagnosis_period" onchange="try{sessionStorage.setItem('vetrix.clinicalTrendScroll',String(window.scrollY));}catch(_e){} this.form.submit()"><?php foreach($diagnosisPeriods as $key=>$label):?><option value="<?=e($key)?>" <?=$diagnosisPeriod===$key?'selected':''?>><?=e($label)?></option><?php endforeach;?></select></form></div></div>
   <div class="diagnosis-chart" aria-label="Top diagnosis counts">
@@ -166,6 +156,25 @@ include "../includes/navbar.php";
   </div>
 </section>
 <script>document.addEventListener('DOMContentLoaded',()=>{try{const y=sessionStorage.getItem('vetrix.clinicalTrendScroll');if(y!==null){sessionStorage.removeItem('vetrix.clinicalTrendScroll');requestAnimationFrame(()=>window.scrollTo({top:Number(y)||0,left:0,behavior:'auto'}));}}catch(_e){}});</script>
+</div>
+</div>
+<div class="dashboard-task-row">
+<section class="surface-card workflow-queue-card" id="actionQueue">
+  <div class="section-heading"><div><span class="eyebrow">Action queue</span><h2>Tasks requiring review</h2><p class="field-help">Unresolved work across all dates. A visit can need more than one action.</p></div></div>
+  <button type="button" hidden data-queue-key="appointments" data-record-detail='<?=e(json_encode(['title'=>'Appointments needing attention','eyebrow'=>'Action queue · All dates','html'=>$attentionAppointmentHtml]))?>'>Review all appointment issues</button>
+  <?php $queueColumns = array_chunk($queue, max(1, (int)ceil(count($queue) / 2))); ?>
+  <div class="workflow-queue-list">
+  <?php foreach($queueColumns as $queueColumn): ?>
+    <div class="workflow-queue-column">
+    <?php foreach($queueColumn as $queueItem): [$label,$count,$note,$url,$icon,$tone,$priority]=$queueItem; $detail=$queueItem[7]??null; ?>
+      <?php if($detail):?><button type="button" class="workflow-queue-item queue-<?=e($tone)?> <?=$count > 0 ? 'queue-has-items' : 'queue-empty'?>" data-queue-key="<?=e($detail['queue_key']??'leave')?>" data-record-detail='<?=e(json_encode($detail))?>'><?php else:?><a class="workflow-queue-item queue-<?=e($tone)?> <?=$count > 0 ? 'queue-has-items' : 'queue-empty'?>" href="<?=app_url($url)?>"><?php endif;?><span class="queue-icon"><?=ui_icon($icon)?></span><div><b><?=e($label)?></b><p><?=e($note)?></p></div><span class="queue-count-wrap"><strong class="queue-count"><?=intval($count)?></strong><?php if($count>0 && $priority>=80):?><span class="queue-urgency" aria-label="Urgent">!</span><?php endif;?></span><span class="queue-arrow"><?=ui_icon('chevron-right')?></span><?php if($detail):?></button><?php else:?></a><?php endif;?>
+    <?php endforeach;?>
+    </div>
+  <?php endforeach;?>
+  </div>
+</section>
+
+
 </div>
 
 <section class="surface-card dashboard-overview-card" id="quickOverview">

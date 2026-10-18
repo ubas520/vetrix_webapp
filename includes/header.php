@@ -29,11 +29,20 @@ $redesignStyleVersion = file_exists(__DIR__ . '/../assets/css/vetrix-redesign.cs
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="<?= app_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
+    <?php $adminReadability = ($_SESSION['role'] ?? '') === 'admin' && in_array($scriptName,['dashboard.php','clients.php','pets.php','medical_records.php','inventory.php','pos.php'],true); ?>
+    <?php if($adminReadability): ?><link href="<?=e(app_url('assets/css/admin-readability.css'))?>?v=<?=filemtime(__DIR__.'/../assets/css/admin-readability.css')?>" rel="stylesheet" media="screen"><?php endif; ?>
+    <link href="<?= app_url('assets/css/typography.css') ?>?v=<?=e(hash_file('sha256', __DIR__.'/../assets/css/typography.css'))?>" rel="stylesheet" media="screen">
+    <?php if (in_array($_SESSION['role'] ?? '', ['admin', 'staff'], true) && $scriptName === 'pos.php'): ?>
+    <link href="<?= app_url('assets/css/admin-pos-cards.css') ?>?v=<?=e(filemtime(__DIR__.'/../assets/css/admin-pos-cards.css'))?>" rel="stylesheet" media="screen">
+    <?php endif; ?>
+    <?php if (in_array($_SESSION['role'] ?? '', ['admin', 'veterinarian', 'staff'], true) && $scriptName !== 'pos.php'): ?>
+    <link href="<?= app_url('assets/css/admin-interface.css') ?>?v=<?=e(filemtime(__DIR__.'/../assets/css/admin-interface.css'))?>" rel="stylesheet" media="screen">
+    <?php endif; ?>
     <link href="<?= app_url('assets/css/style.css') ?>?v=<?= e($styleVersion) ?>" rel="stylesheet">
     <link href="<?= app_url('assets/css/vetrix-reference.css') ?>?v=<?= e($referenceStyleVersion) ?>" rel="stylesheet">
     <link href="<?= app_url('assets/css/vetrix-enterprise.css') ?>?v=<?= e($enterpriseStyleVersion) ?>" rel="stylesheet" media="screen">
     <link href="<?= app_url('assets/css/vetrix-redesign.css') ?>?v=<?= e($redesignStyleVersion) ?>" rel="stylesheet" media="screen">
-    <?php if (($_SESSION['role'] ?? '') === 'veterinarian' && in_array($scriptName, ['medical_records.php','prescription.php','vaccinations.php'], true)): ?>
+    <?php if (in_array($_SESSION['role'] ?? '', ['admin', 'veterinarian', 'staff'], true) && in_array($scriptName, ['medical_records.php','prescription.php','vaccinations.php','health_monitoring.php'], true)): ?>
     <link href="<?= app_url('assets/css/clinical-record-cards.css') ?>?v=<?= e(filemtime(__DIR__ . '/../assets/css/clinical-record-cards.css')) ?>" rel="stylesheet" media="screen">
     <?php endif; ?>
     <?php if (($_SESSION['role'] ?? '') === 'admin' && $scriptName === 'reports.php'): ?>

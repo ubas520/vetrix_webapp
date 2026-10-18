@@ -44,6 +44,10 @@ try {
     try { order_save_account($conn, 2, $input); throw new RuntimeException('Client saved a payment account'); }
     catch (ProductOrderError $error) { payment_check($error->getCode() === 403, 'Wrong authorization error'); }
     payment_check(count(order_accounts($conn)) === 1, 'Rejected save changed payment options');
+    order_db($conn, "INSERT INTO users VALUES(3,'admin','active')");
+    $adminAccount = order_save_account($conn, 3, $input);
+    order_disable_account($conn, 3, $adminAccount);
+    payment_check(count(order_accounts($conn)) === 1, 'Admin account save/disable failed');
     echo "Payment regression checks passed: legacy/new audit schemas, GCash and bank options, replacements, disabled accounts, and staff authorization.\n";
 } catch (Throwable $error) {
     fwrite(STDERR, 'Payment regression check failed: ' . $error->getMessage() . "\n");

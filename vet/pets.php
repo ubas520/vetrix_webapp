@@ -143,19 +143,8 @@ $rows = $conn->query("SELECT p.*,u.full_name owner_name,u.phone,u.email,updater.
 <?php if($m=flash('success')):?><div class="alert alert-success" role="status"><?=e($m)?></div><?php endif;?>
 <?php if($m=flash('error')):?><div class="alert alert-danger" role="alert"><?=e($m)?></div><?php endif;?>
 
-<section class="surface-card data-toolbar">
-    <div class="filter-tabs" aria-label="Pet verification filters">
-        <?php foreach(['all'=>'All','approved'=>'Approved','pending'=>'Pending','in_person_confirmation'=>'In-person','rejected'=>'Rejected'] as $key=>$label):$count=$key==='all'?($counts['total']??0):($counts[$key]??0);?>
-        <a class="filter-tab status-<?=e($key)?> <?=$status===$key?'active':''?>" href="?status=<?=$key?>&q=<?=urlencode($petSearch)?>&per_page=<?=e($petShow)?>"><?=e($label)?><b><?=intval($count)?></b></a>
-        <?php endforeach;?>
-    </div>
-    <form class="toolbar-actions moved-show-control" method="GET" action="pets.php">
-        <input type="hidden" name="status" value="<?=e($status)?>"><input type="hidden" name="q" value="<?=e($petSearch)?>">
-        <label class="entries-select">Show<select class="unified-show-select" name="per_page" aria-label="Number of pets to show" onchange="this.form.submit()"><?php foreach(['6','12','18','24','full'] as $choice):?><option value="<?=e($choice)?>" <?=$petShow===$choice?'selected':''?>><?=e($choice==='full'?'Full':$choice)?></option><?php endforeach;?></select></label>
-    </form>
-</section>
-<form class="surface-card data-search-bar" method="GET"><input type="hidden" name="status" value="<?=e($status)?>"><input type="hidden" name="per_page" value="<?=e($petShow)?>"><input type="search" name="q" value="<?=e($petSearch)?>" placeholder="Search pet, owner, species, breed, or color"><button class="button-primary" type="submit">Search</button><?php if($petSearch!==''):?><a class="button-secondary" href="?status=<?=e($status)?>&per_page=<?=e($petShow)?>">Clear</a><?php endif;?></form>
-
+<form class="surface-card admin-record-finder" method="GET"><div class="admin-record-finder-heading"><div><span class="eyebrow">Record search</span><h2>Browse pet records</h2></div><label class="entries-select">Show<select name="per_page" onchange="this.form.submit()"><?php foreach(['6','12','18','24','full'] as $choice):?><option value="<?=$choice?>" <?=$petShow===$choice?'selected':''?>><?=$choice==='full'?'Full':$choice?></option><?php endforeach;?></select></label></div><div class="admin-record-search"><input class="form-control" type="search" name="q" value="<?=e($petSearch)?>" placeholder="Search pet, owner, species, breed, or color" aria-label="Search pets">
+<select class="form-select" name="status" aria-label="Pet status" onchange="this.form.submit()"><?php foreach(['all'=>'All','approved'=>'Approved','pending'=>'Pending','in_person_confirmation'=>'In-person','rejected'=>'Rejected'] as $key=>$label):$count=$key==='all'?($counts['total']??0):($counts[$key]??0);?><option value="<?=$key?>" <?=$status===$key?'selected':''?>><?=e($label)?> (<?=intval($count)?>)</option><?php endforeach;?></select><button class="button-primary" type="submit">Search</button><a class="button-secondary" href="pets.php">Clear</a></div></form>
 <div class="pet-card-list view-list" id="vetPetCollection">
 <?php if(!$rows->num_rows): ?><div class="admin-empty-card">No pet profiles found. Try another status filter or search term.</div><?php endif; ?>
 <?php while($p=$rows->fetch_assoc()):

@@ -1,0 +1,70 @@
+/* Readability only: preserve existing grids, navigation and dialog behavior. */
+@layer admin-readability {
+body.role-admin #mainContent .dashboard-visit-trend { margin:0 0 20px!important; padding:20px!important; }
+body.role-admin #mainContent .visit-trend-heading { display:flex!important; flex-wrap:wrap!important; align-items:center!important; justify-content:space-between!important; gap:12px!important; }
+body.role-admin #mainContent .visit-trend-heading h2 { margin:4px 0!important; font-size:18px!important; color:#183b60!important; }
+body.role-admin #mainContent .visit-trend-heading p { margin:0!important; color:#526579!important; font-size:13px!important; }
+body.role-admin #mainContent .visit-trend-totals { display:flex!important; flex-wrap:wrap!important; gap:12px 28px!important; margin:18px 0 12px!important; }
+body.role-admin #mainContent .visit-trend-totals span { display:flex!important; align-items:baseline!important; gap:8px!important; color:#526579!important; font-size:13px!important; }
+body.role-admin #mainContent .visit-trend-totals b { color:#183b60!important; font-size:26px!important; font-variant-numeric:tabular-nums!important; }
+body.role-admin #mainContent .visit-trend-canvas { position:relative!important; height:260px!important; width:100%!important; min-width:0!important; }
+body.role-admin #mainContent .visit-trend-data { margin-top:12px!important; font-size:13px!important; }
+body.role-admin #mainContent .visit-trend-data summary { cursor:pointer!important; color:#245ba8!important; padding:8px 0!important; }
+body.role-admin #mainContent .visit-trend-empty { padding:12px!important; background:#f4f7fb!important; border-radius:8px!important; color:#526579!important; }
+body.role-admin #mainContent .dashboard-day-stack { display:grid!important; grid-template-columns:minmax(0,1fr)!important; gap:16px!important; min-width:0!important; align-content:start!important; }
+body.role-admin #mainContent .dashboard-day-stack>.surface-card { min-width:0!important; height:auto!important; min-height:0!important; margin:0!important; padding:20px!important; }
+body.role-admin #mainContent .dashboard-day-stack .diagnosis-chart { flex:initial!important; align-content:start!important; }
+body.role-admin #mainContent .dashboard-task-row { display:block!important; min-width:0!important; }
+body.role-admin #mainContent .dashboard-task-row .workflow-queue-card { height:auto!important; margin:0!important; padding:20px!important; }
+body.role-admin #mainContent .dashboard-overview-card { margin:16px 0 0!important; padding:20px!important; }
+body.role-admin #mainContent .dashboard-task-row .workflow-queue-list { display:grid!important; grid-template-columns:repeat(2,minmax(0,1fr))!important; gap:10px 16px!important; }
+body.role-admin #mainContent .dashboard-task-row .workflow-queue-column { display:contents!important; }
+body.role-admin #mainContent .dashboard-task-row .workflow-queue-item { min-width:0!important; height:auto!important; }
+@media(max-width:680px){body.role-admin #mainContent .dashboard-task-row .workflow-queue-list { grid-template-columns:minmax(0,1fr)!important; }}
+body.role-admin #mainContent .dashboard-schedule-pair { display:grid!important; grid-template-columns:minmax(300px,1fr) minmax(0,1.4fr)!important; gap:16px!important; align-items:stretch!important; margin-bottom:16px!important; }
+@media(min-width:1001px){
+body.role-admin #mainContent .dashboard-schedule-pair>.dashboard-day-stack { align-content:stretch!important; grid-template-rows:minmax(0,1fr)!important; }
+body.role-admin #mainContent .dashboard-schedule-pair .top-diagnosis-card .diagnosis-chart { flex:1!important; align-content:space-evenly!important; }
+}
+body.role-admin #mainContent .dashboard-schedule-pair>.surface-card { min-width:0!important; margin:0!important; padding:20px!important; }
+body.role-admin #mainContent .mini-calendar-heading,body.role-admin #mainContent .mini-month-nav { display:flex!important; align-items:center!important; justify-content:space-between!important; gap:8px!important; }
+body.role-admin #mainContent .mini-calendar-heading h2 { margin:4px 0!important; font-size:18px!important; }
+body.role-admin #mainContent .mini-month-nav { margin-top:16px!important; }
+body.role-admin #mainContent .mini-month-nav h3 { margin:0!important; font-size:15px!important; }
+body.role-admin #mainContent :is(.mini-calendar-help,.mini-calendar-summary) { color:#526579!important; font-size:12px!important; line-height:1.5!important; margin:12px 0!important; }
+body.role-admin #mainContent :is(.mini-weekdays,.mini-days) { display:grid!important; grid-template-columns:repeat(7,minmax(0,1fr))!important; gap:4px!important; }
+body.role-admin #mainContent .mini-weekdays span { text-align:center!important; font-size:11px!important; color:#526579!important; padding:6px 0!important; }
+body.role-admin #mainContent .mini-day { position:relative!important; display:flex!important; flex-direction:column!important; align-items:center!important; justify-content:center!important; gap:2px!important; min-width:0!important; min-height:46px!important; padding:3px!important; border:1px solid transparent!important; border-radius:8px!important; background:#f5f7fa!important; color:#34465b!important; font-size:13px!important; cursor:pointer!important; }
+body.role-admin #mainContent .mini-day.has-visits { background:#eaf2ff!important; color:#204d8c!important; }
+body.role-admin #mainContent .mini-day.is-today { border:2px solid #3569f4!important; }
+body.role-admin #mainContent .mini-day small { font-size:10px!important; line-height:1!important; background:#245ba8!important; color:white!important; border-radius:8px!important; padding:2px 5px!important; }
+body.role-admin #mainContent .mini-day:hover { background:#dbe9fc!important; }
+body.role-admin #mainContent .mini-day:focus-visible { outline:3px solid #183b60!important; outline-offset:2px!important; }
+body.role-admin #mainContent .mini-calendar-full { display:flex!important; align-items:center!important; gap:6px!important; font-size:13px!important; font-weight:700!important; }
+@media(max-width:1000px){body.role-admin #mainContent .dashboard-schedule-pair { grid-template-columns:minmax(0,1fr)!important; }}
+body.role-admin #mainContent :is(.title-with-status h2,.pet-name-row h4,.medical-index-header h2,.medical-history-row h3,.pos-admin-product-card h3) {
+    color:#183b60!important; line-height:1.5!important; white-space:normal!important; overflow-wrap:anywhere!important;
+}
+body.role-admin #mainContent :is(.entity-card header p,.entity-facts b,.pet-owner,.medical-index-facts b,.pos-admin-product-card p) {
+    white-space:normal!important; overflow-wrap:anywhere!important; text-overflow:clip!important; line-height:1.5!important;
+}
+body.role-admin #mainContent :is(.medical-history-grid p,.record-note,.medical-index-notes span) {
+    white-space:pre-wrap!important; overflow-wrap:anywhere!important; line-height:1.65!important;
+}
+body.role-admin #mainContent :is(.medical-history-grid small,.medical-index-facts small,.entity-facts small) {
+    display:block!important; color:#526579!important; margin-bottom:4px!important; font-size:12px!important;
+}
+body.role-admin #mainContent .medical-history-row header time { color:#183b60!important; font-weight:700!important; }
+body.role-admin #mainContent .metric-card p { line-height:1.5!important; color:#526579!important; }
+body.role-admin #mainContent :is(.inventory-overview-row,.inventory-overview-head)>span:nth-child(3),
+body.role-admin #mainContent :is(.inventory-overview-row,.inventory-overview-head)>span:nth-child(4),
+body.role-admin #recentTransactions :is(td,th):nth-child(3),
+body.role-admin #recentTransactions :is(td,th):nth-child(4) { text-align:right!important; font-variant-numeric:tabular-nums!important; }
+body.role-admin #recentTransactions td:nth-child(3) { font-weight:700!important; white-space:nowrap!important; color:#183b60!important; }
+body.role-admin #recentTransactions th { white-space:normal!important; line-height:1.45!important; }
+body.role-admin #mainContent .stock-low_stock .badge { background:#fff4df!important; color:#854800!important; }
+body.role-admin #mainContent .stock-out_of_stock .badge { background:#feecec!important; color:#a62121!important; }
+body.role-admin .readability-required { display:inline!important; margin-left:6px!important; color:#526579!important; font-size:12px!important; font-weight:400!important; }
+body.role-admin .readability-field-error { display:block!important; margin-top:6px!important; color:#a62121!important; font-size:13px!important; line-height:1.5!important; }
+body.role-admin [data-readability-invalid] { border-color:#b42318!important; }
+}

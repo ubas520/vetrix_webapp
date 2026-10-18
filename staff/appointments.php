@@ -98,22 +98,21 @@ $appointmentNoChangeWarning=flash('appointment_warning');
 
 <section class="appt-monitor">
     <div class="appt-monitor-head"><div><h2>Appointments and Scheduling</h2></div></div>
-    <form class="admin-list-search unified-search-row" method="GET" action="appointments.php">
-        <?php if($status_filter !== 'all'): ?><input type="hidden" name="status" value="<?=e($status_filter)?>"><?php endif; ?>
-        <input class="form-control" type="search" name="q" value="<?=e($appointment_search)?>" placeholder="Search pet, owner, phone, concern, veterinarian, or code">
-        <button class="btn btn-primary" type="submit">Search</button>
-        <a class="btn btn-light" href="appointments.php<?= $status_filter !== 'all' ? '?status='.urlencode($status_filter) : '' ?>">Clear</a>
-    </form>
-<div class="appt-filter-toolbar"><div class="appt-filter-row">
-        <a class="appt-filter status-all <?=$status_filter==='all'?'active':''?>" href="appointments.php<?=$appointment_all_search_param?>">All <b><?=$totalAppointments?></b></a>
-        <a class="appt-filter status-pending <?=$status_filter==='pending'?'active':''?>" href="appointments.php?status=pending<?=$appointment_search_param?>">Pending <b><?=$counts['pending']?></b></a>
-        <a class="appt-filter status-approved <?=$status_filter==='approved'?'active':''?>" href="appointments.php?status=approved<?=$appointment_search_param?>">Approved <b><?=$counts['approved']?></b></a>
-        <a class="appt-filter status-completed <?=$status_filter==='completed'?'active':''?>" href="appointments.php?status=completed<?=$appointment_search_param?>">Completed <b><?=$counts['completed']?></b></a>
-        <a class="appt-filter status-rejected <?=$status_filter==='rejected'?'active':''?>" href="appointments.php?status=rejected<?=$appointment_search_param?>">Rejected <b><?=$counts['rejected']?></b></a>
-        <a class="appt-filter status-cancelled <?=$status_filter==='cancelled'?'active':''?>" href="appointments.php?status=cancelled<?=$appointment_search_param?>">Cancelled <b><?=$counts['cancelled']?></b></a>
-    </div><form class="appt-category-controls" method="GET" action="appointments.php"><?php if($status_filter !== 'all'): ?><input type="hidden" name="status" value="<?=e($status_filter)?>"><?php endif; ?><input type="hidden" name="q" value="<?=e($appointment_search)?>"><label class="entries-select">Show<select class="unified-show-select" aria-label="Appointments per page" name="per_page" onchange="this.form.submit()"><?=render_per_page_options($perPage,[4,8,12,16,'full'])?></select></label><div class="view-toggle" data-view-toggle data-target="#appointmentView" data-key="staff-appointments-unified" data-default="list"><button type="button" data-view="list" aria-label="List view"><?=ui_icon('list')?></button><button type="button" data-view="grid" aria-label="Grid view"><?=ui_icon('grid')?></button></div></form></div>
-    <?php if($rows->num_rows===0): ?>
-        <div class="appt-empty"><h3>No appointments found</h3><p>Try another status filter or search term.</p></div>
+    <form class="surface-card admin-record-finder" method="GET" action="appointments.php">
+    <div class="admin-record-finder-heading">
+        <div><span class="eyebrow">Record search</span><h2>Browse appointments</h2></div>
+        <label class="entries-select">Show<select name="per_page" onchange="this.form.submit()"><?=render_per_page_options($perPage,[4,8,12,16,'full'])?></select></label>
+    </div>
+    <div class="admin-record-search">
+        <input class="form-control" type="search" name="q" value="<?=e($appointment_search)?>" placeholder="Search pet, owner, phone, concern, veterinarian, or code" aria-label="Search appointments">
+        <select class="form-select" name="status" aria-label="Appointment status" onchange="this.form.submit()">
+            <?php foreach(['all'=>'All','pending'=>'Pending','approved'=>'Approved','completed'=>'Completed','rejected'=>'Rejected','cancelled'=>'Cancelled'] as $key=>$label):?><option value="<?=$key?>" <?=$status_filter===$key?'selected':''?>><?=$label?> (<?=$key==='all'?$totalAppointments:intval($counts[$key]??0)?>)</option><?php endforeach;?>
+        </select>
+        <button class="button-primary" type="submit">Search</button><a class="button-secondary" href="appointments.php">Clear</a>
+    </div>
+</form>
+<?php if($rows->num_rows===0): ?>
+        <div class="appt-empty"><h3>No appointments found</h3><p>No <?=e($status_filter==='all'?'':$status_filter.' ')?>appointments match the current filters. <a href="appointments.php">Clear filters</a></p></div>
     <?php else: ?>
     <div class="appt-list view-list compact-appointment-list" id="appointmentView">
         <div class="appointment-list-heading" aria-hidden="true"><span>Pet</span><span>Owner</span><span>Scheduled time</span><span>Veterinarian</span><span>Status</span><span>Action</span></div>

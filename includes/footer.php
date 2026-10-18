@@ -167,5 +167,6 @@ window.VETRIX_CSRF = document.querySelector('meta[name="csrf-token"]')?.content 
 <script src="<?= app_url('assets/js/app.js') ?>?v=<?= e(file_exists(__DIR__ . '/../assets/js/app.js') ? filemtime(__DIR__ . '/../assets/js/app.js') : time()) ?>"></script>
 <script src="<?= app_url('assets/js/enterprise-filters.js') ?>?v=<?= e(filemtime(__DIR__ . '/../assets/js/enterprise-filters.js')) ?>"></script>
 <?php if (($_SESSION['role'] ?? '') === 'staff'): ?><script src="<?= e(app_url('assets/js/product-order-notifications.js')) ?>?v=<?= filemtime(__DIR__ . '/../assets/js/product-order-notifications.js') ?>"></script><?php endif; ?>
+<?php if(!empty($adminReadability)): ?><script src="<?=e(app_url('assets/js/admin-readability.js'))?>?v=<?=filemtime(__DIR__.'/../assets/js/admin-readability.js')?>"></script><?php endif; ?>
 </body>
 </html>

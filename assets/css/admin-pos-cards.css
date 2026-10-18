@@ -1,0 +1,91 @@
+/* POS products have their own layout; transaction tables keep their styles. */
+@layer admin-pos-cards {
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) :is(#recentTransactions,#posSalesHistory) > .section-heading {
+    display:grid!important; grid-template-columns:minmax(0,1fr) max-content!important;
+    align-items:center!important; gap:12px!important; padding:16px!important;
+    margin:0!important; height:auto!important; min-height:0!important; text-align:left!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) :is(#recentTransactions,#posSalesHistory) > .section-heading > div {
+    min-width:0!important; width:auto!important; margin:0!important; text-align:left!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) :is(#recentTransactions,#posSalesHistory) .pos-sales-controls {
+    display:flex!important; align-items:center!important; justify-content:flex-end!important;
+    justify-self:end!important; gap:8px!important; padding:0!important; margin:0!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) :is(#recentTransactions,#posSalesHistory) .entries-select {
+    display:flex!important; align-items:center!important; gap:8px!important; margin:0!important; white-space:nowrap!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) :is(#recentTransactions,#posSalesHistory) .entries-select select {
+    width:90px!important; min-width:90px!important; margin:0!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) :is(#recentTransactions,#posSalesHistory) h2 {
+    margin:4px 0 0!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-product-admin-grid {
+    display:grid!important; grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    grid-auto-rows:1fr!important; align-items:stretch!important; gap:16px!important;
+    width:100%!important; min-width:0!important; padding:0!important;
+    border:0!important; background:transparent!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-card {
+    display:flex!important; flex-direction:column!important; align-items:stretch!important;
+    width:100%!important; min-width:0!important; max-width:none!important;
+    height:auto!important; min-height:0!important; margin:0!important; padding:0!important;
+    border:1px solid #d5e1ec!important; border-radius:12px!important;
+    background:#fff!important; box-shadow:0 2px 8px rgb(30 55 80 / 4%)!important;
+    overflow:hidden!important; text-align:left!important; box-sizing:border-box!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-card:hover { border-color:#9cbad5!important; }
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-photo {
+    position:relative!important; display:flex!important; align-items:center!important; justify-content:center!important;
+    width:100%!important; height:120px!important; min-height:120px!important; flex:0 0 120px!important;
+    margin:0!important; padding:12px!important; border:0!important; border-radius:0!important;
+    background:#f2f6fa!important; box-sizing:border-box!important; overflow:hidden!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-photo img { width:100%!important; height:100%!important; object-fit:contain!important; }
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-photo svg { width:40px!important; height:40px!important; color:#7d9ab5!important; }
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-photo em { position:absolute!important; top:8px!important; right:8px!important; }
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-copy {
+    display:flex!important; flex:1 1 auto!important; flex-direction:column!important;
+    align-items:flex-start!important; gap:6px!important; padding:12px 14px!important;
+    min-width:0!important; min-height:0!important; text-align:left!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-copy h3 {
+    font-size:14px!important; line-height:1.4!important; min-height:39px!important; margin:0!important;
+    text-align:left!important; white-space:normal!important; overflow-wrap:anywhere!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-copy :is(p,small) { font-size:12px!important; line-height:1.4!important; margin:0!important; color:#61758a!important; }
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-copy strong { font-size:18px!important; line-height:1.3!important; margin:4px 0 0!important; color:#203f5e!important; }
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-actions {
+    display:block!important; width:100%!important; margin-top:auto!important; padding:0 14px 14px!important; box-sizing:border-box!important;
+}
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-actions :is(form,button) { width:100%!important; margin:0!important; }
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-actions button { min-height:36px!important; padding:8px 10px!important; font-size:12px!important; border-radius:7px!important; justify-content:center!important; }
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-view-product-grid { padding:16px!important; overflow-y:auto!important; grid-auto-rows:auto!important; }
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-product-admin-grid > .empty-state { grid-column:1/-1!important; }
+/* Preserve search, category filtering and the Show limit. */
+body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-admin-product-card:is([hidden],[style*="display: none"],[style*="display:none"]) { display:none!important; }
+@media(max-width:1200px) { body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-product-admin-grid { grid-template-columns:repeat(3,minmax(0,1fr))!important; } }
+@media(max-width:900px) { body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-product-admin-grid { grid-template-columns:repeat(2,minmax(0,1fr))!important; } }
+@media(max-width:480px) { body:is([data-user-role="admin"],[data-user-role="staff"]) :is(.admin-pos-page,.staff-pos-page) .pos-product-admin-grid { grid-template-columns:minmax(0,1fr)!important; } }
+}
+
+/* Cashier cards fit alongside the cart; checkout controls keep their own layout. */
+@layer admin-pos-cards {
+body[data-user-role="staff"] .staff-pos-page .pos-product-admin-grid {
+    grid-template-columns:repeat(3,minmax(0,1fr))!important; gap:12px!important;
+}
+body[data-user-role="staff"] .staff-pos-page #posSalesHistory .pos-sales-controls {
+    flex-wrap:wrap!important;
+}
+@media(max-width:1100px) {
+    body[data-user-role="staff"] .staff-pos-page .pos-product-admin-grid { grid-template-columns:repeat(2,minmax(0,1fr))!important; }
+}
+@media(max-width:600px) {
+    body[data-user-role="staff"] .staff-pos-page #posSalesHistory > .section-heading { grid-template-columns:minmax(0,1fr)!important; }
+    body[data-user-role="staff"] .staff-pos-page #posSalesHistory .pos-sales-controls { justify-self:start!important; justify-content:flex-start!important; }
+}
+@media(max-width:440px) {
+    body[data-user-role="staff"] .staff-pos-page .pos-product-admin-grid { grid-template-columns:minmax(0,1fr)!important; }
+}
+}

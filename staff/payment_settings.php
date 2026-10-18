@@ -2,6 +2,7 @@
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 require_role('staff');
+$orderArea = ($_SESSION['role'] ?? '') === 'admin' ? 'admin' : 'staff';
 require_once '../includes/product_orders.php';
 ensure_product_order_schema($conn);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,14 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } catch (ProductOrderError $e) { flash('error', $e->getMessage()); }
     catch (Throwable $e) { error_log($e->getMessage()); flash('error', 'Could not save payment settings. Please try again.'); }
-    redirect_to('staff/payment_settings.php');
+    redirect_to($orderArea . '/payment_settings.php');
 }
 $accounts = order_accounts($conn);
 $gcash = order_payment_options($conn)['gcash'];
 $title = 'Payment Settings'; include '../includes/header.php'; include '../includes/navbar.php';
 ?>
 <link rel="stylesheet" href="<?= e(app_url('assets/css/product-orders.css')) ?>?v=<?= filemtime(__DIR__ . '/../assets/css/product-orders.css') ?>">
-<div class="layout"><?php include '../includes/staff_sidebar.php'; ?><main class="content product-orders-page" id="mainContent">
+<div class="layout"><?php include '../includes/' . $orderArea . '_sidebar.php'; ?><main class="content product-orders-page" id="mainContent">
 <section class="page-heading product-orders-heading"><h1>Payment Settings</h1><p>Add the clinic's GCash QR and bank accounts for mobile product orders.</p></section>
 <?php foreach (['success','error'] as $key): if ($message = flash($key)): ?><div role="alert" class="alert product-order-feedback alert-<?= $key === 'error' ? 'warning' : 'success' ?>"><?= e($message) ?></div><?php endif; endforeach; ?>
 <section class="surface-card mb-4" style="max-width:760px"><h2>Receiving accounts</h2>

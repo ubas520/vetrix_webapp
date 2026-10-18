@@ -42,9 +42,9 @@ $access = [
     ['Appointments', true, true, true],
     ['Clinic calendar', true, true, true],
     ['Pet profiles', true, true, true],
-    ['Medical record editing', false, true, false],
+    ['Medical record editing', true, true, false],
     ['Client account approval and OTP', true, false, false],
-    ['POS processing', 'Monitor', false, true],
+    ['POS processing', true, false, true],
     ['Inventory changes', true, false, true],
     ['Reports and activity logs', true, false, false],
     ['Manual notifications', true, false, false],
@@ -75,7 +75,7 @@ $access = [
 <details class="faq-item admin-handover-faq"><summary><span><?=ui_icon('help-circle')?></span><b>Why can a client still not use the account?</b><?=ui_icon('chevron-down')?></summary><p>The account needs admin approval and OTP verification. Check Clients for the account status and OTP state.</p></details>
 <details class="faq-item admin-handover-faq"><summary><span><?=ui_icon('help-circle')?></span><b>Why can a client not book for a pet?</b><?=ui_icon('chevron-down')?></summary><p>The pet must be approved. Pending, rejected, or in-person-confirmation pets should not be used for booking.</p></details>
 <details class="faq-item admin-handover-faq"><summary><span><?=ui_icon('help-circle')?></span><b>When should I use Calendar instead of Appointments?</b><?=ui_icon('chevron-down')?></summary><p>Use Calendar for day workload, clinic blocks, workforce availability, and schedule conflicts. Use Appointments to edit one request.</p></details>
-<details class="faq-item admin-handover-faq"><summary><span><?=ui_icon('help-circle')?></span><b>Who should enter clinical information?</b><?=ui_icon('chevron-down')?></summary><p>Veterinarians should enter diagnosis, treatment, prescription, medical record, and vaccination details.</p></details>
+<details class="faq-item admin-handover-faq"><summary><span><?=ui_icon('help-circle')?></span><b>Who should enter clinical information?</b><?=ui_icon('chevron-down')?></summary><p>Administrators and veterinarians can enter diagnosis, treatment, prescription, medical record, and vaccination details. Administrators can open these tools from Clinical Care.</p></details>
 <details class="faq-item admin-handover-faq"><summary><span><?=ui_icon('help-circle')?></span><b>Where can I check who changed a record?</b><?=ui_icon('chevron-down')?></summary><p>Use Activity Logs. It shows the actor, role, record type, time, and saved details.</p></details>
 <details class="faq-item admin-handover-faq"><summary><span><?=ui_icon('help-circle')?></span><b>What should I do with a broad notification?</b><?=ui_icon('chevron-down')?></summary><p>Read the popup details. Only notifications with an exact record ID should open a specific record page.</p></details>
 </div>

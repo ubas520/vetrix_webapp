@@ -2,6 +2,7 @@
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 require_role('staff');
+$orderArea = ($_SESSION['role'] ?? '') === 'admin' ? 'admin' : 'staff';
 require_once '../includes/product_orders.php';
 ensure_pos_product_schema($conn);
 ensure_product_order_schema($conn);
@@ -13,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash('success', 'Order updated. The client has been notified.');
     } catch (ProductOrderError $e) { flash('error', $e->getMessage()); }
     catch (Throwable $e) { error_log($e->getMessage()); flash('error', 'The order could not be updated. Refresh and try again.'); }
-    redirect_to('staff/product_orders.php?id=' . $selected);
+    redirect_to($orderArea . '/product_orders.php?id=' . $selected);
 }
 $detail = null;
 if ($selected) {
@@ -29,7 +30,7 @@ $title = 'Product Orders';
 include '../includes/header.php'; include '../includes/navbar.php';
 ?>
 <link rel="stylesheet" href="<?= e(app_url('assets/css/product-orders.css')) ?>?v=<?= filemtime(__DIR__ . '/../assets/css/product-orders.css') ?>">
-<div class="layout"><?php include '../includes/staff_sidebar.php'; ?><main class="content product-orders-page" id="mainContent">
+<div class="layout"><?php include '../includes/' . $orderArea . '_sidebar.php'; ?><main class="content product-orders-page" id="mainContent">
 <section class="page-heading product-orders-heading"><h1>Product Orders</h1><p>Manage mobile purchases, verify transfer payments, and prepare clinic pickups.</p><a class="btn btn-outline-primary" href="payment_settings.php">Payment settings</a></section>
 <?php foreach (['success','error'] as $key): if ($message = flash($key)): ?><div role="alert" class="alert product-order-feedback alert-<?= $key === 'error' ? 'warning' : 'success' ?>"><?= e($message) ?></div><?php endif; endforeach; ?>
 <?php if ($selected && !$detail): ?><div class="alert product-order-feedback alert-warning">Order not found.</div><?php endif; ?>
@@ -61,11 +62,11 @@ include '../includes/header.php'; include '../includes/navbar.php';
 <?php endif; ?><button class="btn btn-success me-2 mb-2" name="action" value="complete">Complete pickup<?= $detail['payment_method'] === 'clinic' ? ' and record payment' : '' ?></button><?php endif; ?>
 <?php if (in_array($detail['payment_status'], ['pending','rejected'], true)): ?><button class="btn btn-outline-danger mb-2" name="action" value="cancel" onclick="return confirm('Cancel this order and release its reserved stock?')">Cancel order</button><?php endif; ?>
 </form><?php endif; ?>
-<?php if ($detail['transaction_id']): ?><p class="mt-3">POS payment record #<?= (int) $detail['transaction_id'] ?> · <?php if (file_exists(__DIR__ . '/receipt.php')): ?><a href="receipt.php?transaction_id=<?= (int) $detail['transaction_id'] ?>">View receipt</a> · <?php endif; ?><a href="pos.php">Open POS cashier</a></p><?php endif; ?>
+<?php if ($detail['transaction_id']): ?><p class="mt-3">POS payment record #<?= (int) $detail['transaction_id'] ?> · <?php if (file_exists(__DIR__ . '/../' . $orderArea . '/receipt.php')): ?><a href="receipt.php?transaction_id=<?= (int) $detail['transaction_id'] ?>">View receipt</a> · <?php endif; ?><a href="pos.php">Open POS cashier</a></p><?php endif; ?>
 </section><?php endif; ?>
-<form method="GET" class="d-flex gap-2 mb-3"><label for="orderStatus" class="visually-hidden">Order status</label><select name="status" id="orderStatus" class="form-select" style="max-width:220px"><?php foreach (['open'=>'Open orders','placed'=>'Placed','ready'=>'Ready for pickup','completed'=>'Completed','cancelled'=>'Cancelled','all'=>'All orders'] as $value=>$label): ?><option value="<?= $value ?>" <?= $filter === $value ? 'selected' : '' ?>><?= $label ?></option><?php endforeach; ?></select><button class="btn btn-primary">Filter</button><a class="btn btn-light" href="product_orders.php">Refresh</a></form>
-<div class="table-card"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Order</th><th>Client</th><th>Total</th><th>Payment</th><th>Pickup</th><th>Created</th></tr></thead><tbody>
+<section class="surface-card admin-record-finder"><div class="admin-record-finder-heading"><div><span class="eyebrow">Order search</span><h2>Browse product orders</h2></div></div><form method="GET" class="admin-record-search"><label for="orderStatus" class="visually-hidden">Order status</label><select name="status" id="orderStatus" class="form-select" onchange="this.form.submit()" style="max-width:220px"><?php foreach (['open'=>'Open orders','placed'=>'Placed','ready'=>'Ready for pickup','completed'=>'Completed','cancelled'=>'Cancelled','all'=>'All orders'] as $value=>$label): ?><option value="<?= $value ?>" <?= $filter === $value ? 'selected' : '' ?>><?= $label ?></option><?php endforeach; ?></select><button class="btn btn-primary">Filter</button><a class="btn btn-light" href="product_orders.php">Refresh</a></form></section>
+<div class="table-card"><div class="table-responsive"><table class="data-table align-middle"><thead><tr><th>Order</th><th>Client</th><th>Total</th><th>Payment</th><th>Pickup</th><th>Created</th></tr></thead><tbody>
 <?php if (!$rows->num_rows): ?><tr><td colspan="6">No matching orders.</td></tr><?php endif; ?>
 <?php while ($row = $rows->fetch_assoc()): ?><tr><td><a href="product_orders.php?id=<?= (int) $row['id'] ?>">#<?= (int) $row['id'] ?></a></td><td><?= e($row['full_name']) ?></td><td>PHP <?= number_format((float) $row['total_amount'],2) ?></td><td><?= $row['payment_method'] === 'clinic' ? 'At clinic' : ($row['payment_method'] === 'bank' ? 'Bank transfer' : 'GCash') ?><br><?= badge(str_replace('_',' ', $row['payment_status'])) ?></td><td><?= badge($row['status']) ?></td><td><?= e($row['created_at']) ?></td></tr><?php endwhile; ?>
-</tbody></table></div></div><p class="text-muted mt-2">Latest 100 matching orders. New orders and payment proofs appear in the notification bell automatically.</p>
+</tbody></table></div></div><p class="text-muted mt-2">Latest 100 matching orders. <?php if ($orderArea === 'staff'): ?>New orders and payment proofs appear in the notification bell automatically.<?php else: ?>Refresh to see new orders and payment proofs.<?php endif; ?></p>
 </main></div><?php include '../includes/footer.php'; ?>
