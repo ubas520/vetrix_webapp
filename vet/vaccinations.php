@@ -2,36 +2,52 @@
 require_once "../config/database.php";
 require_once "../includes/functions.php";
 require_role("veterinarian");
+require_once __DIR__.'/../includes/vaccination_save.php';
+ensure_vaccination_completion_schema($conn);
+ensure_review_workflow_schema($conn);
 $uid=(int)current_user_id();
 $vetName=(string)($_SESSION['full_name']??'Veterinarian');
-if($_SERVER['REQUEST_METHOD']==='POST'){
+require_once '../includes/vaccination_save.php';
+$vaccineError = '';
+$vaccineDraft = [];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf_or_fail();
-    $action=$_POST['action']??'save_vaccine';
-    if($action==='send_owner_notification'){
-        $vaccinationId=(int)($_POST['vaccination_id']??0);
-        $stmt=$conn->prepare("SELECT v.vaccine_name,v.next_due_date,p.id pet_id,p.name pet_name,p.owner_id FROM vaccinations v JOIN pets p ON v.pet_id=p.id WHERE v.id=? LIMIT 1");
-        $stmt->bind_param('i',$vaccinationId);$stmt->execute();$row=$stmt->get_result()->fetch_assoc();
-        if($row){
-            $due=$row['next_due_date']?date('M d, Y',strtotime($row['next_due_date'])):'not recorded';
-            notify_user($conn,(int)$row['owner_id'],'Vaccination follow-up needed',$row['pet_name'].' needs owner follow-up for '.$row['vaccine_name'].'. Due date: '.$due.'. Sent by '.$vetName.'.','vaccine',null);
+    $action = $_POST['action'] ?? 'save_vaccine';
+    try {
+        if ($action === 'send_owner_notification') {
+            $vaccinationId = (int)($_POST['vaccination_id'] ?? 0);
+            $stmt = $conn->prepare("SELECT v.vaccine_name,v.next_due_date,v.completed_by_record_id,p.name pet_name,p.owner_id FROM vaccinations v JOIN pets p ON v.pet_id=p.id WHERE v.id=? LIMIT 1");
+            if (!$stmt || !$stmt->bind_param('i', $vaccinationId) || !$stmt->execute()) throw new RuntimeException('Could not load vaccination.');
+            $row = $stmt->get_result()->fetch_assoc();
+            if (!$row) throw new InvalidArgumentException('Vaccination record not found.');
+            if ($row['completed_by_record_id']) throw new InvalidArgumentException('This follow-up is already completed.');
+            if (!$row['next_due_date']) throw new InvalidArgumentException('This vaccination has no follow-up date.');
+            $limit = $conn->prepare("SELECT COUNT(*) c FROM audit_logs WHERE entity_type='vaccination' AND entity_id=? AND action IN ('Sent vaccination reminder','Sent vaccination follow-up notification') AND created_at>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+            if (!$limit || !$limit->bind_param('i', $vaccinationId) || !$limit->execute()) throw new RuntimeException('Could not check reminder history.');
+            if ((int)$limit->get_result()->fetch_assoc()['c'] > 0) throw new InvalidArgumentException('A reminder was already created for this vaccination within the last 24 hours.');
+            $due = date('M d, Y', strtotime($row['next_due_date']));
+            $notification = notify_user($conn,(int)$row['owner_id'],'Vaccination follow-up needed',$row['pet_name'].' needs owner follow-up for '.$row['vaccine_name'].'. Due date: '.$due.'. Sent by '.$vetName.'.','vaccine',null);
+            if (!$notification) throw new RuntimeException('Could not create owner notification.');
             log_action($conn,'Sent vaccination follow-up notification','vaccination',$vaccinationId,'Sent by '.$vetName.'.');
-            flash('success','Owner notification sent.');
+            flash('success','Owner notification created.');
+        } elseif ($action === 'save_vaccine') {
+            $vaccinationId = save_vaccination($conn, $_POST, $uid);
+            log_action($conn,'Veterinarian added vaccination','vaccination',$vaccinationId,'Administered by '.$vetName.'.');
+            flash('success',"Vaccination saved. Confirmation added to the client's in-app notifications.");
+        } else {
+            throw new InvalidArgumentException('Unknown vaccination action.');
         }
-    } else {
-        $petId=(int)($_POST['pet_id']??0);
-        $vaccine=trim((string)($_POST['vaccine_name']??''));
-        $dateGiven=trim((string)($_POST['date_given']??''))?:null;
-        $nextDue=trim((string)($_POST['next_due_date']??''))?:null;
-        $remarks=trim((string)($_POST['remarks']??''));
-        $stmt=$conn->prepare("INSERT INTO vaccinations(pet_id,vaccine_name,date_given,next_due_date,administered_by,administered_by_id,remarks) VALUES(?,?,?,?,?,?,?)");
-        $stmt->bind_param("issssis",$petId,$vaccine,$dateGiven,$nextDue,$vetName,$uid,$remarks);
-        $stmt->execute();
-        log_action($conn,'Veterinarian added vaccination','vaccination',(int)$stmt->insert_id,'Administered by '.$vetName.'.');
-        flash('success','Vaccination saved.');
+        redirect_to('vet/vaccinations.php');
+    } catch (InvalidArgumentException $error) {
+        $vaccineError = $error->getMessage();
+    } catch (Throwable $error) {
+        error_log('Vaccination action failed: '.$error->getMessage());
+        $vaccineError = 'The vaccination action could not be completed. Please try again.';
     }
-    redirect_to('vet/vaccinations.php');
+    if ($action === 'save_vaccine') {
+        foreach (['pet_id','vaccine_name','date_given','next_due_date','remarks'] as $key) $vaccineDraft[$key] = is_scalar($_POST[$key] ?? '') ? (string)($_POST[$key] ?? '') : '';
+    }
 }
-
 $vaccine_search = trim($_GET['q'] ?? '');
 $vaccine_filter = $_GET['filter'] ?? 'all';
 $pet_filter = (int)($_GET['pet_id'] ?? 0);
@@ -42,13 +58,13 @@ if(!in_array($vaccine_filter,['all','due_soon','overdue','scheduled'],true)) $va
 $conditions=[];
 if ($vaccine_search !== '') { $safeVaccineSearch = $conn->real_escape_string($vaccine_search); $conditions[]="(p.name LIKE '%$safeVaccineSearch%' OR v.vaccine_name LIKE '%$safeVaccineSearch%' OR v.administered_by LIKE '%$safeVaccineSearch%' OR v.remarks LIKE '%$safeVaccineSearch%')"; }
 if($pet_filter>0) $conditions[]="v.pet_id=$pet_filter";
-if($vaccine_filter==='due_soon') $conditions[]="v.next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY)";
-if($vaccine_filter==='overdue') $conditions[]="v.next_due_date < CURDATE()";
-if($vaccine_filter==='scheduled') $conditions[]="(v.next_due_date IS NULL OR v.next_due_date >= DATE_ADD(CURDATE(), INTERVAL 15 DAY))";
+if($vaccine_filter==='due_soon') $conditions[]="v.completed_by_record_id IS NULL AND v.next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY)";
+if($vaccine_filter==='overdue') $conditions[]="v.completed_by_record_id IS NULL AND v.next_due_date < CURDATE()";
+if($vaccine_filter==='scheduled') $conditions[]="(v.completed_by_record_id IS NULL AND v.next_due_date IS NULL OR v.completed_by_record_id IS NULL AND v.next_due_date >= DATE_ADD(CURDATE(), INTERVAL 15 DAY))";
 $vaccine_where=$conditions?'WHERE '.implode(' AND ',$conditions):'';
-$vaccineOrder=$vaccine_sort==='az'?'v.vaccine_name ASC, v.id DESC':($vaccine_sort==='za'?'v.vaccine_name DESC, v.id DESC':'next_due_date IS NULL, next_due_date ASC, v.id DESC');
-$vaccineSummary = $conn->query("SELECT COUNT(*) total_vaccines, SUM(next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY)) due_soon, SUM(next_due_date < CURDATE()) overdue, COUNT(DISTINCT pet_id) pets_vaccinated FROM vaccinations")->fetch_assoc();
-$filterCounts=['all'=>(int)($vaccineSummary['total_vaccines']??0),'due_soon'=>(int)($vaccineSummary['due_soon']??0),'overdue'=>(int)($vaccineSummary['overdue']??0),'scheduled'=>(int)$conn->query("SELECT COUNT(*) c FROM vaccinations WHERE next_due_date IS NULL OR next_due_date >= DATE_ADD(CURDATE(), INTERVAL 15 DAY)")->fetch_assoc()['c']];
+$vaccineOrder=$vaccine_sort==='az'?'v.vaccine_name ASC, v.id DESC':($vaccine_sort==='za'?'v.vaccine_name DESC, v.id DESC':'v.completed_by_record_id IS NOT NULL, next_due_date IS NULL, next_due_date ASC, v.id DESC');
+$vaccineSummary = $conn->query("SELECT COUNT(*) total_vaccines, SUM(completed_by_record_id IS NULL AND next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY)) due_soon, SUM(completed_by_record_id IS NULL AND next_due_date < CURDATE()) overdue, COUNT(DISTINCT pet_id) pets_vaccinated FROM vaccinations")->fetch_assoc();
+$filterCounts=['all'=>(int)($vaccineSummary['total_vaccines']??0),'due_soon'=>(int)($vaccineSummary['due_soon']??0),'overdue'=>(int)($vaccineSummary['overdue']??0),'scheduled'=>(int)$conn->query("SELECT COUNT(*) c FROM vaccinations WHERE completed_by_record_id IS NULL AND next_due_date IS NULL OR completed_by_record_id IS NULL AND next_due_date >= DATE_ADD(CURDATE(), INTERVAL 15 DAY)")->fetch_assoc()['c']];
 $totalFiltered=(int)$conn->query("SELECT COUNT(*) c FROM vaccinations v JOIN pets p ON v.pet_id=p.id $vaccine_where")->fetch_assoc()['c'];
 $title="Vaccinations"; include "../includes/header.php"; include "../includes/navbar.php";
 ?>
@@ -62,6 +78,7 @@ $title="Vaccinations"; include "../includes/header.php"; include "../includes/na
     body.enterprise-ui[data-user-role="veterinarian"] #mainContent.vet-vaccinations-page .vet-vaccine-list-card{width:100%!important;height:auto!important;min-height:0!important;max-height:none!important}
     </style>
     <?php if($m=flash('success')):?><div class="alert alert-success"><?=e($m)?></div><?php endif;?>
+    <?php if($vaccineError): ?><div class="alert alert-danger" role="alert"><?=e($vaccineError)?></div><?php endif; ?>
     <section class="metric-grid compact-metrics">
         <?php foreach([
             ['syringe','Vaccine records','total_vaccines','All vaccination entries.'],
@@ -92,6 +109,7 @@ $title="Vaccinations"; include "../includes/header.php"; include "../includes/na
                 elseif($r['next_due_date']<=date('Y-m-d',strtotime('+14 days'))){$dueLabel='Due soon';$badgeClass='warning';}
                 else{$dueLabel='Scheduled';$badgeClass='success';}
             }
+            if($r['completed_by_record_id']){$dueLabel='Follow-up completed';$badgeClass='success';}
             $detail=['title'=>$r['pet_name'].' vaccination','eyebrow'=>'Vaccination record','fields'=>[
                 'Owner'=>$r['owner_name']?:'Not recorded','Phone'=>$r['phone']?:'No phone saved',
                 'Vaccine'=>$r['vaccine_name'],'Status'=>$dueLabel,
@@ -109,7 +127,16 @@ $title="Vaccinations"; include "../includes/header.php"; include "../includes/na
             <td><?=e($r['administered_by']?:'Not recorded')?></td>
             <td><span class="badge text-bg-<?=$badgeClass?>"><?=e($dueLabel)?></span></td>
             <td><?=$r['last_sent']?date('M d, Y h:i A',strtotime($r['last_sent'])):'Never sent'?></td>
-            <td><?php if($dueLabel==='Overdue'):?><form method="POST" data-confirm-message="Send a vaccination follow-up notification to the owner?"><?=csrf_field()?><input type="hidden" name="action" value="send_owner_notification"><input type="hidden" name="vaccination_id" value="<?=$r['id']?>"><button class="button-secondary" type="submit"><?=ui_icon('bell')?>Send reminder</button></form><?php else:?><span class="text-muted">No follow-up needed</span><?php endif;?></td>
+            <td>
+                <?php if($r['completed_by_record_id']): ?>
+                    <span class="text-muted">Follow-up completed</span>
+                <?php elseif($r['next_due_date']): ?>
+                    <a class="button-primary" href="record_vaccination.php?vaccination_id=<?=(int)$r['id']?>">Record completed vaccination</a>
+                    <?php if($dueLabel==='Overdue'): ?><form method="POST" data-confirm-message="Send a vaccination follow-up notification to the owner?"><?=csrf_field()?><input type="hidden" name="action" value="send_owner_notification"><input type="hidden" name="vaccination_id" value="<?=$r['id']?>"><button class="button-secondary" type="submit"><?=ui_icon('bell')?>Send reminder</button></form><?php endif; ?>
+                <?php else: ?>
+                    <span class="text-muted">No follow-up scheduled</span>
+                <?php endif; ?>
+            </td>
         </tr>
         <?php endwhile;?>
         </tbody>
@@ -120,12 +147,18 @@ $title="Vaccinations"; include "../includes/header.php"; include "../includes/na
 (()=>{
     const toggle=document.getElementById('vaccineFormToggle');
     const panel=document.getElementById('vaccineFormPanel');
+    const draft=<?=json_encode($vaccineDraft,JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT)?>;
+    for(const [name,value] of Object.entries(draft)) {
+        const field=panel.querySelector(`[name="${name}"]`);
+        if(field)field.value=value;
+    }
     const setExpanded=expanded=>{
         panel.hidden=!expanded;
         toggle.setAttribute('aria-expanded',String(expanded));
         document.getElementById('vaccineFormChevron').textContent=expanded?'\u25b4':'\u25be';
     };
     toggle.addEventListener('click',()=>setExpanded(panel.hidden));
+    if(Object.keys(draft).length)setExpanded(true);
     document.getElementById('vaccineFormClose').addEventListener('click',()=>{setExpanded(false);toggle.focus();});
 })();
 </script>

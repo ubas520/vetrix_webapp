@@ -2,6 +2,8 @@
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 require_role('admin');
+require_once __DIR__.'/../includes/vaccination_save.php';
+ensure_vaccination_completion_schema($conn);
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -56,7 +58,7 @@ try {
     } elseif ($kind === 'vaccinations') {
         $days = (int)($_POST['days'] ?? 60);
         if (!in_array($days, [30, 60, 90, 365], true)) throw new InvalidArgumentException('Choose a valid due period.');
-        $rows = chart_rows($conn, "SELECT CASE WHEN v.next_due_date<CURDATE() THEN 'Overdue' ELSE 'Upcoming' END category,COUNT(*) total FROM vaccinations v JOIN pets p ON p.id=v.pet_id JOIN users u ON u.id=p.owner_id WHERE v.next_due_date<=DATE_ADD(CURDATE(),INTERVAL ? DAY) GROUP BY category", 'i', [$days]);
+        $rows = chart_rows($conn, "SELECT CASE WHEN v.completed_by_record_id IS NULL AND v.next_due_date<CURDATE() THEN 'Overdue' ELSE 'Upcoming' END category,COUNT(*) total FROM vaccinations v JOIN pets p ON p.id=v.pet_id JOIN users u ON u.id=p.owner_id WHERE v.completed_by_record_id IS NULL AND v.next_due_date<=DATE_ADD(CURDATE(),INTERVAL ? DAY) GROUP BY category", 'i', [$days]);
         $counts = array_column($rows, 'total', 'category');
         $data = ['type' => 'doughnut', 'title' => "Vaccination doses · Next $days days and overdue", 'labels' => ['Overdue', 'Upcoming'], 'datasets' => [['label' => 'Doses', 'backgroundColor' => ['#dc6575', '#18a999'], 'data' => [(int)($counts['Overdue'] ?? 0), (int)($counts['Upcoming'] ?? 0)]]]];
     } elseif ($kind === 'directory') {

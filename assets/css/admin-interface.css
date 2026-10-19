@@ -1,6 +1,21 @@
 /* Loaded before the legacy theme. Important rules in this first layer own
    admin and veterinarian component geometry; navigation and dialog visibility remain unchanged. */
 @layer admin-interface {
+/* Vaccination actions stack within the cell instead of colliding with status copy. */
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"]) #mainContent .vaccination-table :is(th,td):last-child {
+    min-width:190px!important; width:210px!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"]) #mainContent .vaccination-table td:last-child :is(.button-primary,.button-secondary) {
+    display:flex!important; justify-content:center!important; align-items:center!important;
+    width:100%!important; max-width:210px!important; box-sizing:border-box!important;
+    white-space:normal!important; text-align:center!important; line-height:1.4!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"]) #mainContent .vaccination-table td:last-child form {
+    display:block!important; margin:8px 0 0!important;
+}
+body.enterprise-ui:is([data-user-role="admin"],[data-user-role="veterinarian"]) #mainContent .vaccination-table td:last-child small {
+    display:block!important; margin-top:8px!important;
+}
 /* Readable shared appointment rows; retain the existing responsive columns. */
 body.enterprise-ui #mainContent .appointment-row :is(.appointment-pet h3,.appointment-time time b) {
     color: #183b60 !important;

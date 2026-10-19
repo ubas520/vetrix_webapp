@@ -2,6 +2,8 @@
 require_once "../config/database.php";
 require_once "../includes/functions.php";
 require_role("admin");
+require_once __DIR__.'/../includes/vaccination_save.php';
+ensure_vaccination_completion_schema($conn);
 
 $todayAppointments = (int)$conn->query("SELECT COUNT(*) c FROM appointments WHERE DATE(COALESCE(scheduled_date, requested_date))=CURDATE()")->fetch_assoc()['c'];
 $pendingAppointments = (int)$conn->query("SELECT COUNT(*) c FROM appointments WHERE status='pending'")->fetch_assoc()['c'];
@@ -9,8 +11,8 @@ $pendingPets = (int)$conn->query("SELECT COUNT(*) c FROM pets WHERE verification
 $pendingUsers = (int)$conn->query("SELECT COUNT(*) c FROM users WHERE role='client' AND status='pending'")->fetch_assoc()['c'];
 $pendingEditRequests = (int)$conn->query("SELECT COUNT(*) c FROM edit_requests WHERE status='pending'")->fetch_assoc()['c'];
 $lowStock = (int)$conn->query("SELECT COUNT(*) c FROM inventory_items WHERE status IN ('low_stock','out_of_stock')")->fetch_assoc()['c'];
-$dueSoon = (int)$conn->query("SELECT COUNT(*) c FROM vaccinations WHERE next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 60 DAY)")->fetch_assoc()['c'];
-$overdueVaccinations = (int)$conn->query("SELECT COUNT(*) c FROM vaccinations WHERE next_due_date<CURDATE()")->fetch_assoc()['c'];
+$dueSoon = (int)$conn->query("SELECT COUNT(*) c FROM vaccinations WHERE completed_by_record_id IS NULL AND next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 60 DAY)")->fetch_assoc()['c'];
+$overdueVaccinations = (int)$conn->query("SELECT COUNT(*) c FROM vaccinations WHERE completed_by_record_id IS NULL AND next_due_date<CURDATE()")->fetch_assoc()['c'];
 $attentionAppointments = (int)$conn->query("SELECT COUNT(*) c FROM appointments WHERE (status='pending' AND requested_date<NOW()) OR (status='approved' AND (scheduled_date IS NULL OR assigned_vet_id IS NULL OR scheduled_date<NOW()))")->fetch_assoc()['c'];
 $pendingLeaveRequests = (int)$conn->query("SELECT COUNT(*) c FROM staff_availability WHERE event_kind='unavailable' AND reason LIKE '[Pending]%' AND ends_at>starts_at")->fetch_assoc()['c'];
 $revenue = (float)$conn->query("SELECT COALESCE(SUM(total_amount),0) c FROM pos_transactions WHERE payment_status='paid' AND DATE(transaction_date)=CURDATE()")->fetch_assoc()['c'];
@@ -26,7 +28,7 @@ $todayAppointmentRows = dashboard_rows($conn, "SELECT a.id,a.status,a.reason,COA
 $pendingAppointmentRows = dashboard_rows($conn, "SELECT a.id,a.reason,COALESCE(a.scheduled_date,a.requested_date) visit_time,u.full_name client_name,p.name pet_name,p.species FROM appointments a JOIN users u ON a.owner_id=u.id JOIN pets p ON a.pet_id=p.id WHERE a.status='pending' ORDER BY visit_time,a.id");
 $attentionAppointmentRows = dashboard_rows($conn, "SELECT a.id,a.status,a.reason,COALESCE(a.scheduled_date,a.requested_date) visit_time,u.full_name client_name,p.name pet_name,p.species,v.full_name vet_name FROM appointments a JOIN users u ON a.owner_id=u.id JOIN pets p ON a.pet_id=p.id LEFT JOIN users v ON a.assigned_vet_id=v.id WHERE (a.status='pending' AND a.requested_date<NOW()) OR (a.status='approved' AND (a.scheduled_date IS NULL OR a.assigned_vet_id IS NULL OR a.scheduled_date<NOW())) ORDER BY visit_time,a.id");
 $pendingLeaveRows = dashboard_rows($conn, "SELECT sa.id,sa.user_id,sa.starts_at,sa.ends_at,sa.reason,u.full_name,u.role FROM staff_availability sa JOIN users u ON sa.user_id=u.id WHERE sa.event_kind='unavailable' AND sa.reason LIKE '[Pending]%' AND sa.ends_at>sa.starts_at ORDER BY sa.starts_at,sa.id");
-$dueVaccinationRows = dashboard_rows($conn, "SELECT v.id,v.vaccine_name,v.next_due_date,p.name pet_name,p.species,u.full_name client_name,vet.full_name vet_name FROM vaccinations v JOIN pets p ON v.pet_id=p.id JOIN users u ON p.owner_id=u.id LEFT JOIN users vet ON v.administered_by_id=vet.id WHERE v.next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(),INTERVAL 60 DAY) ORDER BY v.next_due_date,v.id");
+$dueVaccinationRows = dashboard_rows($conn, "SELECT v.id,v.vaccine_name,v.next_due_date,p.name pet_name,p.species,u.full_name client_name,vet.full_name vet_name FROM vaccinations v JOIN pets p ON v.pet_id=p.id JOIN users u ON p.owner_id=u.id LEFT JOIN users vet ON v.administered_by_id=vet.id WHERE v.completed_by_record_id IS NULL AND v.next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(),INTERVAL 60 DAY) ORDER BY v.next_due_date,v.id");
 $todaySalesRows = dashboard_rows($conn, "SELECT t.id,t.total_amount,t.payment_status,t.transaction_date,COALESCE(c.full_name,'Walk-in') client_name,COALESCE(h.full_name,'Clinic staff') handled_by_name,COUNT(i.id) line_count,COALESCE(SUM(i.quantity),0) item_count FROM pos_transactions t LEFT JOIN users c ON t.client_id=c.id LEFT JOIN users h ON t.handled_by=h.id LEFT JOIN pos_transaction_items i ON i.transaction_id=t.id WHERE t.payment_status='paid' AND DATE(t.transaction_date)=CURDATE() GROUP BY t.id ORDER BY t.transaction_date DESC,t.id DESC");
 $overviewTab = $_GET['overview'] ?? 'appointments';
 $overviewAllowed = ['appointments','activity','sales','inventory','notifications'];

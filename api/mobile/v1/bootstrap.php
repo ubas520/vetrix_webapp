@@ -148,10 +148,13 @@ $administeredIdSelect = mobile_api_column_exists($conn, 'vaccinations', 'adminis
 $vaccinationCreatedSelect = mobile_api_column_exists($conn, 'vaccinations', 'created_at')
     ? 'v.created_at'
     : 'NULL AS created_at';
+$vaccinationCompletionSelect = mobile_api_column_exists($conn, 'vaccinations', 'completed_by_record_id')
+    ? 'v.completed_by_record_id'
+    : 'NULL AS completed_by_record_id';
 $vaccinationsStmt = mobile_api_prepare(
     $conn,
     "SELECT v.id,v.pet_id,v.vaccine_name,v.date_given,v.next_due_date,v.administered_by,v.remarks,
-            {$administeredIdSelect},{$vaccinationCreatedSelect},p.name AS pet_name
+            {$administeredIdSelect},{$vaccinationCreatedSelect},{$vaccinationCompletionSelect},p.name AS pet_name
      FROM vaccinations v
      JOIN pets p ON p.id=v.pet_id
      WHERE p.owner_id=?
@@ -161,6 +164,11 @@ $vaccinationsStmt->bind_param('i', $userId);
 $vaccinationsStmt->execute();
 $vaccinationRecords = mobile_api_all_rows($vaccinationsStmt);
 foreach ($vaccinationRecords as &$vaccination) {
+    $vaccination['completed_by_record_id'] = $vaccination['completed_by_record_id'] !== null ? (int)$vaccination['completed_by_record_id'] : null;
+    $vaccination['original_next_due_date'] = $vaccination['next_due_date'];
+    $vaccination['follow_up_completed'] = $vaccination['completed_by_record_id'] !== null;
+    // Existing clients use next_due_date to calculate outstanding reminders.
+    if ($vaccination['follow_up_completed']) $vaccination['next_due_date'] = null;
     $vaccination['id'] = (int) $vaccination['id'];
     $vaccination['pet_id'] = (int) $vaccination['pet_id'];
     $vaccination['administered_by_id'] = $vaccination['administered_by_id'] !== null

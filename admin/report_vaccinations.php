@@ -3,13 +3,15 @@ require_once "../config/database.php";
 require_once "../includes/functions.php";
 require_once "../includes/report_helpers.php";
 require_role("admin");
+require_once __DIR__.'/../includes/vaccination_save.php';
+ensure_vaccination_completion_schema($conn);
 
 $days = (int)($_GET['days'] ?? 60);
 $title = "Vaccination Due Report";
 include "../includes/header.php";
 echo report_actions();
 
-$stmt = $conn->prepare("SELECT v.*,p.name pet_name,u.full_name,u.phone FROM vaccinations v JOIN pets p ON v.pet_id=p.id JOIN users u ON p.owner_id=u.id WHERE v.next_due_date IS NOT NULL AND v.next_due_date<=DATE_ADD(CURDATE(), INTERVAL ? DAY) ORDER BY v.next_due_date");
+$stmt = $conn->prepare("SELECT v.*,p.name pet_name,u.full_name,u.phone FROM vaccinations v JOIN pets p ON v.pet_id=p.id JOIN users u ON p.owner_id=u.id WHERE v.completed_by_record_id IS NULL AND v.next_due_date IS NOT NULL AND v.next_due_date<=DATE_ADD(CURDATE(), INTERVAL ? DAY) ORDER BY v.next_due_date");
 $stmt->bind_param("i",$days);
 $stmt->execute();
 $rows = $stmt->get_result();
